@@ -51,8 +51,9 @@ body{
 button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:none;}
 canvas{
   display:block;
-  transform:translateZ(0);
   image-rendering:auto;
+  opacity:1 !important;
+  filter:none !important;
 }
 input,select{font-family:'Outfit',sans-serif;}
 
@@ -158,8 +159,14 @@ input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── KPI PILL ─── */
 .kpi-card{
-  background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);
-  padding:16px 18px;position:relative;overflow:hidden;transition:all .2s ease;
+  background:var(--surface);
+  border-radius:var(--r);
+  box-shadow:var(--shadow);
+  padding:16px 18px;
+  position:relative;
+  overflow:hidden;
+  transition:all .2s ease;
+  isolation:isolate;
 }
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
 .kpi-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px;}
@@ -169,7 +176,14 @@ input,select{font-family:'Outfit',sans-serif;}
 .kpi-delta{display:flex;align-items:center;gap:3px;margin-top:6px;}
 .delta-arrow{font-size:11px;font-weight:700;}
 .delta-txt{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);}
-.kpi-spark{position:absolute;bottom:0;right:0;opacity:.45;}
+.kpi-spark{
+  position:absolute;
+  bottom:0;
+  right:0;
+  opacity:1 !important;
+  filter:none !important;
+  mix-blend-mode:normal;
+}
 
 /* ─── STATUS BADGE ─── */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
