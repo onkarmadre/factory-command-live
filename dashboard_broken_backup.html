@@ -34,8 +34,6 @@
   margin:0;
   padding:0;
   box-sizing:border-box;
-  backface-visibility:hidden;
-  -webkit-backface-visibility:hidden;
 }
 body{
   background:var(--bg);
@@ -46,14 +44,11 @@ body{
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
-  transform:translateZ(0);
 }
 button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:none;}
 canvas{
   display:block;
   image-rendering:auto;
-  opacity:1 !important;
-  filter:none !important;
 }
 input,select{font-family:'Outfit',sans-serif;}
 
@@ -166,7 +161,6 @@ input,select{font-family:'Outfit',sans-serif;}
   position:relative;
   overflow:hidden;
   transition:all .2s ease;
-  isolation:isolate;
 }
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
 .kpi-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px;}
