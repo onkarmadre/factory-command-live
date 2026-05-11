@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Factory Command</title>
+<title>ACTIN TraceiX — Decision Command Center</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
@@ -30,40 +30,17 @@
   --r: 14px; --r-sm: 9px;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Outfit',sans-serif;
-  font-size:14px;
-  overflow-x:hidden;
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Outfit',sans-serif;font-size:14px;overflow-x:hidden;min-height:100vh;}
 button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:none;}
-canvas{
-  display:block;
-  image-rendering:auto;
-}
+canvas{display:block;}
 input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── HEADER ─── */
 #header{
-  height:56px;
-  background:#ffffff;
-  border-bottom:1px solid var(--border);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 24px;
-  position:sticky;
-  top:0;
-  z-index:200;
+  height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(24px) saturate(180%);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:200;
 }
 .logo{display:flex;align-items:center;gap:9px;}
 .logo-gem{
@@ -154,13 +131,8 @@ input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── KPI PILL ─── */
 .kpi-card{
-  background:var(--surface);
-  border-radius:var(--r);
-  box-shadow:var(--shadow);
-  padding:16px 18px;
-  position:relative;
-  overflow:hidden;
-  transition:all .2s ease;
+  background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:16px 18px;position:relative;overflow:hidden;transition:all .2s ease;
 }
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
 .kpi-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px;}
@@ -170,14 +142,7 @@ input,select{font-family:'Outfit',sans-serif;}
 .kpi-delta{display:flex;align-items:center;gap:3px;margin-top:6px;}
 .delta-arrow{font-size:11px;font-weight:700;}
 .delta-txt{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);}
-.kpi-spark{
-  position:absolute;
-  bottom:0;
-  right:0;
-  opacity:1 !important;
-  filter:none !important;
-  mix-blend-mode:normal;
-}
+.kpi-spark{position:absolute;bottom:0;right:0;opacity:.45;}
 
 /* ─── STATUS BADGE ─── */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
@@ -273,16 +238,9 @@ input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── OVERLAY ─── */
 #overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.32);
-  z-index:300;
-  display:flex;
-  align-items:flex-start;
-  justify-content:flex-end;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .25s;
+  position:fixed;inset:0;background:rgba(0,0,0,.32);backdrop-filter:blur(6px);
+  z-index:300;display:flex;align-items:flex-start;justify-content:flex-end;
+  opacity:0;pointer-events:none;transition:opacity .25s;
 }
 #overlay.open{opacity:1;pointer-events:all;}
 #ov-panel{
@@ -293,15 +251,10 @@ input,select{font-family:'Outfit',sans-serif;}
 }
 #overlay.open #ov-panel{transform:translateX(0);}
 .ov-hdr{
-  background:#ffffff;
-  border-bottom:1px solid var(--border);
-  padding:16px 22px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:10;
+  background:rgba(255,255,255,.92);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);padding:16px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:10;
 }
 .ov-close{
   width:30px;height:30px;border-radius:9px;background:var(--surface3);
@@ -313,16 +266,9 @@ input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── TRACE MODAL ─── */
 #trace-bg{
-  position:fixed;
-  inset:0;
-  z-index:400;
-  background:rgba(0,0,0,.38);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  opacity:0;
-  pointer-events:none;
-  transition:opacity .2s;
+  position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.38);backdrop-filter:blur(5px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;
 }
 #trace-bg.open{opacity:1;pointer-events:all;}
 #trace-modal{
@@ -375,16 +321,10 @@ input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── ACTION DRAWER ─── */
 .action-drawer{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  z-index:250;
-  background:#ffffff;
+  position:fixed;bottom:0;left:0;right:0;z-index:250;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(24px);
   border-top:1px solid var(--border2);
-  padding:0;
-  max-height:0;
-  overflow:hidden;
+  padding:0;max-height:0;overflow:hidden;
   transition:max-height .3s cubic-bezier(.4,0,.2,1),padding .3s;
   box-shadow:0 -4px 24px rgba(0,0,0,.08);
 }
@@ -494,8 +434,8 @@ input,select{font-family:'Outfit',sans-serif;}
       </svg>
     </div>
     <div>
-      <div class="logo-name">Factory <em>Command</em></div>
-      <div class="logo-tag">LIVE DECISION CENTER</div>
+      <div class="logo-name">ACTIN <em>TraceiX</em></div>
+      <div class="logo-tag">DECISION COMMAND CENTER</div>
     </div>
   </div>
   <nav class="nav">
@@ -1156,153 +1096,6 @@ const KPI_SUMMARY = [
   {name:'Labor Productivity',actual:'94 u/h',target:'100 u/h',delta:'-6',status:'amber'},
 ];
 
-const API_REFRESH_MS=300;
-const API_ENDPOINTS={kpis:'/kpis',machines:'/machines',alerts:'/alerts'};
-const LIVE={kpis:null,machines:null,alerts:null,loading:false,lastOk:0};
-
-function syncArray(target,items){
-  if(!Array.isArray(items))return;
-  target.splice(0,target.length,...items);
-}
-function currentTabId(){
-  const active=document.querySelector('.tab-page.active');
-  return active?active.id.replace('tab-',''):'overview';
-}
-function esc(v){
-  return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
-}
-function fmtNumber(v){return Number(v||0).toLocaleString('en-US');}
-function findCardByTitle(title){
-  return [...document.querySelectorAll('.card,.card-p,.kpi-card')].map(el=>el.closest('.card')||el)
-    .find(el=>[...el.querySelectorAll('.card-title,.kpi-label')].some(t=>t.textContent.trim()===title));
-}
-function findKpiCard(label){
-  const lbl=[...document.querySelectorAll('.kpi-card .kpi-label')].find(el=>el.textContent.trim()===label);
-  return lbl?lbl.closest('.kpi-card'):null;
-}
-function setKpiCard(label,value,sub,arrow,delta,color){
-  const card=findKpiCard(label);if(!card)return;
-  const val=card.querySelector('.kpi-val');if(val){val.textContent=value;val.style.color=color;}
-  const subEl=card.querySelector('.kpi-sub');if(subEl)subEl.textContent=sub;
-  const arr=card.querySelector('.delta-arrow');if(arr){arr.textContent=arrow;arr.style.color=arrow==='↓'?'var(--red)':'var(--green)';}
-  const dt=card.querySelector('.delta-txt');if(dt)dt.textContent=delta;
-}
-function applyKpis(data){
-  if(!data||!data.overview)return;
-  LIVE.kpis=data;
-  if(data.quality?.kpiSummary)syncArray(KPI_SUMMARY,data.quality.kpiSummary);
-  if(data.quality?.defectLog)syncArray(DEFECT_LOG,data.quality.defectLog);
-  updateOverviewText();
-  updateOverviewCharts();
-}
-function applyMachines(data){
-  if(!data)return;
-  LIVE.machines=data;
-  syncArray(LINES,data.machines);
-  syncArray(STATIONS,data.stations);
-  syncArray(ASSETS,data.assets);
-  syncArray(MAINT_EVENTS,data.maintenanceEvents);
-}
-function applyAlerts(data){
-  if(!data)return;
-  LIVE.alerts=data;
-  renderAlertPanels();
-}
-function updateOverviewText(){
-  const o=LIVE.kpis?.overview;if(!o)return;
-  const banner=LIVE.kpis.banner||{};
-  const greeting=document.querySelector('.ban-greeting');
-  if(greeting)greeting.innerHTML=esc(banner.greeting||`Good afternoon, Sarah. Plant running at ${Math.round(o.oee)}% OEE - 2 lines need your attention.`).replace('Sarah.','<strong>Sarah.</strong>').replace(`${Math.round(o.oee)}% OEE`,`<strong>${Math.round(o.oee)}% OEE</strong>`);
-  const meta=document.querySelector('.ban-meta');if(meta)meta.textContent=banner.meta||meta.textContent;
-  const oeeLabel=[...document.querySelectorAll('#tab-overview .kpi-label')].find(el=>el.textContent.trim()==='Overall OEE');
-  const oeeCard=oeeLabel?oeeLabel.closest('.card'):null;
-  if(oeeCard){
-    const big=oeeCard.querySelector('div[style*="font-size:58px"]');
-    if(big)big.innerHTML=`${Math.round(o.oee)}<span style="font-size:24px;font-weight:400;letter-spacing:0;">%</span>`;
-    const fills=oeeCard.querySelectorAll('.prog-fill');
-    const vals=oeeCard.querySelectorAll('.prog-track + div');
-    [['availability',0],['performance',1],['quality',2]].forEach(([key,i])=>{
-      if(fills[i])fills[i].style.width=`${o[key]}%`;
-      if(vals[i])vals[i].textContent=`${o[key]}%`;
-    });
-  }
-  setKpiCard('Units Produced',fmtNumber(o.unitsProduced),`/ ${fmtNumber(o.unitsTarget)} target`,'↑','+4.2% vs yesterday','var(--blue)');
-  setKpiCard('First Pass Yield',`${o.firstPassYield}%`,'target >= 95%','↓','-0.7% vs target','var(--green)');
-  setKpiCard('Total Defects',String(o.totalDefects),`this shift - ${o.rework} rework`,'↓','-8 vs last shift','var(--red)');
-  setKpiCard('Avg Cycle Time',`${o.avgCycleTime}s`, `target ${o.cycleTarget}s`,'↑',`+${Math.max(0,(o.avgCycleTime-o.cycleTarget)).toFixed(1)}s above target`,'var(--amber)');
-}
-function updateOverviewCharts(){
-  const sparks=LIVE.kpis?.sparks||{};
-  sparkline('spk1',sparks.spk1||[320,380,360,420,390,430,410,438],'#2563eb');
-  sparkline('spk2',sparks.spk2||[95,94,96,93,95,94,95,94],'#00b96b');
-  sparkline('spk3',sparks.spk3||[32,28,35,24,30,22,28,24],'#ef4444');
-  sparkline('spk4',sparks.spk4||[44,46,43,48,45,47,46,46],'#f59e0b');
-  drawThroughput();drawDefectDonut();drawBottlenecks();drawShiftBars();
-}
-function alertIconHTML(status){
-  const col=status==='red'?'var(--red)':'var(--amber)';
-  const bg=status==='red'?'var(--red-l)':'var(--amber-l)';
-  const svg=status==='red'
-    ?`<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>`
-    :`<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>`;
-  return`<div class="alert-icon" style="background:${bg};"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="${col}" stroke-width="2.2">${svg}</svg></div>`;
-}
-function renderAlertPanels(){
-  const data=LIVE.alerts;if(!data)return;
-  const alerts=data.alerts||[];
-  document.querySelectorAll('.bell-badge,.nav-badge').forEach(el=>el.textContent=data.open);
-  const activeCard=findCardByTitle('Active Alerts');
-  if(activeCard){
-    const badge=activeCard.querySelector('.badge');if(badge){badge.className=`badge ${data.open?'red':'green'}`;badge.textContent=`${data.open} open`;}
-    const old=[...activeCard.querySelectorAll('.alert-item')];
-    old.forEach(el=>el.remove());
-    const btn=activeCard.querySelector('button');
-    const html=alerts.map(a=>`<div class="alert-item" onclick="openTrace('${esc(a.location)}','${esc(a.issue)}','${esc(a.operator)}','${esc(a.serial)}','${esc(a.batch)}','${esc(a.severity)}')">
-      ${alertIconHTML(a.status)}
-      <div class="alert-body"><div class="alert-title">${esc(a.title)}</div><div class="alert-detail">${esc(a.detail)}</div></div>
-      <div class="alert-time">${esc(a.time)}</div>
-    </div>`).join('');
-    if(btn)btn.insertAdjacentHTML('beforebegin',html);else activeCard.insertAdjacentHTML('beforeend',html);
-  }
-  const top=document.querySelector('.top-alert');
-  const first=alerts[0];
-  if(top&&first){
-    top.onclick=()=>openTrace(first.location,`${first.issue} - line at 55% OEE`,first.operator,first.serial,first.batch,first.severity);
-    const spans=top.querySelectorAll('span');
-    if(spans[0])spans[0].textContent=`${first.severity}: `;
-    if(spans[1])spans[1].textContent=`${first.title.replace(' - ',' ')} detected - ${first.time} ago - Click to trace`;
-  }
-}
-function renderLiveViews(){
-  const tab=currentTabId();
-  const og=document.getElementById('overviewLinesGrid');
-  if(og)og.innerHTML=LINES.map((l,i)=>lineCardHTML(l,i)).join('');
-  if(tab==='lines')renderLinesTab();
-  if(tab==='quality')renderQualityTab();
-  if(tab==='maintenance')renderMaintenanceTab();
-  if(tab==='reports')renderReportsTab();
-}
-async function fetchLiveData(){
-  if(LIVE.loading)return;
-  LIVE.loading=true;
-  try{
-    const [kpis,machines,alerts]=await Promise.all([
-      fetch(API_ENDPOINTS.kpis,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(r.status)),
-      fetch(API_ENDPOINTS.machines,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(r.status)),
-      fetch(API_ENDPOINTS.alerts,{cache:'no-store'}).then(r=>r.ok?r.json():Promise.reject(r.status))
-    ]);
-    applyMachines(machines);
-    applyKpis(kpis);
-    applyAlerts(alerts);
-    renderLiveViews();
-    LIVE.lastOk=Date.now();
-  }catch(err){
-    document.querySelector('.live-chip')?.setAttribute('title','Live API unavailable - showing last known values');
-  }finally{
-    LIVE.loading=false;
-  }
-}
-
 // ══════════════════════════════════════════════
 // CLOCK
 // ══════════════════════════════════════════════
@@ -1392,17 +1185,24 @@ function initOverview(){
   // Lines mini-grid
   const g=document.getElementById('overviewLinesGrid');
   g.innerHTML=LINES.map((l,i)=>lineCardHTML(l,i)).join('');
-  updateOverviewCharts();
+  // Sparklines
+  sparkline('spk1',[320,380,360,420,390,430,410,438],'#2563eb');
+  sparkline('spk2',[95,94,96,93,95,94,95,94],'#00b96b');
+  sparkline('spk3',[32,28,35,24,30,22,28,24],'#ef4444');
+  sparkline('spk4',[44,46,43,48,45,47,46,46],'#f59e0b');
+  drawThroughput();
+  drawDefectDonut();
+  drawBottlenecks();
+  drawShiftBars();
 }
 
 // ── THROUGHPUT CHART ──
 function drawThroughput(){
   const r=ctx2d('throughputChart');if(!r)return;
   const{ctx,W,H}=r;
-  const t=LIVE.kpis?.throughput||{};
-  const today=t.today||[350,370,420,400,440,430,450,438];
-  const yest=t.yesterday||[310,340,380,370,400,390,420,410];
-  const tgt=t.target||400;const labels=t.labels||['08h','09h','10h','11h','12h','13h','14h','15h'];
+  const today=[350,370,420,400,440,430,450,438];
+  const yest=[310,340,380,370,400,390,420,410];
+  const tgt=400;const labels=['08h','09h','10h','11h','12h','13h','14h','15h'];
   const mn=280,mx=470;
   const px=i=>38+i*(W-50)/(today.length-1);
   const py=v=>H-20-((v-mn)/(mx-mn))*(H-30);
@@ -1441,7 +1241,7 @@ function switchChartView(btn,view){
 function drawDefectDonut(){
   const r=ctx2d('defDonut');if(!r)return;
   const{ctx}=r;const cx=50,cy=50,outerR=44,innerR=26;
-  const cats=LIVE.kpis?.defectBreakdown||[{c:'#ef4444',n:8},{c:'#f59e0b',n:6},{c:'#2563eb',n:5},{c:'#6366f1',n:3},{c:'#a8a8b8',n:2}];
+  const cats=[{c:'#ef4444',n:8},{c:'#f59e0b',n:6},{c:'#2563eb',n:5},{c:'#6366f1',n:3},{c:'#a8a8b8',n:2}];
   const total=cats.reduce((a,x)=>a+x.n,0);
   let angle=-Math.PI/2;
   cats.forEach(x=>{const sw=x.n/total*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,outerR,angle,angle+sw);ctx.closePath();ctx.fillStyle=x.c+'cc';ctx.fill();angle+=sw;});
@@ -1452,7 +1252,7 @@ function drawDefectDonut(){
 
 // ── BOTTLENECKS ──
 function drawBottlenecks(){
-  const bns=LIVE.kpis?.bottlenecks||[{l:'L-07 Press',m:72,c:'var(--red)'},{l:'L-03 Weld',m:48,c:'var(--red)'},{l:'L-05 Paint',m:28,c:'var(--amber)'},{l:'L-09 Pack',m:24,c:'var(--amber)'},{l:'L-01 Assm',m:7,c:'var(--green)'}];
+  const bns=[{l:'L-07 Press',m:72,c:'var(--red)'},{l:'L-03 Weld',m:48,c:'var(--red)'},{l:'L-05 Paint',m:28,c:'var(--amber)'},{l:'L-09 Pack',m:24,c:'var(--amber)'},{l:'L-01 Assm',m:7,c:'var(--green)'}];
   const mx=72;
   document.getElementById('bottleneckList').innerHTML=bns.map((b,i)=>`
     <div class="hbar-row">
@@ -1466,7 +1266,7 @@ function drawBottlenecks(){
 function drawShiftBars(){
   const r=ctx2d('shiftBarChart');if(!r)return;
   const{ctx,W,H}=r;
-  const data=LIVE.kpis?.shiftComparison||[{v:3650,l:'A Mon'},{v:3820,l:'B Mon'},{v:3710,l:'A Tue'},{v:3841,l:'B Now'}];
+  const data=[{v:3650,l:'A Mon'},{v:3820,l:'B Mon'},{v:3710,l:'A Tue'},{v:3841,l:'B Now'}];
   const mx=4000,mn=3400;
   const bw=(W-40)/(data.length*2);
   data.forEach((d,i)=>{
@@ -1487,17 +1287,9 @@ function drawShiftBars(){
 // LINES TAB
 // ══════════════════════════════════════════════
 let linesFilter='all';
-function getFilteredLines(){
-  const q=(document.getElementById('lineSearch')?.value||'').toLowerCase();
-  return LINES.filter(l=>
-    (linesFilter==='all'||l.status===linesFilter)&&
-    (!q||l.id.toLowerCase().includes(q)||l.name.toLowerCase().includes(q))
-  );
-}
 function renderLinesTab(){
-  const data=getFilteredLines();
-  buildLinesGrid(data,'linesTabGrid');
-  buildLinesTable(data);
+  buildLinesGrid(LINES,'linesTabGrid');
+  buildLinesTable(LINES);
   buildLeagueTable();
   drawTaktChart();
 }
@@ -1508,10 +1300,12 @@ function buildLinesGrid(data,targetId){
 function filterLinesStatus(btn,f){
   document.querySelectorAll('#tab-lines .filter-chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');linesFilter=f;
-  renderLinesTab();
+  const filtered=f==='all'?LINES:LINES.filter(l=>l.status===f);
+  buildLinesGrid(filtered,'linesTabGrid');buildLinesTable(filtered);
 }
 function filterLinesTab(q){
-  renderLinesTab();
+  const filtered=LINES.filter(l=>l.id.toLowerCase().includes(q.toLowerCase())||l.name.toLowerCase().includes(q.toLowerCase()));
+  buildLinesGrid(filtered,'linesTabGrid');buildLinesTable(filtered);
 }
 function buildLinesTable(data){
   const tb=document.getElementById('linesTableBody');if(!tb)return;
@@ -1609,7 +1403,7 @@ function drawFPYChart(){
     ctx.fillStyle=col+'22';const rr=4;
     ctx.beginPath();ctx.moveTo(x+rr,H-18-bh);ctx.lineTo(x+bw-rr,H-18-bh);ctx.arcTo(x+bw,H-18-bh,x+bw,H-18-bh+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,H-18-bh+rr);ctx.arcTo(x,H-18-bh,x+rr,H-18-bh,rr);ctx.closePath();ctx.fill();
     ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x+rr,H-18-6);ctx.lineTo(x+bw-rr,H-18-6);ctx.arcTo(x+bw,H-18-6,x+bw,H-18-6+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,H-18-6+rr);ctx.arcTo(x,H-18-6,x+rr,H-18-6,rr);ctx.closePath();ctx.fill();
-    ctx.fillStyle='rgba(0,0,0,.35)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';ctx.fillText(`${v}%`,x+bw/2,H-18-bh-4);ctx.fillText(labels[i],x+bw/2,H-5);
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';ctx.fillText(`${v}%`,x+bw/2,H-18-bh-4);ctx.fillText(l.id,x+bw/2,H-5);
   });
   // target line
   const ty=H-18-((tgt-mn)/(mx-mn))*(H-28);
@@ -1684,12 +1478,11 @@ function renderMaintenanceTab(){
 }
 function buildAssetRiskList(){
   const el=document.getElementById('assetRiskList');if(!el)return;
-  const assetIcon=a=>({red:'🔴',amber:'🟡',green:'🟢',RED:'🔴',AMBER:'🟡',GREEN:'🟢'}[a.type]||{red:'🔴',amber:'🟡',green:'🟢'}[a.status]||'●');
   el.innerHTML=ASSETS.map(a=>{
     const col=a.status==='red'?'var(--red)':a.status==='amber'?'var(--amber)':'var(--green)';
     const bg=a.status==='red'?'var(--red-l)':a.status==='amber'?'var(--amber-l)':'var(--green-l)';
     return`<div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;background:${bg};border:1px solid ${col}22;cursor:pointer;" onclick="openTrace('${a.name}','Asset health ${a.health}/100 — predicted failure ${a.risk}','MAINT-TEAM','ASSET-${a.line}','N/A','${a.status==='red'?'CRITICAL':'WARNING'}')">
-      <div style="font-size:20px;">${assetIcon(a)}</div>
+      <div style="font-size:20px;">${a.type}</div>
       <div style="flex:1;">
         <div style="font-size:12px;font-weight:700;">${a.name}</div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px;">Health: ${a.health}/100 · MTBF: ${a.mtbf}h · MTTR: ${a.mttr}h</div>
@@ -2072,8 +1865,6 @@ window.addEventListener('DOMContentLoaded',()=>{
   initOverview();
   // Pre-build lines tab so cards load on switch
   buildLinesGrid(LINES,'linesTabGrid');
-  fetchLiveData();
-  setInterval(fetchLiveData,API_REFRESH_MS);
 });
 // Redraw charts when tab becomes visible (handle font-loading delays)
 setTimeout(()=>{drawThroughput();drawDefectDonut();drawShiftBars();},400);
