@@ -137,6 +137,11 @@ box-shadow:var(--shadow);
 padding:16px 18px;
 position:relative;
 overflow:hidden;
+transform: translateZ(0);
+backface-visibility: hidden;
+-webkit-backface-visibility: hidden;
+will-change: transform;
+contain: layout paint;
 transition:box-shadow .2s ease, transform .2s ease;
 }
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
@@ -1130,6 +1135,7 @@ function ctx2d(id){
   const W=c.offsetWidth||c.width,H=c.offsetHeight||c.height;
   c.width=W*dpr;c.height=H*dpr;
   const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
   return{ctx,W,H};
 }
 function sparkline(id,data,color){
@@ -1632,16 +1638,33 @@ function drawEnergyChart(){
   ctx.fillStyle='rgba(0,185,107,.7)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';ctx.fillText('Target 2.6',W-6,ty-3);
 }
 
+let isFetching = false;
+
 async function fetchLiveData() {
-try {
-const res = await fetch('/kpis');
-const data = await res.json();
+  if (isFetching) return;
 
-updateDashboard(data);
+  isFetching = true;
 
-} catch (err) {
-console.error('Live data fetch failed:', err);
-}
+  try {
+    const response = await fetch('/kpis?t=' + Date.now(), {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    requestAnimationFrame(() => {
+      updateDashboard(data);
+    });
+
+  } catch (err) {
+    console.error('Polling error:', err);
+  } finally {
+    isFetching = false;
+  }
 }
 function formatMetric(value){
   if(value===undefined||value===null||Number.isNaN(value))return '—';
@@ -1917,7 +1940,7 @@ window.addEventListener('DOMContentLoaded',()=>{
   // Pre-build lines tab so cards load on switch
   buildLinesGrid(LINES,'linesTabGrid');
   fetchLiveData();
-  setInterval(fetchLiveData,3000);
+  setInterval(fetchLiveData,1000);
 });
 // Redraw charts when tab becomes visible (handle font-loading delays)
 setTimeout(()=>{drawThroughput();drawDefectDonut();drawShiftBars();},400);
