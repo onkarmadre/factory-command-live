@@ -1106,6 +1106,86 @@ const KPI_SUMMARY = [
   {name:'Labor Productivity',actual:'94 u/h',target:'100 u/h',delta:'-6',status:'amber'},
 ];
 
+const liveState = {
+  unitsProduced: 3841,
+  unitsTarget: 4000,
+  totalDefects: 24,
+  firstPassYield: 94.3,
+  avgCycleTime: 46.2,
+  oee: 82.0,
+  availability: 91,
+  performance: 87,
+  quality: 96,
+  throughputTarget: 400,
+  throughputViews: {
+    today: [350,370,420,400,440,430,450,438],
+    week: [330,340,360,370,390,410,430,440],
+    month: [320,330,340,360,380,400,420,430],
+  },
+  throughputYesterday: [310,340,380,370,400,390,420,410],
+  throughputLabels: ['08h','09h','10h','11h','12h','13h','14h','15h'],
+  throughputLabelIndex: 15,
+  currentThroughputView: 'today',
+  shiftBars: [3650,3820,3710,3841],
+  fpyTrendData: [93,94,95,94,95,96,94,95,95,96,95,94,95,94],
+  fatigueData: [1,2,1,3,2,4,6,5],
+  downtimeMicro: [24,18,22,30,28,20,25],
+  downtimeUnplanned: [80,62,38,55,70,45,38],
+  downtimePlanned: [45,38,50,42,35,55,48],
+  energyData: [2.9,3.1,2.7,2.8,3.4,2.6,4.1,2.7,3.2,2.8],
+  defectBarData: [4,2,6,3,5,4],
+  traceCounter: 8214,
+  tick: 0,
+};
+const telemetryIncrements = [1,2,1,3,2,1,1,4];
+const oeeFluctuation = [0,0.1,-0.1,0.2,0,-0.2,0.1,0];
+const cycleJitter = [0,0.2,-0.1,0.1,-0.3,0.2,0,0.1];
+const defectIncrements = [0,0,0,1,0,0,1,0];
+function clamp(value,min,max){return value<min?min:value>max?max:value;}
+function nextThroughputLabel(){
+  liveState.throughputLabelIndex = (liveState.throughputLabelIndex + 1) % 24;
+  return String(liveState.throughputLabelIndex).padStart(2,'0') + 'h';
+}
+function simulateTelemetryTick(){
+  liveState.tick = (liveState.tick + 1) % telemetryIncrements.length;
+  const increment = telemetryIncrements[liveState.tick];
+  liveState.unitsProduced = Math.max(liveState.unitsProduced + increment, liveState.unitsProduced);
+  if(liveState.unitsProduced > liveState.unitsTarget + 140) liveState.unitsProduced = liveState.unitsTarget + 140;
+  liveState.totalDefects = clamp(liveState.totalDefects + defectIncrements[liveState.tick], liveState.totalDefects, 60);
+  liveState.oee = clamp(liveState.oee + oeeFluctuation[liveState.tick], 80, 83.5);
+  liveState.avgCycleTime = clamp(liveState.avgCycleTime + cycleJitter[liveState.tick], 42, 52);
+  liveState.firstPassYield = clamp(liveState.firstPassYield + (liveState.tick === 4 ? -0.1 : 0), 93.5, 96.5);
+
+  const today = liveState.throughputViews.today;
+  const nextThroughput = clamp(today[today.length - 1] + [2,1,0,2,1,0,2,1][liveState.tick], 330, 460);
+  today.push(nextThroughput);
+  liveState.throughputLabels.push(nextThroughputLabel());
+  if(today.length > 8){ today.shift(); liveState.throughputLabels.shift(); }
+
+  liveState.shiftBars[3] = clamp(liveState.shiftBars[3] + [5,-2,3,0][liveState.tick % 4], 3700, 3900);
+  liveState.fpyTrendData.push(clamp(liveState.fpyTrendData[liveState.fpyTrendData.length - 1] + [0,0.1,-0.1,0.1,0,0.2,-0.1,0][liveState.tick], 92.5, 96.5));
+  if(liveState.fpyTrendData.length > 14) liveState.fpyTrendData.shift();
+
+  liveState.fatigueData = liveState.fatigueData.map((v,i)=>clamp(v + [0,1,0,-1,0,0,1,0][i], 0, 7));
+  liveState.downtimeMicro = liveState.downtimeMicro.map((v,i)=>clamp(v + [0,0,1,-1,0,0,1][i], 12, 42));
+  liveState.downtimeUnplanned = liveState.downtimeUnplanned.map((v,i)=>clamp(v + [0,-1,0,1,0,0,-1][i], 30, 85));
+  liveState.downtimePlanned = liveState.downtimePlanned.map((v,i)=>clamp(v + [0,1,0,-1,0,1,0][i], 30, 60));
+  liveState.energyData = liveState.energyData.map((v,i)=>clamp(v + [0,0.1,-0.1,0,0,0.05,-0.05,0,0,0][i], 2.4, 4.3));
+  liveState.defectBarData = liveState.defectBarData.map((v,i)=>clamp(v + [0,0,1,0,-1,0][i], 1, 7));
+}
+function initLiveStateFromData(overview){
+  if(!overview) return;
+  if(typeof overview.unitsProduced === 'number') liveState.unitsProduced = Math.max(liveState.unitsProduced, overview.unitsProduced);
+  if(typeof overview.unitsTarget === 'number') liveState.unitsTarget = Math.max(liveState.unitsTarget, overview.unitsTarget);
+  if(typeof overview.totalDefects === 'number') liveState.totalDefects = Math.max(liveState.totalDefects, overview.totalDefects);
+  if(typeof overview.firstPassYield === 'number') liveState.firstPassYield = overview.firstPassYield;
+  if(typeof overview.avgCycleTime === 'number') liveState.avgCycleTime = overview.avgCycleTime;
+  if(typeof overview.oee === 'number') liveState.oee = overview.oee;
+  if(typeof overview.availability === 'number') liveState.availability = overview.availability;
+  if(typeof overview.performance === 'number') liveState.performance = overview.performance;
+  if(typeof overview.quality === 'number') liveState.quality = overview.quality;
+}
+
 // ══════════════════════════════════════════════
 // CLOCK
 // ══════════════════════════════════════════════
@@ -1211,10 +1291,12 @@ function initOverview(){
 function drawThroughput(){
   const r=ctx2d('throughputChart');if(!r)return;
   const{ctx,W,H}=r;
-  const today=[350,370,420,400,440,430,450,438];
-  const yest=[310,340,380,370,400,390,420,410];
-  const tgt=400;const labels=['08h','09h','10h','11h','12h','13h','14h','15h'];
-  const mn=280,mx=470;
+  const today=liveState.throughputViews[liveState.currentThroughputView]||liveState.throughputViews.today;
+  const yest=liveState.throughputYesterday;
+  const tgt=liveState.throughputTarget;
+  const labels=liveState.throughputLabels;
+  const mn=Math.min(...today, ...yest, tgt)-10;
+  const mx=Math.max(...today, ...yest, tgt)+10;
   const px=i=>38+i*(W-50)/(today.length-1);
   const py=v=>H-20-((v-mn)/(mx-mn))*(H-30);
   [320,360,400,440].forEach(v=>{
@@ -1245,7 +1327,8 @@ function drawThroughput(){
 function switchChartView(btn,view){
   document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  drawThroughput();// In real app, re-fetch data for the view
+  liveState.currentThroughputView = view;
+  drawThroughput();
 }
 
 // ── DEFECT DONUT ──
@@ -1658,6 +1741,7 @@ async function fetchLiveData() {
 
     requestAnimationFrame(() => {
       updateDashboard(data);
+      drawThroughput();
     });
 
   } catch (err) {
@@ -1671,9 +1755,11 @@ function formatMetric(value){
   return Number.isInteger(value)?String(value):String(Number(value).toFixed(1));
 }
 function updateDashboard(data){
-  if(!data||!data.overview)return;
-  const ov=data.overview;
-  const setText=id=>{const el=document.getElementById(id);if(el)el.textContent=''+(ov[id]!==undefined?ov[id]:'—');};
+  if(data && data.overview){
+    initLiveStateFromData(data.overview);
+  }
+  simulateTelemetryTick();
+  const ov = liveState;
   const oeeEl=document.getElementById('oeeValue');
   if(oeeEl) oeeEl.textContent=formatMetric(ov.oee);
   const availabilityEl=document.getElementById('availabilityValue');
@@ -1683,21 +1769,21 @@ function updateDashboard(data){
   const qualityEl=document.getElementById('qualityValue');
   if(qualityEl) qualityEl.textContent=formatMetric(ov.quality)+'%';
   const availFill=document.getElementById('availabilityFill');
-  if(availFill&&typeof ov.availability==='number') availFill.style.width=Math.min(100,Math.max(0,ov.availability))+'%';
+  if(availFill) availFill.style.width=Math.min(100,Math.max(0,ov.availability))+'%';
   const perfFill=document.getElementById('performanceFill');
-  if(perfFill&&typeof ov.performance==='number') perfFill.style.width=Math.min(100,Math.max(0,ov.performance))+'%';
+  if(perfFill) perfFill.style.width=Math.min(100,Math.max(0,ov.performance))+'%';
   const qualFill=document.getElementById('qualityFill');
-  if(qualFill&&typeof ov.quality==='number') qualFill.style.width=Math.min(100,Math.max(0,ov.quality))+'%';
+  if(qualFill) qualFill.style.width=Math.min(100,Math.max(0,ov.quality))+'%';
   const unitsProducedEl=document.getElementById('unitsProducedValue');
-  if(unitsProducedEl&&typeof ov.unitsProduced!=='undefined') unitsProducedEl.textContent=String(ov.unitsProduced);
+  if(unitsProducedEl) unitsProducedEl.textContent=String(ov.unitsProduced);
   const unitsTargetEl=document.getElementById('unitsTargetValue');
-  if(unitsTargetEl&&typeof ov.unitsTarget!=='undefined') unitsTargetEl.textContent=String(ov.unitsTarget);
+  if(unitsTargetEl) unitsTargetEl.textContent=String(ov.unitsTarget);
   const fpyEl=document.getElementById('fpyValue');
-  if(fpyEl&&typeof ov.firstPassYield!=='undefined') fpyEl.textContent=formatMetric(ov.firstPassYield)+'%';
+  if(fpyEl) fpyEl.textContent=formatMetric(ov.firstPassYield)+'%';
   const defectsEl=document.getElementById('totalDefectsValue');
-  if(defectsEl&&typeof ov.totalDefects!=='undefined') defectsEl.textContent=String(ov.totalDefects);
+  if(defectsEl) defectsEl.textContent=String(ov.totalDefects);
   const cycleEl=document.getElementById('avgCycleTimeValue');
-  if(cycleEl&&typeof ov.avgCycleTime!=='undefined') cycleEl.textContent=formatMetric(ov.avgCycleTime)+'s';
+  if(cycleEl) cycleEl.textContent=formatMetric(ov.avgCycleTime)+'s';
 }
 
 function buildScheduledReports(){
@@ -1880,9 +1966,10 @@ document.getElementById('overlay').addEventListener('click',e=>{if(e.target===do
 // TRACE MODAL
 // ══════════════════════════════════════════════
 function openTrace(location,issue,operator,serial,batch,severity){
-  const wo='WO-'+Math.floor(50000+Math.random()*9999);
-  const po='PO-2026-'+Math.floor(1000+Math.random()*999);
-  const ship='2026-03-'+String(Math.floor(1+Math.random()*17)).padStart(2,'0');
+  const wo='WO-'+(52000+liveState.traceCounter++);
+  const po='PO-2026-'+String(1000 + (liveState.traceCounter % 900)).padStart(3,'0');
+  const shipDate=new Date(); shipDate.setDate(shipDate.getDate()+2);
+  const ship=shipDate.toISOString().slice(0,10);
   const sc=severity==='CRITICAL'?'bad':severity==='WARNING'?'warn':severity==='INFO'?'hi':'good';
   document.getElementById('traceTitle').textContent='🔍 Traceability Record';
   document.getElementById('traceSub').textContent=`${location} · ${new Date().toLocaleString()}`;
