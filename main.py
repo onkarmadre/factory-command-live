@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import math
+import random
 import time
 from copy import deepcopy
 from datetime import datetime
@@ -24,6 +25,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.mount("/static", StaticFiles(directory=ROOT), name="static")
+
+
+@app.on_event("startup")
+def startup() -> None:
+    _initialize_telemetry_state()
 
 
 BASE_LINES: list[dict[str, Any]] = [
@@ -92,6 +98,8 @@ KPI_SUMMARY: list[dict[str, str]] = [
     {"name": "Scrap Rate", "actual": "0.55%", "target": "<0.5%", "delta": "+0.05%", "status": "amber"},
     {"name": "Labor Productivity", "actual": "94 u/h", "target": "100 u/h", "delta": "-6", "status": "amber"},
 ]
+
+telemetry_state: dict[str, Any] = {}
 
 
 def _phase() -> float:
@@ -188,6 +196,63 @@ def _live_kpis(lines: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def _initialize_telemetry_state() -> None:
+    lines = _live_lines()
+    base_state = _live_kpis(lines)
+    telemetry_state.clear()
+    telemetry_state.update(base_state)
+    telemetry_state["updatedAt"] = datetime.now().isoformat()
+
+
+def simulate_telemetry_tick() -> None:
+    if not telemetry_state:
+        return
+
+    overview = telemetry_state["overview"]
+    overview["unitsProduced"] = int(overview["unitsProduced"] + random.randint(0, 3))
+    overview["totalDefects"] = int(overview["totalDefects"] + random.choice([0, 0, 0, 1]))
+
+    current_oee = float(overview["oee"])
+    current_oee = round(max(1.0, min(99.9, current_oee + random.uniform(-0.1, 0.1))), 1)
+    overview["oee"] = current_oee
+
+    current_avg_cycle = float(overview["avgCycleTime"])
+    current_avg_cycle = round(max(1.0, current_avg_cycle + random.uniform(-0.1, 0.1)), 1)
+    overview["avgCycleTime"] = current_avg_cycle
+
+    throughput_today = telemetry_state["throughput"]["today"]
+    if throughput_today:
+        last_point = int(throughput_today[-1])
+        next_point = max(0, last_point + random.randint(-5, 5))
+        throughput_today.pop(0)
+        throughput_today.append(next_point)
+
+    telemetry_state["sparks"]["spk1"] = throughput_today
+    telemetry_state["sparks"]["spk3"][-1] = int(overview["totalDefects"])
+    telemetry_state["sparks"]["spk4"][-1] = current_avg_cycle
+
+    for bottleneck in telemetry_state["bottlenecks"]:
+        label = bottleneck["l"]
+        if label == "L-07 Press":
+            bottleneck["m"] = 72 + random.randint(0, 3)
+        elif label == "L-03 Weld":
+            bottleneck["m"] = 48 + random.randint(0, 2)
+        elif label == "L-05 Paint":
+            bottleneck["m"] = 28
+        elif label == "L-09 Pack":
+            bottleneck["m"] = 24
+        elif label == "L-01 Assm":
+            bottleneck["m"] = 7
+
+    telemetry_state["banner"]["greeting"] = (
+        f"Good afternoon, Sarah. Plant running at {round(current_oee)}% OEE - 2 lines need your attention."
+    )
+    telemetry_state["banner"]["meta"] = datetime.now().strftime(
+        "%a %d %b %Y - %H:%M IST - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%%"
+    ).upper()
+    telemetry_state["updatedAt"] = datetime.now().isoformat()
+
+
 def _live_alerts() -> dict[str, Any]:
     phase = _phase()
     alerts = [
@@ -238,7 +303,10 @@ def dashboard() -> FileResponse:
 
 @app.get("/kpis")
 def kpis() -> dict[str, Any]:
-    return _live_kpis(_live_lines())
+    simulate_telemetry_tick()
+    telemetry_state["overview"]["unitsTarget"] = telemetry_state["overview"].get("unitsTarget", telemetry_state["overview"]["unitsProduced"])
+    telemetry_state["shiftComparison"][3]["v"] = telemetry_state["overview"]["unitsProduced"]
+    return telemetry_state
 
 
 @app.get("/machines")
