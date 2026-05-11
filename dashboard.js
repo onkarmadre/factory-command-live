@@ -113,6 +113,39 @@ function nextThroughputLabel(){
 }
 function nowIso(){return new Date().toLocaleString('en-US',{weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false}).toUpperCase();}
 
+function animateValue(el, from, to, duration = 300, format = (v) => String(v)) {
+  if(!el) return;
+  const start = Date.now();
+  const animate = () => {
+    const elapsed = Math.min(Date.now() - start, duration);
+    const progress = elapsed / duration;
+    const value = from + (to - from) * progress;
+    el.textContent = format(value);
+    if(elapsed < duration) requestAnimationFrame(animate);
+  };
+  animate();
+}
+
+function applyKPIGlow(el) {
+  if(!el) return;
+  el.classList.add('kpi-updating');
+  setTimeout(() => el.classList.remove('kpi-updating'), 300);
+}
+
+function updateValueWithAnimation(el, newValue, formatter = formatMetric) {
+  if(!el) return;
+  const currentText = el.textContent;
+  const currentNum = parseFloat(currentText);
+  const newNum = parseFloat(String(newValue));
+  if(!isNaN(currentNum) && !isNaN(newNum) && currentNum !== newNum) {
+    animateValue(el, currentNum, newNum, 200, formatter);
+    applyKPIGlow(el);
+  } else if(currentText !== String(newValue)) {
+    el.textContent = formatter(newValue);
+    applyKPIGlow(el);
+  }
+}
+
 function derivePlantOverview(){
   const lines = plantState.lines;
   const totalOutput = lines.reduce((acc,l)=>acc+l.output,0);
@@ -897,23 +930,23 @@ async function fetchTelemetry(){
 }
 function updateDashboardUI(){
   const ov = plantState.overview;
-  const oeeEl=document.getElementById('oeeValue'); if(oeeEl) oeeEl.textContent = formatMetric(ov.oee);
-  const availabilityEl=document.getElementById('availabilityValue'); if(availabilityEl) availabilityEl.textContent = formatMetric(ov.availability)+'%';
-  const performanceEl=document.getElementById('performanceValue'); if(performanceEl) performanceEl.textContent = formatMetric(ov.performance)+'%';
-  const qualityEl=document.getElementById('qualityValue'); if(qualityEl) qualityEl.textContent = formatMetric(ov.quality)+'%';
+  const oeeEl=document.getElementById('oeeValue'); if(oeeEl) updateValueWithAnimation(oeeEl, ov.oee, formatMetric);
+  const availabilityEl=document.getElementById('availabilityValue'); if(availabilityEl) updateValueWithAnimation(availabilityEl, ov.availability, (v)=>formatMetric(v)+'%');
+  const performanceEl=document.getElementById('performanceValue'); if(performanceEl) updateValueWithAnimation(performanceEl, ov.performance, (v)=>formatMetric(v)+'%');
+  const qualityEl=document.getElementById('qualityValue'); if(qualityEl) updateValueWithAnimation(qualityEl, ov.quality, (v)=>formatMetric(v)+'%');
   const availFill=document.getElementById('availabilityFill'); if(availFill) availFill.style.width = Math.min(100,Math.max(0,ov.availability))+'%';
   const perfFill=document.getElementById('performanceFill'); if(perfFill) perfFill.style.width = Math.min(100,Math.max(0,ov.performance))+'%';
   const qualFill=document.getElementById('qualityFill'); if(qualFill) qualFill.style.width = Math.min(100,Math.max(0,ov.quality))+'%';
-  const unitsProducedEl=document.getElementById('unitsProducedValue'); if(unitsProducedEl) unitsProducedEl.textContent = String(ov.unitsProduced);
+  const unitsProducedEl=document.getElementById('unitsProducedValue'); if(unitsProducedEl) updateValueWithAnimation(unitsProducedEl, ov.unitsProduced, String);
   const unitsTargetEl=document.getElementById('unitsTargetValue'); if(unitsTargetEl) unitsTargetEl.textContent = String(ov.unitsTarget);
-  const fpyEl=document.getElementById('fpyValue'); if(fpyEl) fpyEl.textContent = formatMetric(ov.firstPassYield)+'%';
-  const defectsEl=document.getElementById('totalDefectsValue'); if(defectsEl) defectsEl.textContent = String(ov.totalDefects);
-  const cycleEl=document.getElementById('avgCycleTimeValue'); if(cycleEl) cycleEl.textContent = formatMetric(ov.avgCycleTime)+'s';
+  const fpyEl=document.getElementById('fpyValue'); if(fpyEl) updateValueWithAnimation(fpyEl, ov.firstPassYield, (v)=>formatMetric(v)+'%');
+  const defectsEl=document.getElementById('totalDefectsValue'); if(defectsEl) updateValueWithAnimation(defectsEl, ov.totalDefects, String);
+  const cycleEl=document.getElementById('avgCycleTimeValue'); if(cycleEl) updateValueWithAnimation(cycleEl, ov.avgCycleTime, (v)=>formatMetric(v)+'s');
   const banGreeting=document.querySelector('.ban-greeting'); if(banGreeting) banGreeting.innerHTML = plantState.bannerState.greeting || `Good afternoon, <strong>Sarah.</strong> Plant running at <strong>${formatMetric(ov.oee)}% OEE</strong> — ${plantState.bannerState.warningLines} lines need your attention.`;
   const banMeta=document.querySelector('.ban-meta'); if(banMeta) banMeta.textContent = plantState.bannerState.meta || `${nowIso()} · PLANT 4 — PUNE NORTH · CUSTOMER OTIF: 96.4%`;
-  const safetyDays = document.getElementById('safetyDaysValue'); if(safetyDays) safetyDays.textContent = String(plantState.safetyDays);
-  const safetyNearMisses = document.getElementById('safetyNearMisses'); if(safetyNearMisses) safetyNearMisses.textContent = String(plantState.safetyNearMisses);
-  const safetyAlerts = document.getElementById('safetyAlertsValue'); if(safetyAlerts) safetyAlerts.textContent = String(plantState.safetyAlertsOpen);
+  const safetyDays = document.getElementById('safetyDaysValue'); if(safetyDays) updateValueWithAnimation(safetyDays, plantState.safetyDays, String);
+  const safetyNearMisses = document.getElementById('safetyNearMisses'); if(safetyNearMisses) updateValueWithAnimation(safetyNearMisses, plantState.safetyNearMisses, String);
+  const safetyAlerts = document.getElementById('safetyAlertsValue'); if(safetyAlerts) updateValueWithAnimation(safetyAlerts, plantState.safetyAlertsOpen, String);
   const safetyRiskZone = document.getElementById('safetyRiskZone'); if(safetyRiskZone) safetyRiskZone.textContent = plantState.safetyRiskZone;
   const alertBadge=document.querySelector('.bell-badge'); if(alertBadge) alertBadge.textContent = String(plantState.alerts.length);
   document.querySelectorAll('.top-alert .badge.red').forEach(el=>{el.textContent = `${plantState.alerts.length} open`;});

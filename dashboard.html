@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Factory Command</title>
+<title>ACTIN TraceiX — Decision Command Center</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
@@ -36,7 +36,7 @@ button{font-family:'Outfit',sans-serif;cursor:pointer;border:none;background:non
 canvas{display:block;}
 input,select{font-family:'Outfit',sans-serif;}
 
-/* â”€â”€â”€ HEADER â”€â”€â”€ */
+/* ─── HEADER ─── */
 #header{
   height:56px;background:rgba(255,255,255,0.92);backdrop-filter:blur(24px) saturate(180%);
   border-bottom:1px solid var(--border);display:flex;align-items:center;
@@ -99,7 +99,7 @@ input,select{font-family:'Outfit',sans-serif;}
   font-size:11px;font-weight:800;color:#fff;
 }
 
-/* â”€â”€â”€ BANNER â”€â”€â”€ */
+/* ─── BANNER ─── */
 #banner{
   background:linear-gradient(135deg,#1e40af 0%,#4f46e5 60%,#7c3aed 100%);
   padding:13px 24px;display:flex;align-items:center;justify-content:space-between;
@@ -117,32 +117,22 @@ input,select{font-family:'Outfit',sans-serif;}
 .bchip.bad{background:rgba(239,68,68,.25);border-color:rgba(239,68,68,.4);color:#fca5a5;}
 .bchip.good{background:rgba(0,185,107,.2);border-color:rgba(0,185,107,.35);color:#6ee7b7;}
 
-/* â”€â”€â”€ TABS CONTENT â”€â”€â”€ */
+/* ─── TABS CONTENT ─── */
 .tab-page{display:none;padding:20px 24px 40px;}
 .tab-page.active{display:block;animation:fadeUp .3s ease;}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
-/* â”€â”€â”€ CARDS â”€â”€â”€ */
+/* ─── CARDS ─── */
 .card{background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;}
 .card-p{padding:18px 20px;}
 .card-title{font-size:13px;font-weight:700;color:var(--text);}
 .card-sub{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
 .card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
 
-/* â”€â”€â”€ KPI PILL â”€â”€â”€ */
+/* ─── KPI PILL ─── */
 .kpi-card{
-background:var(--surface);
-border-radius:var(--r);
-box-shadow:var(--shadow);
-padding:16px 18px;
-position:relative;
-overflow:hidden;
-transform: translateZ(0);
-backface-visibility: hidden;
--webkit-backface-visibility: hidden;
-will-change: transform;
-contain: layout paint;
-transition:box-shadow .2s ease, transform .2s ease;
+  background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:16px 18px;position:relative;overflow:hidden;transition:all .2s ease;
 }
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
 .kpi-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px;}
@@ -154,7 +144,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .delta-txt{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);}
 .kpi-spark{position:absolute;bottom:0;right:0;opacity:.45;}
 
-/* â”€â”€â”€ STATUS BADGE â”€â”€â”€ */
+/* ─── STATUS BADGE ─── */
 .badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;}
 .badge.green{background:var(--green-l);color:var(--green);}
 .badge.amber{background:var(--amber-l);color:var(--amber);}
@@ -166,19 +156,23 @@ transition:box-shadow .2s ease, transform .2s ease;
 .pip.amber{background:var(--amber);animation:blink 1.4s infinite;}
 .pip.red{background:var(--red);animation:blink .85s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+@keyframes kpiGlow{0%{box-shadow:0 0 0 0 rgba(37,99,235,0.4)}50%{box-shadow:0 0 12px 2px rgba(37,99,235,0.15)}100%{box-shadow:0 0 0 0 rgba(37,99,235,0)}}
+@keyframes dataUpdate{0%{transform:scale(0.98);opacity:0.7}50%{transform:scale(1.02);opacity:1}100%{transform:scale(1);opacity:1}}
+.kpi-updating{animation:dataUpdate 0.3s ease-out;}
+.alert-highlight{animation:kpiGlow 1.2s ease-out;}
 
-/* â”€â”€â”€ PROGRESS BAR â”€â”€â”€ */
+/* ─── PROGRESS BAR ─── */
 .prog-track{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;}
 .prog-fill{height:100%;border-radius:2px;transition:width 1.2s cubic-bezier(.4,0,.2,1);}
 
-/* â”€â”€â”€ GRIDS â”€â”€â”€ */
+/* ─── GRIDS ─── */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
 .g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
 .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
 .g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
 .g-auto{display:grid;gap:14px;}
 
-/* â”€â”€â”€ CHIP BUTTONS â”€â”€â”€ */
+/* ─── CHIP BUTTONS ─── */
 .chip-group{display:flex;gap:5px;}
 .chip{
   padding:4px 12px;border-radius:7px;font-size:11px;font-weight:600;
@@ -193,7 +187,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .filter-chip.active{background:var(--text);color:#fff;border-color:var(--text);}
 .filter-chip:hover:not(.active){border-color:var(--blue);color:var(--blue);}
 
-/* â”€â”€â”€ TABLE â”€â”€â”€ */
+/* ─── TABLE ─── */
 .tbl{width:100%;border-collapse:collapse;}
 .tbl th{font-size:10px;font-weight:700;letter-spacing:.1em;color:var(--muted);text-transform:uppercase;text-align:left;padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);}
 .tbl td{padding:11px 14px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle;}
@@ -202,7 +196,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .tbl tbody tr:last-child td{border-bottom:none;}
 .mono{font-family:'JetBrains Mono',monospace;}
 
-/* â”€â”€â”€ SECTION HEADER â”€â”€â”€ */
+/* ─── SECTION HEADER ─── */
 .sec-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
 .sec-title{font-size:16px;font-weight:800;letter-spacing:-.02em;}
 .sec-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
@@ -213,7 +207,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 }
 .icon-btn:hover{background:var(--blue-l);border-color:var(--blue);}
 
-/* â”€â”€â”€ LINE CARD â”€â”€â”€ */
+/* ─── LINE CARD ─── */
 .line-card{
   background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);
   padding:15px;cursor:pointer;transition:all .2s cubic-bezier(.4,0,.2,1);
@@ -234,7 +228,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .lc-denom{font-size:13px;color:var(--muted);}
 .lc-unit{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.1em;margin-bottom:7px;}
 
-/* â”€â”€â”€ ALERT ITEM â”€â”€â”€ */
+/* ─── ALERT ITEM ─── */
 .alert-item{
   display:flex;align-items:flex-start;gap:9px;padding:9px 10px;
   border-radius:9px;cursor:pointer;transition:background .12s;margin-bottom:3px;
@@ -246,7 +240,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .alert-detail{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .alert-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);flex-shrink:0;margin-top:2px;}
 
-/* â”€â”€â”€ OVERLAY â”€â”€â”€ */
+/* ─── OVERLAY ─── */
 #overlay{
   position:fixed;inset:0;background:rgba(0,0,0,.32);backdrop-filter:blur(6px);
   z-index:300;display:flex;align-items:flex-start;justify-content:flex-end;
@@ -274,7 +268,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .ov-close:hover{background:var(--red-l);color:var(--red);border-color:var(--red);}
 .ov-body{padding:18px 22px;}
 
-/* â”€â”€â”€ TRACE MODAL â”€â”€â”€ */
+/* ─── TRACE MODAL ─── */
 #trace-bg{
   position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.38);backdrop-filter:blur(5px);
   display:flex;align-items:center;justify-content:center;
@@ -300,12 +294,12 @@ transition:box-shadow .2s ease, transform .2s ease;
 .trace-val.bad{color:var(--red);}
 .trace-val.good{color:var(--green);}
 
-/* â”€â”€â”€ SCROLLBAR â”€â”€â”€ */
+/* ─── SCROLLBAR ─── */
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:var(--surface3);border-radius:2px;}
 
-/* â”€â”€â”€ SEARCH â”€â”€â”€ */
+/* ─── SEARCH ─── */
 .search-bar{
   display:flex;align-items:center;gap:7px;
   background:var(--surface);border:1.5px solid var(--border2);
@@ -317,10 +311,10 @@ transition:box-shadow .2s ease, transform .2s ease;
 .search-btn{padding:9px 18px;background:var(--blue);border-radius:9px;color:#fff;font-size:12px;font-weight:700;transition:background .12s;}
 .search-btn:hover{background:#1d4ed8;}
 
-/* â”€â”€â”€ RING CHART â”€â”€â”€ */
+/* ─── RING CHART ─── */
 .ring-wrap{position:relative;display:inline-flex;align-items:center;justify-content:center;}
 
-/* â”€â”€â”€ MAINTENANCE QUADRANT â”€â”€â”€ */
+/* ─── MAINTENANCE QUADRANT ─── */
 .quad-dot{
   position:absolute;width:10px;height:10px;border-radius:50%;
   transform:translate(-50%,-50%);cursor:pointer;transition:all .15s;
@@ -329,7 +323,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .quad-dot:hover{transform:translate(-50%,-50%) scale(1.6);}
 .quad-canvas-wrap{position:relative;width:100%;}
 
-/* â”€â”€â”€ ACTION DRAWER â”€â”€â”€ */
+/* ─── ACTION DRAWER ─── */
 .action-drawer{
   position:fixed;bottom:0;left:0;right:0;z-index:250;
   background:rgba(255,255,255,.96);backdrop-filter:blur(24px);
@@ -354,14 +348,14 @@ transition:box-shadow .2s ease, transform .2s ease;
 .ad-btn.danger:hover{background:var(--red);color:#fff;}
 .ad-close{width:28px;height:28px;border-radius:7px;background:var(--surface3);font-size:14px;color:var(--dim);}
 
-/* â”€â”€â”€ HEALTH GAUGE â”€â”€â”€ */
+/* ─── HEALTH GAUGE ─── */
 .health-num{font-size:28px;font-weight:800;letter-spacing:-.04em;}
 
-/* â”€â”€â”€ SCROLL container â”€â”€â”€ */
+/* ─── SCROLL container ─── */
 .scroll-x{overflow-x:auto;padding-bottom:4px;}
 .scroll-x::-webkit-scrollbar{height:3px;}
 
-/* â”€â”€â”€ TIMELINE EVENTS â”€â”€â”€ */
+/* ─── TIMELINE EVENTS ─── */
 .timeline-event{
   display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);
 }
@@ -371,7 +365,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .te-title{font-size:12px;font-weight:600;}
 .te-meta{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px;}
 
-/* â”€â”€â”€ LEAGUE TABLE â”€â”€â”€ */
+/* ─── LEAGUE TABLE ─── */
 .lt-row{
   display:flex;align-items:center;gap:10px;padding:9px 12px;
   border-radius:9px;cursor:pointer;transition:background .1s;
@@ -383,7 +377,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .lt-bar-wrap{width:90px;}
 .lt-score{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;width:36px;text-align:right;}
 
-/* â”€â”€â”€ REPORTS â”€â”€â”€ */
+/* ─── REPORTS ─── */
 .report-card{
   background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);
   padding:18px;cursor:pointer;transition:all .18s;border:1.5px solid transparent;
@@ -394,13 +388,13 @@ transition:box-shadow .2s ease, transform .2s ease;
 .rc-desc{font-size:11px;color:var(--dim);line-height:1.5;}
 .rc-meta{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;}
 
-/* â”€â”€â”€ MB SPACING â”€â”€â”€ */
+/* ─── MB SPACING ─── */
 .mb8{margin-bottom:8px;}
 .mb12{margin-bottom:12px;}
 .mb16{margin-bottom:16px;}
 .mb20{margin-bottom:20px;}
 
-/* â”€â”€â”€ TOP ALERT BANNER â”€â”€â”€ */
+/* ─── TOP ALERT BANNER ─── */
 .top-alert{
   background:linear-gradient(90deg,rgba(239,68,68,.08),transparent);
   border:1px solid rgba(239,68,68,.15);border-radius:10px;
@@ -409,7 +403,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 }
 .top-alert:hover{background:rgba(239,68,68,.1);}
 
-/* â”€â”€â”€ STATION MAP â”€â”€â”€ */
+/* ─── STATION MAP ─── */
 .station-map{display:flex;gap:6px;overflow-x:auto;padding:4px 0 8px;}
 .smap-node{
   flex-shrink:0;width:68px;padding:8px;border-radius:9px;
@@ -425,7 +419,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 .smap-name{font-size:9px;font-weight:600;line-height:1.2;margin:2px 0;}
 .smap-eff{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;}
 
-/* â”€â”€â”€ HORIZONTAL BAR â”€â”€â”€ */
+/* ─── HORIZONTAL BAR ─── */
 .hbar-row{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
 .hbar-label{font-size:11px;font-weight:600;width:100px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .hbar-track{flex:1;height:7px;background:var(--surface3);border-radius:4px;overflow:hidden;}
@@ -435,7 +429,7 @@ transition:box-shadow .2s ease, transform .2s ease;
 </head>
 <body>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• HEADER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════ HEADER ═══════════════ -->
 <div id="header">
   <div class="logo">
     <div class="logo-gem">
@@ -444,8 +438,8 @@ transition:box-shadow .2s ease, transform .2s ease;
       </svg>
     </div>
     <div>
-      <div class="logo-name">Factory Command</div>
-      <div class="logo-tag">LIVE DECISION CENTER</div>
+      <div class="logo-name">ACTIN <em>TraceiX</em></div>
+      <div class="logo-tag">DECISION COMMAND CENTER</div>
     </div>
   </div>
   <nav class="nav">
@@ -456,8 +450,8 @@ transition:box-shadow .2s ease, transform .2s ease;
     <button class="nav-btn" onclick="showTab('reports',this)">Reports</button>
   </nav>
   <div class="hdr-right">
-    <div class="live-chip"><div class="live-dot"></div>LIVE Â· <span id="clock">â€”</span></div>
-    <div class="shift-chip">SHIFT B Â· DAY 3</div>
+    <div class="live-chip"><div class="live-dot"></div>LIVE · <span id="clock">—</span></div>
+    <div class="shift-chip">SHIFT B · DAY 3</div>
     <button class="bell-btn" onclick="openTrace('Plant-Wide','3 active alerts require attention','MANAGER','MULTI','MULTI','CRITICAL')">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
       <div class="bell-badge">3</div>
@@ -466,36 +460,36 @@ transition:box-shadow .2s ease, transform .2s ease;
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• BANNER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════ BANNER ═══════════════ -->
 <div id="banner">
   <div>
-    <div class="ban-greeting">Good afternoon, <strong>Sarah.</strong> Plant running at <strong>82% OEE</strong> â€” 2 lines need your attention.</div>
-    <div class="ban-meta">WED 18 MAR 2026 Â· 14:32 IST Â· PLANT 4 â€” PUNE NORTH Â· CUSTOMER OTIF: 96.4%</div>
+    <div class="ban-greeting">Good afternoon, <strong>Sarah.</strong> Plant running at <strong>82% OEE</strong> — 2 lines need your attention.</div>
+    <div class="ban-meta">WED 18 MAR 2026 · 14:32 IST · PLANT 4 — PUNE NORTH · CUSTOMER OTIF: 96.4%</div>
   </div>
   <div class="ban-chips">
-    <div id="bannerGoodLines" class="bchip good">âœ“ 6 LINES ON TARGET</div>
-    <div id="bannerWarnLines" class="bchip warn">âš  2 LINES WARNING</div>
-    <div id="bannerCritLines" class="bchip bad">âœ• 2 LINES CRITICAL</div>
-    <div id="bannerSafetyDays" class="bchip">ðŸŸ¢ SAFETY: 14 DAYS CLEAR</div>
-    <div id="bannerAssetsAtRisk" class="bchip warn">âš¡ 3 ASSETS AT RISK</div>
+    <div class="bchip good">✓ 6 LINES ON TARGET</div>
+    <div class="bchip warn">⚠ 2 LINES WARNING</div>
+    <div class="bchip bad">✕ 2 LINES CRITICAL</div>
+    <div class="bchip">🟢 SAFETY: 14 DAYS CLEAR</div>
+    <div class="bchip warn">⚡ 3 ASSETS AT RISK</div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ═══════════════════════════════════════
      TAB 1: OVERVIEW
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════ -->
 <div id="tab-overview" class="tab-page active">
 
   <!-- CRITICAL ALERT BANNER -->
-  <div class="top-alert" onclick="openTrace('L-07 Â· Station 03','Hydraulic pressure drop â€” line at 55% OEE','OP-214','SN-00821','BATCH-44B','CRITICAL')">
+  <div class="top-alert" onclick="openTrace('L-07 · Station 03','Hydraulic pressure drop — line at 55% OEE','OP-214','SN-00821','BATCH-44B','CRITICAL')">
     <div style="width:28px;height:28px;border-radius:8px;background:var(--red-l);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
     </div>
     <div style="flex:1">
       <span style="font-size:12px;font-weight:700;color:var(--red);">CRITICAL: </span>
-      <span style="font-size:12px;font-weight:600;">L-07 hydraulic pressure drop detected Â· 2 min ago Â· Click to trace</span>
+      <span style="font-size:12px;font-weight:600;">L-07 hydraulic pressure drop detected · 2 min ago · Click to trace</span>
     </div>
-    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red);">â†’ ACT NOW</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red);">→ ACT NOW</div>
   </div>
 
   <!-- ROW 1: OEE HERO + 4 KPIs -->
@@ -505,26 +499,26 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="card" style="padding:20px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--indigo));"></div>
       <div class="kpi-label" style="margin-bottom:5px;">Overall OEE</div>
-      <div style="font-size:58px;font-weight:900;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,#2563eb,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"><span id="oeeValue">82</span><span style="font-size:24px;font-weight:400;letter-spacing:0;">%</span></div>
+      <div style="font-size:58px;font-weight:900;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,#2563eb,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">82<span style="font-size:24px;font-weight:400;letter-spacing:0;">%</span></div>
       <div style="display:flex;align-items:center;gap:6px;margin:6px 0 14px;">
-        <span class="badge green">â†‘ +4.2%</span>
+        <span class="badge green">↑ +4.2%</span>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">vs yesterday 78.8%</span>
       </div>
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="display:flex;align-items:center;gap:7px;">
           <div style="font-size:11px;font-weight:600;color:var(--dim);width:80px;">Availability</div>
-          <div class="prog-track" style="flex:1;"><div id="availabilityFill" class="prog-fill" style="width:91%;background:var(--green);"></div></div>
-          <div id="availabilityValue" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">91%</div>
+          <div class="prog-track" style="flex:1;"><div class="prog-fill" style="width:91%;background:var(--green);"></div></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">91%</div>
         </div>
         <div style="display:flex;align-items:center;gap:7px;">
           <div style="font-size:11px;font-weight:600;color:var(--dim);width:80px;">Performance</div>
-          <div class="prog-track" style="flex:1;"><div id="performanceFill" class="prog-fill" style="width:87%;background:var(--blue);"></div></div>
-          <div id="performanceValue" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">87%</div>
+          <div class="prog-track" style="flex:1;"><div class="prog-fill" style="width:87%;background:var(--blue);"></div></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">87%</div>
         </div>
         <div style="display:flex;align-items:center;gap:7px;">
           <div style="font-size:11px;font-weight:600;color:var(--dim);width:80px;">Quality</div>
-          <div class="prog-track" style="flex:1;"><div id="qualityFill" class="prog-fill" style="width:96%;background:var(--indigo);"></div></div>
-          <div id="qualityValue" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">96%</div>
+          <div class="prog-track" style="flex:1;"><div class="prog-fill" style="width:96%;background:var(--indigo);"></div></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">96%</div>
         </div>
       </div>
     </div>
@@ -532,36 +526,36 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--blue-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
       <div class="kpi-label">Units Produced</div>
-      <div id="unitsProducedValue" class="kpi-val" style="color:var(--blue);">3,841</div>
-      <div class="kpi-sub">/ <span id="unitsTargetValue">4,000</span> target</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">â†‘</span><span class="delta-txt">+4.2% vs yesterday</span></div>
+      <div class="kpi-val" style="color:var(--blue);">3,841</div>
+      <div class="kpi-sub">/ 4,000 target</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">↑</span><span class="delta-txt">+4.2% vs yesterday</span></div>
       <div class="kpi-spark"><canvas id="spk1" width="72" height="32"></canvas></div>
     </div>
 
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--green-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <div class="kpi-label">First Pass Yield</div>
-      <div id="fpyValue" class="kpi-val" style="color:var(--green);">94.3%</div>
-      <div class="kpi-sub">target â‰¥ 95%</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†“</span><span class="delta-txt">âˆ’0.7% vs target</span></div>
+      <div class="kpi-val" style="color:var(--green);">94.3%</div>
+      <div class="kpi-sub">target ≥ 95%</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↓</span><span class="delta-txt">−0.7% vs target</span></div>
       <div class="kpi-spark"><canvas id="spk2" width="72" height="32"></canvas></div>
     </div>
 
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--red-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
       <div class="kpi-label">Total Defects</div>
-      <div id="totalDefectsValue" class="kpi-val" style="color:var(--red);">24</div>
-      <div class="kpi-sub">this shift Â· 3 rework</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">â†“</span><span class="delta-txt">âˆ’8 vs last shift</span></div>
+      <div class="kpi-val" style="color:var(--red);">24</div>
+      <div class="kpi-sub">this shift · 3 rework</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">↓</span><span class="delta-txt">−8 vs last shift</span></div>
       <div class="kpi-spark"><canvas id="spk3" width="72" height="32"></canvas></div>
     </div>
 
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--amber-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <div class="kpi-label">Avg Cycle Time</div>
-      <div id="avgCycleTimeValue" class="kpi-val" style="color:var(--amber);">46.2s</div>
+      <div class="kpi-val" style="color:var(--amber);">46.2s</div>
       <div class="kpi-sub">target 42s</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†‘</span><span class="delta-txt">+4.2s above target</span></div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↑</span><span class="delta-txt">+4.2s above target</span></div>
       <div class="kpi-spark"><canvas id="spk4" width="72" height="32"></canvas></div>
     </div>
   </div>
@@ -572,7 +566,7 @@ transition:box-shadow .2s ease, transform .2s ease;
     <!-- THROUGHPUT -->
     <div class="card card-p">
       <div class="card-head">
-        <div><div class="card-title">Production Throughput</div><div class="card-sub">Hourly units Â· Today vs Yesterday vs Target</div></div>
+        <div><div class="card-title">Production Throughput</div><div class="card-sub">Hourly units · Today vs Yesterday vs Target</div></div>
         <div class="chip-group">
           <button class="chip active" onclick="switchChartView(this,'today')">Today</button>
           <button class="chip" onclick="switchChartView(this,'week')">Week</button>
@@ -588,22 +582,22 @@ transition:box-shadow .2s ease, transform .2s ease;
         <div><div class="card-title">Active Alerts</div></div>
         <span class="badge red">3 open</span>
       </div>
-      <div class="alert-item" onclick="openTrace('L-07 Â· ST-03','Hydraulic pressure drop','OP-214','SN-00821','BATCH-44B','CRITICAL')">
+      <div class="alert-item" onclick="openTrace('L-07 · ST-03','Hydraulic pressure drop','OP-214','SN-00821','BATCH-44B','CRITICAL')">
         <div class="alert-icon" style="background:var(--red-l);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <div class="alert-body"><div class="alert-title">L-07 Â· Hydraulic Pressure Drop</div><div class="alert-detail">SN-00821 Â· BATCH-44B Â· Station 03</div></div>
+        <div class="alert-body"><div class="alert-title">L-07 · Hydraulic Pressure Drop</div><div class="alert-detail">SN-00821 · BATCH-44B · Station 03</div></div>
         <div class="alert-time">2m</div>
       </div>
-      <div class="alert-item" onclick="openTrace('L-03 Â· ST-07','Weld temp exceeded UCL +12Â°C','OP-208','SN-00694','BATCH-43A','CRITICAL')">
+      <div class="alert-item" onclick="openTrace('L-03 · ST-07','Weld temp exceeded UCL +12°C','OP-208','SN-00694','BATCH-43A','CRITICAL')">
         <div class="alert-icon" style="background:var(--red-l);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-        <div class="alert-body"><div class="alert-title">L-03 Â· Weld Temp Exceeded</div><div class="alert-detail">SN-00694 Â· BATCH-43A Â· Station 07</div></div>
+        <div class="alert-body"><div class="alert-title">L-03 · Weld Temp Exceeded</div><div class="alert-detail">SN-00694 · BATCH-43A · Station 07</div></div>
         <div class="alert-time">18m</div>
       </div>
-      <div class="alert-item" onclick="openTrace('L-05 Â· ST-09','Paint color deviation Î”=4.2','OP-219','SN-00712','BATCH-43C','WARNING')">
+      <div class="alert-item" onclick="openTrace('L-05 · ST-09','Paint color deviation Δ=4.2','OP-219','SN-00712','BATCH-43C','WARNING')">
         <div class="alert-icon" style="background:var(--amber-l);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
-        <div class="alert-body"><div class="alert-title">L-05 Â· Paint Color Deviation</div><div class="alert-detail">SN-00712 Â· BATCH-43C Â· Station 09</div></div>
+        <div class="alert-body"><div class="alert-title">L-05 · Paint Color Deviation</div><div class="alert-detail">SN-00712 · BATCH-43C · Station 09</div></div>
         <div class="alert-time">41m</div>
       </div>
-      <button style="width:100%;padding:8px;border-radius:8px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;margin-top:4px;transition:background .12s;" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='var(--blue-l)';this.style.color='var(--blue)'" onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])">View All Alerts â†’</button>
+      <button style="width:100%;padding:8px;border-radius:8px;background:var(--blue-l);color:var(--blue);font-size:12px;font-weight:700;margin-top:4px;transition:background .12s;" onmouseover="this.style.background='var(--blue)';this.style.color='#fff'" onmouseout="this.style.background='var(--blue-l)';this.style.color='var(--blue)'" onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])">View All Alerts →</button>
     </div>
 
     <!-- SAFETY -->
@@ -612,7 +606,7 @@ transition:box-shadow .2s ease, transform .2s ease;
       <div style="text-align:center;padding:10px 0;">
         <div style="font-size:44px;font-weight:900;color:var(--green);letter-spacing:-3px;">14</div>
         <div style="font-size:11px;font-weight:600;color:var(--dim);">DAYS WITHOUT INCIDENT</div>
-        <div class="badge green" style="margin:6px auto;display:inline-flex;">â— SAFE</div>
+        <div class="badge green" style="margin:6px auto;display:inline-flex;">● SAFE</div>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px;">
         <div style="display:flex;justify-content:space-between;font-size:11px;"><span style="color:var(--dim);">Near-misses (shift)</span><span class="mono" style="font-weight:600;">2</span></div>
@@ -624,8 +618,8 @@ transition:box-shadow .2s ease, transform .2s ease;
 
   <!-- ROW 3: LINES MINI GRID -->
   <div class="sec-head mb12">
-    <div><div class="sec-title">Assembly Lines â€” Quick View</div><div class="sec-meta">Click any line to drill down Â· 10 lines total</div></div>
-    <button onclick="showTab('lines',document.querySelectorAll('.nav-btn')[1])" style="padding:7px 16px;border-radius:9px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;">View All Lines â†’</button>
+    <div><div class="sec-title">Assembly Lines — Quick View</div><div class="sec-meta">Click any line to drill down · 10 lines total</div></div>
+    <button onclick="showTab('lines',document.querySelectorAll('.nav-btn')[1])" style="padding:7px 16px;border-radius:9px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;">View All Lines →</button>
   </div>
   <div id="overviewLinesGrid" class="g5 mb16"></div>
 
@@ -633,7 +627,7 @@ transition:box-shadow .2s ease, transform .2s ease;
   <div class="g3">
     <!-- Defect Donut -->
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Defect Breakdown</div><div class="card-sub">This shift Â· 24 total</div></div></div>
+      <div class="card-head"><div><div class="card-title">Defect Breakdown</div><div class="card-sub">This shift · 24 total</div></div></div>
       <div style="display:flex;align-items:center;gap:14px;">
         <canvas id="defDonut" width="100" height="100" style="flex-shrink:0;"></canvas>
         <div style="flex:1;display:flex;flex-direction:column;gap:7px;">
@@ -658,13 +652,13 @@ transition:box-shadow .2s ease, transform .2s ease;
 
     <!-- Bottlenecks -->
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Top Bottlenecks</div><div class="card-sub">By downtime minutes Â· this shift</div></div></div>
+      <div class="card-head"><div><div class="card-title">Top Bottlenecks</div><div class="card-sub">By downtime minutes · this shift</div></div></div>
       <div id="bottleneckList"></div>
     </div>
 
     <!-- Shift Comparison -->
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Shift Comparison</div><div class="card-sub">Throughput Â· Last 4 shifts</div></div></div>
+      <div class="card-head"><div><div class="card-title">Shift Comparison</div><div class="card-sub">Throughput · Last 4 shifts</div></div></div>
       <canvas id="shiftBarChart" style="width:100%;height:110px;"></canvas>
     </div>
   </div>
@@ -672,12 +666,12 @@ transition:box-shadow .2s ease, transform .2s ease;
   <!-- HIDDEN LOSSES + ASSET HEALTH MINI -->
   <div class="g2" style="margin-top:14px;">
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Hidden Losses â€” Micro-Downtime</div><div class="card-sub">Stops &lt;60s not logged as formal downtime Â· equivalent output lost</div></div><span class="badge amber">âš  94 stops</span></div>
+      <div class="card-head"><div><div class="card-title">Hidden Losses — Micro-Downtime</div><div class="card-sub">Stops &lt;60s not logged as formal downtime · equivalent output lost</div></div><span class="badge amber">⚠ 94 stops</span></div>
       <div style="display:flex;align-items:center;gap:16px;">
         <div style="text-align:center;">
           <div style="font-size:32px;font-weight:900;color:var(--amber);letter-spacing:-2px;">142m</div>
           <div style="font-size:10px;color:var(--dim);">cumulative micro-stops</div>
-          <div style="font-size:10px;color:var(--red);font-weight:600;margin-top:2px;">â‰ˆ 48 units lost</div>
+          <div style="font-size:10px;color:var(--red);font-weight:600;margin-top:2px;">≈ 48 units lost</div>
         </div>
         <div style="flex:1;display:flex;flex-direction:column;gap:6px;">
           <div class="hbar-row"><div class="hbar-label">L-07 Press</div><div class="hbar-track"><div class="hbar-fill" style="width:100%;background:var(--red);"></div></div><div class="hbar-val" style="color:var(--red);">34m</div></div>
@@ -690,21 +684,21 @@ transition:box-shadow .2s ease, transform .2s ease;
     </div>
 
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Critical Asset Health</div><div class="card-sub">Top 3 at-risk assets this shift</div></div><button onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])" style="font-size:11px;font-weight:700;color:var(--blue);">View All â†’</button></div>
+      <div class="card-head"><div><div class="card-title">Critical Asset Health</div><div class="card-sub">Top 3 at-risk assets this shift</div></div><button onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])" style="font-size:11px;font-weight:700;color:var(--blue);">View All →</button></div>
       <div style="display:flex;flex-direction:column;gap:10px;">
         <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:9px;background:var(--red-l);border:1px solid rgba(239,68,68,.15);cursor:pointer;" onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])">
-          <div style="font-size:22px;">âš™ï¸</div>
-          <div style="flex:1;"><div style="font-size:12px;font-weight:700;">L-07 Hydraulic Press #3</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">Health: 23/100 Â· Predicted failure: &lt;2h</div></div>
+          <div style="font-size:22px;">⚙️</div>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:700;">L-07 Hydraulic Press #3</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">Health: 23/100 · Predicted failure: &lt;2h</div></div>
           <span class="badge red">CRITICAL</span>
         </div>
         <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:9px;background:var(--amber-l);border:1px solid rgba(245,158,11,.15);cursor:pointer;" onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])">
-          <div style="font-size:22px;">ðŸ”¥</div>
-          <div style="flex:1;"><div style="font-size:12px;font-weight:700;">L-03 Weld Station #7</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">Health: 48/100 Â· Predicted failure: &lt;8h</div></div>
+          <div style="font-size:22px;">🔥</div>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:700;">L-03 Weld Station #7</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">Health: 48/100 · Predicted failure: &lt;8h</div></div>
           <span class="badge amber">AT RISK</span>
         </div>
         <div style="display:flex;align-items:center;gap:12px;padding:10px;border-radius:9px;background:var(--amber-l);border:1px solid rgba(245,158,11,.15);cursor:pointer;" onclick="showTab('maintenance',document.querySelectorAll('.nav-btn')[3])">
-          <div style="font-size:22px;">ðŸŽ¨</div>
-          <div style="flex:1;"><div style="font-size:12px;font-weight:700;">L-05 Paint Oven #2</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">Health: 61/100 Â· Predicted failure: &lt;24h</div></div>
+          <div style="font-size:22px;">🎨</div>
+          <div style="flex:1;"><div style="font-size:12px;font-weight:700;">L-05 Paint Oven #2</div><div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">Health: 61/100 · Predicted failure: &lt;24h</div></div>
           <span class="badge amber">WATCH</span>
         </div>
       </div>
@@ -712,32 +706,32 @@ transition:box-shadow .2s ease, transform .2s ease;
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ═══════════════════════════════════════
      TAB 2: LINES
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════ -->
 <div id="tab-lines" class="tab-page">
   <div class="sec-head mb12">
-    <div><div class="sec-title">Assembly Lines</div><div class="sec-meta">Click any card to drill down Â· 10 lines Â· Real-time status</div></div>
+    <div><div class="sec-title">Assembly Lines</div><div class="sec-meta">Click any card to drill down · 10 lines · Real-time status</div></div>
     <div style="display:flex;gap:8px;align-items:center;">
       <div class="search-bar" style="width:220px;">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input placeholder="Search line, productâ€¦" id="lineSearch" oninput="filterLinesTab(this.value)">
+        <input placeholder="Search line, product…" id="lineSearch" oninput="filterLinesTab(this.value)">
       </div>
       <div class="icon-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--dim)" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>
     </div>
   </div>
   <div style="display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap;">
     <button class="filter-chip active" onclick="filterLinesStatus(this,'all')">All Lines</button>
-    <button class="filter-chip" onclick="filterLinesStatus(this,'green')">â— On Target</button>
-    <button class="filter-chip" onclick="filterLinesStatus(this,'amber')">â— Warning</button>
-    <button class="filter-chip" onclick="filterLinesStatus(this,'red')">â— Critical</button>
+    <button class="filter-chip" onclick="filterLinesStatus(this,'green')">● On Target</button>
+    <button class="filter-chip" onclick="filterLinesStatus(this,'amber')">● Warning</button>
+    <button class="filter-chip" onclick="filterLinesStatus(this,'red')">● Critical</button>
   </div>
   <div id="linesTabGrid" class="g5 mb20"></div>
 
   <!-- LINE PERFORMANCE TABLE -->
   <div class="card mb16">
     <div class="card-p" style="border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
-      <div><div class="card-title">Line Performance Summary</div><div class="card-sub">All lines Â· Current shift</div></div>
+      <div><div class="card-title">Line Performance Summary</div><div class="card-sub">All lines · Current shift</div></div>
     </div>
     <div style="overflow-x:auto;">
       <table class="tbl" id="linesTable">
@@ -754,49 +748,49 @@ transition:box-shadow .2s ease, transform .2s ease;
   <!-- BENCHMARKING LEAGUE TABLE -->
   <div class="g2">
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">OEE League Table</div><div class="card-sub">Line ranking Â· Best-practice candidates flagged</div></div></div>
+      <div class="card-head"><div><div class="card-title">OEE League Table</div><div class="card-sub">Line ranking · Best-practice candidates flagged</div></div></div>
       <div id="leagueTable"></div>
     </div>
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Takt vs. Cycle Time</div><div class="card-sub">Lines off-takt highlighted Â· Current shift</div></div></div>
+      <div class="card-head"><div><div class="card-title">Takt vs. Cycle Time</div><div class="card-sub">Lines off-takt highlighted · Current shift</div></div></div>
       <canvas id="taktChart" style="width:100%;height:180px;"></canvas>
     </div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ═══════════════════════════════════════
      TAB 3: QUALITY
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════ -->
 <div id="tab-quality" class="tab-page">
   <!-- KPI ROW -->
   <div class="g4 mb16">
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--green-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <div class="kpi-label">First Pass Yield</div>
-      <div id="qualityFPYValue" class="kpi-val" style="color:var(--green);">94.3%</div>
-      <div class="kpi-sub">Target â‰¥ 95%</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†“</span><span class="delta-txt">âˆ’0.7% vs target</span></div>
+      <div class="kpi-val" style="color:var(--green);">94.3%</div>
+      <div class="kpi-sub">Target ≥ 95%</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↓</span><span class="delta-txt">−0.7% vs target</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--red-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
       <div class="kpi-label">Total Defects</div>
-      <div id="qualityDefectsValue" class="kpi-val" style="color:var(--red);">24</div>
-      <div class="kpi-sub">3 rework Â· 21 scrap</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">â†“</span><span class="delta-txt">âˆ’8 vs last shift</span></div>
+      <div class="kpi-val" style="color:var(--red);">24</div>
+      <div class="kpi-sub">3 rework · 21 scrap</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">↓</span><span class="delta-txt">−8 vs last shift</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--amber-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M14.5 10c-.83 0-1.5-.67-1.5-1.5v-5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5z"/><path d="M20.5 10H19V8.5c0-.83.67-1.5 1.5-1.5s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/><path d="M9.5 14c.83 0 1.5.67 1.5 1.5v5c0 .83-.67 1.5-1.5 1.5S8 21.33 8 20.5v-5c0-.83.67-1.5 1.5-1.5z"/><path d="M3.5 14H5v1.5c0 .83-.67 1.5-1.5 1.5S2 16.33 2 15.5 2.67 14 3.5 14z"/><path d="M14 14.5c0-.83.67-1.5 1.5-1.5h5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-5c-.83 0-1.5-.67-1.5-1.5z"/><path d="M15.5 19H14v1.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5-.67-1.5-1.5-1.5z"/><path d="M10 9.5C10 8.67 9.33 8 8.5 8h-5C2.67 8 2 8.67 2 9.5S2.67 11 3.5 11h5c.83 0 1.5-.67 1.5-1.5z"/><path d="M8.5 5H10V3.5C10 2.67 9.33 2 8.5 2S7 2.67 7 3.5 7.67 5 8.5 5z"/></svg></div>
       <div class="kpi-label">Scrap Rate</div>
-      <div id="qualityScrapValue" class="kpi-val" style="color:var(--amber);">0.55%</div>
+      <div class="kpi-val" style="color:var(--amber);">0.55%</div>
       <div class="kpi-sub">Target &lt; 0.5%</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†‘</span><span class="delta-txt">+0.05% vs target</span></div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↑</span><span class="delta-txt">+0.05% vs target</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--blue-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg></div>
       <div class="kpi-label">Customer Returns</div>
-      <div id="qualityReturnsValue" class="kpi-val" style="color:var(--blue);">2</div>
-      <div class="kpi-sub">This week Â· 0.04%</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">â†“</span><span class="delta-txt">âˆ’1 vs last week</span></div>
+      <div class="kpi-val" style="color:var(--blue);">2</div>
+      <div class="kpi-sub">This week · 0.04%</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">↓</span><span class="delta-txt">−1 vs last week</span></div>
     </div>
   </div>
 
@@ -804,7 +798,7 @@ transition:box-shadow .2s ease, transform .2s ease;
   <div style="display:flex;gap:8px;margin-bottom:16px;align-items:center;">
     <div class="search-bar" style="flex:1;">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input placeholder="Search by Serial #, Batch, Work Order, POâ€¦" id="qualSearch">
+      <input placeholder="Search by Serial #, Batch, Work Order, PO…" id="qualSearch">
     </div>
     <button class="search-btn" onclick="doQualSearch()">Trace</button>
   </div>
@@ -817,7 +811,7 @@ transition:box-shadow .2s ease, transform .2s ease;
     </div>
     <!-- DEFECT PARETO -->
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Defect Pareto</div><div class="card-sub">Top categories Â· This shift</div></div></div>
+      <div class="card-head"><div><div class="card-title">Defect Pareto</div><div class="card-sub">Top categories · This shift</div></div></div>
       <canvas id="paretoChart" style="width:100%;height:190px;"></canvas>
     </div>
   </div>
@@ -825,7 +819,7 @@ transition:box-shadow .2s ease, transform .2s ease;
   <!-- DEFECT TABLE -->
   <div class="card mb16">
     <div class="card-p" style="border-bottom:1px solid var(--border);">
-      <div class="card-title">Defect Log â€” This Shift</div>
+      <div class="card-title">Defect Log — This Shift</div>
       <div class="card-sub">Click any row to trace serial number, batch, and operator</div>
     </div>
     <table class="tbl">
@@ -837,19 +831,19 @@ transition:box-shadow .2s ease, transform .2s ease;
   <!-- CORRELATION CHART -->
   <div class="g2">
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Defects vs. Hour of Shift</div><div class="card-sub">Fatigue proxy â€” operator performance over time</div></div></div>
+      <div class="card-head"><div><div class="card-title">Defects vs. Hour of Shift</div><div class="card-sub">Fatigue proxy — operator performance over time</div></div></div>
       <canvas id="fatigueChart" style="width:100%;height:150px;"></canvas>
     </div>
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">FPY Trend â€” Last 7 Days</div><div class="card-sub">By shift Â· Spot deterioration early</div></div></div>
+      <div class="card-head"><div><div class="card-title">FPY Trend — Last 7 Days</div><div class="card-sub">By shift · Spot deterioration early</div></div></div>
       <canvas id="fpyTrendChart" style="width:100%;height:150px;"></canvas>
     </div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ═══════════════════════════════════════
      TAB 4: MAINTENANCE
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════ -->
 <div id="tab-maintenance" class="tab-page">
   <!-- KPI ROW -->
   <div class="g4 mb16">
@@ -857,48 +851,48 @@ transition:box-shadow .2s ease, transform .2s ease;
       <div class="kpi-icon" style="background:var(--blue-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <div class="kpi-label">Avg MTBF</div>
       <div class="kpi-val" style="color:var(--blue);">84h</div>
-      <div class="kpi-sub">Target â‰¥ 96h</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†“</span><span class="delta-txt">âˆ’12h vs target</span></div>
+      <div class="kpi-sub">Target ≥ 96h</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↓</span><span class="delta-txt">−12h vs target</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--green-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
       <div class="kpi-label">Avg MTTR</div>
-      <div id="mttrValue" class="kpi-val" style="color:var(--green);">2.4h</div>
-      <div class="kpi-sub">Target â‰¤ 2h</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--amber);">â†‘</span><span class="delta-txt">+0.4h vs target</span></div>
+      <div class="kpi-val" style="color:var(--green);">2.4h</div>
+      <div class="kpi-sub">Target ≤ 2h</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--amber);">↑</span><span class="delta-txt">+0.4h vs target</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--indigo-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
       <div class="kpi-label">PM Compliance</div>
-      <div id="pmComplianceValue" class="kpi-val" style="color:var(--indigo);">87%</div>
-      <div class="kpi-sub">Target â‰¥ 95%</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†“</span><span class="delta-txt">âˆ’8% vs target</span></div>
+      <div class="kpi-val" style="color:var(--indigo);">87%</div>
+      <div class="kpi-sub">Target ≥ 95%</div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↓</span><span class="delta-txt">−8% vs target</span></div>
     </div>
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--amber-l);"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
       <div class="kpi-label">Unplanned Downtime</div>
-      <div id="unplannedDowntimeValue" class="kpi-val" style="color:var(--amber);">38%</div>
+      <div class="kpi-val" style="color:var(--amber);">38%</div>
       <div class="kpi-sub">of total downtime</div>
-      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">â†‘</span><span class="delta-txt">+5% vs last week</span></div>
+      <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↑</span><span class="delta-txt">+5% vs last week</span></div>
     </div>
   </div>
 
   <!-- RELIABILITY-RESPONSIVENESS QUADRANT + ASSET LIST -->
   <div class="g2 mb16">
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Reliabilityâ€“Responsiveness Quadrant</div><div class="card-sub">MTBF (X) vs MTTR (Y) Â· Click dot for asset detail</div></div></div>
+      <div class="card-head"><div><div class="card-title">Reliability–Responsiveness Quadrant</div><div class="card-sub">MTBF (X) vs MTTR (Y) · Click dot for asset detail</div></div></div>
       <div style="position:relative;">
         <canvas id="quadChart" style="width:100%;height:220px;"></canvas>
         <div id="quadDots" style="position:absolute;top:0;left:0;width:100%;height:220px;pointer-events:none;"></div>
       </div>
       <div style="display:flex;justify-content:center;gap:16px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);">
-        <span>â— Critical</span><span style="color:var(--amber);">â— At-Risk</span><span style="color:var(--green);">â— Healthy</span>
+        <span>● Critical</span><span style="color:var(--amber);">● At-Risk</span><span style="color:var(--green);">● Healthy</span>
       </div>
     </div>
 
     <!-- ASSET AT-RISK LIST -->
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Assets At Risk</div><div class="card-sub">Top 5 Â· Click to open work order</div></div><span class="badge red">3 critical</span></div>
+      <div class="card-head"><div><div class="card-title">Assets At Risk</div><div class="card-sub">Top 5 · Click to open work order</div></div><span class="badge red">3 critical</span></div>
       <div style="display:flex;flex-direction:column;gap:8px;" id="assetRiskList"></div>
     </div>
   </div>
@@ -906,25 +900,25 @@ transition:box-shadow .2s ease, transform .2s ease;
   <!-- PLANNED vs UNPLANNED + TIMELINE -->
   <div class="g2 mb16">
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Downtime Breakdown</div><div class="card-sub">Planned vs Unplanned vs Micro-stops Â· Last 7 days</div></div></div>
+      <div class="card-head"><div><div class="card-title">Downtime Breakdown</div><div class="card-sub">Planned vs Unplanned vs Micro-stops · Last 7 days</div></div></div>
       <canvas id="downtimeChart" style="width:100%;height:160px;"></canvas>
     </div>
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">MTBF / MTTR Trend</div><div class="card-sub">12-week trend Â· Critical assets</div></div></div>
+      <div class="card-head"><div><div class="card-title">MTBF / MTTR Trend</div><div class="card-sub">12-week trend · Critical assets</div></div></div>
       <canvas id="mtbfChart" style="width:100%;height:160px;"></canvas>
     </div>
   </div>
 
   <!-- MAINTENANCE EVENTS TIMELINE -->
   <div class="card card-p">
-    <div class="card-head"><div><div class="card-title">Maintenance Event Timeline</div><div class="card-sub">Recent and upcoming planned events Â· Click to view detail</div></div><button class="search-btn" style="font-size:11px;padding:6px 14px;" onclick="openMaintenanceAction()">+ Create Work Order</button></div>
+    <div class="card-head"><div><div class="card-title">Maintenance Event Timeline</div><div class="card-sub">Recent and upcoming planned events · Click to view detail</div></div><button class="search-btn" style="font-size:11px;padding:6px 14px;" onclick="openMaintenanceAction()">+ Create Work Order</button></div>
     <div id="maintTimeline"></div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+<!-- ═══════════════════════════════════════
      TAB 5: REPORTS
-â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+═══════════════════════════════════════ -->
 <div id="tab-reports" class="tab-page">
   <div class="sec-head mb16">
     <div><div class="sec-title">Reports & Analytics</div><div class="sec-meta">Generate, export, and schedule plant-level reports</div></div>
@@ -942,51 +936,51 @@ transition:box-shadow .2s ease, transform .2s ease;
       <div class="rc-icon" style="background:var(--blue-l);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
       <div class="rc-name">OEE Analytics Report</div>
       <div class="rc-desc">Full breakdown of Overall Equipment Effectiveness across all lines, shifts, and product families with trend analysis.</div>
-      <div class="rc-meta">DAILY Â· AUTO-GENERATED Â· PDF + XLSX</div>
+      <div class="rc-meta">DAILY · AUTO-GENERATED · PDF + XLSX</div>
     </div>
     <div class="report-card" onclick="openReportModal('quality')">
       <div class="rc-icon" style="background:var(--green-l);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <div class="rc-name">Quality & FPY Report</div>
       <div class="rc-desc">First Pass Yield, defect Pareto, customer returns, scrap rates, and corrective action status by line and product.</div>
-      <div class="rc-meta">SHIFT Â· AUTO-GENERATED Â· PDF</div>
+      <div class="rc-meta">SHIFT · AUTO-GENERATED · PDF</div>
     </div>
     <div class="report-card" onclick="openReportModal('maintenance')">
       <div class="rc-icon" style="background:var(--amber-l);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg></div>
       <div class="rc-name">Maintenance Effectiveness</div>
       <div class="rc-desc">MTBF, MTTR, planned vs unplanned breakdown, PM compliance, and post-maintenance OEE uplift analysis.</div>
-      <div class="rc-meta">WEEKLY Â· ON-DEMAND Â· PDF + XLSX</div>
+      <div class="rc-meta">WEEKLY · ON-DEMAND · PDF + XLSX</div>
     </div>
     <div class="report-card" onclick="openReportModal('energy')">
       <div class="rc-icon" style="background:var(--teal-l);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
       <div class="rc-name">Energy Intensity Report</div>
       <div class="rc-desc">kWh per unit by line and product family. Peak/off-peak cost impact, sustainability metrics, and benchmark vs target.</div>
-      <div class="rc-meta">MONTHLY Â· ON-DEMAND Â· PDF</div>
+      <div class="rc-meta">MONTHLY · ON-DEMAND · PDF</div>
     </div>
     <div class="report-card" onclick="openReportModal('labor')">
       <div class="rc-icon" style="background:var(--indigo-l);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
       <div class="rc-name">Labor Productivity</div>
       <div class="rc-desc">Output per labor hour, overtime share, indirect labor ratio, absenteeism impact, and skill-mix analysis by line.</div>
-      <div class="rc-meta">WEEKLY Â· AUTO-GENERATED Â· PDF + XLSX</div>
+      <div class="rc-meta">WEEKLY · AUTO-GENERATED · PDF + XLSX</div>
     </div>
     <div class="report-card" onclick="openReportModal('traceability')">
       <div class="rc-icon" style="background:var(--red-l);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
       <div class="rc-name">Traceability & Genealogy</div>
       <div class="rc-desc">Full serial number genealogy, batch traceability, shipment-to-station chain of custody for QA audits and recalls.</div>
-      <div class="rc-meta">ON-DEMAND Â· EXPORT CSV + PDF</div>
+      <div class="rc-meta">ON-DEMAND · EXPORT CSV + PDF</div>
     </div>
   </div>
 
   <!-- KPI SUMMARY + ENERGY CHART -->
   <div class="g2 mb16">
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Plant KPI Summary â€” This Week</div><div class="card-sub">Actuals vs targets Â· RAG status</div></div></div>
+      <div class="card-head"><div><div class="card-title">Plant KPI Summary — This Week</div><div class="card-sub">Actuals vs targets · RAG status</div></div></div>
       <table class="tbl">
-        <thead><tr><th>KPI</th><th>Actual</th><th>Target</th><th>Î”</th><th>Status</th></tr></thead>
+        <thead><tr><th>KPI</th><th>Actual</th><th>Target</th><th>Δ</th><th>Status</th></tr></thead>
         <tbody id="kpiSummaryTable"></tbody>
       </table>
     </div>
     <div class="card card-p">
-      <div class="card-head"><div><div class="card-title">Energy Intensity</div><div class="card-sub">kWh per unit Â· By line Â· This week</div></div></div>
+      <div class="card-head"><div><div class="card-title">Energy Intensity</div><div class="card-sub">kWh per unit · By line · This week</div></div></div>
       <canvas id="energyChart" style="width:100%;height:180px;"></canvas>
     </div>
   </div>
@@ -1001,46 +995,883 @@ transition:box-shadow .2s ease, transform .2s ease;
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• LINE DETAIL OVERLAY â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════ LINE DETAIL OVERLAY ═══════════════ -->
 <div id="overlay">
   <div id="ov-panel">
     <div class="ov-hdr">
       <div>
-        <div style="font-size:20px;font-weight:900;letter-spacing:-.04em;" id="ovTitle">â€”</div>
-        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;" id="ovSub">â€”</div>
+        <div style="font-size:20px;font-weight:900;letter-spacing:-.04em;" id="ovTitle">—</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px;" id="ovSub">—</div>
       </div>
-      <button class="ov-close" onclick="closeOverlay()">âœ•</button>
+      <button class="ov-close" onclick="closeOverlay()">✕</button>
     </div>
     <div class="ov-body" id="ovBody"></div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• TRACE MODAL â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════ TRACE MODAL ═══════════════ -->
 <div id="trace-bg" onclick="handleTraceBg(event)">
   <div id="trace-modal">
     <div class="trace-top">
-      <button onclick="closeTrace()" style="float:right;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;">âœ•</button>
+      <button onclick="closeTrace()" style="float:right;width:22px;height:22px;border-radius:50%;background:rgba(255,255,255,.2);border:none;color:#fff;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;">✕</button>
       <div class="trace-top-title" id="traceTitle">Traceability Record</div>
-      <div class="trace-top-sub" id="traceSub">â€”</div>
+      <div class="trace-top-sub" id="traceSub">—</div>
     </div>
     <div class="trace-body" id="traceBody"></div>
     <div style="padding:0 20px 16px;display:flex;gap:8px;" id="traceActions"></div>
   </div>
 </div>
 
-<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• ACTION DRAWER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
+<!-- ═══════════════ ACTION DRAWER ═══════════════ -->
 <div class="action-drawer" id="actionDrawer">
   <div class="ad-inner">
     <div>
-      <div class="ad-title" id="adTitle">â€”</div>
-      <div class="ad-sub" id="adSub">â€”</div>
+      <div class="ad-title" id="adTitle">—</div>
+      <div class="ad-sub" id="adSub">—</div>
     </div>
     <div class="ad-actions" id="adActions"></div>
-    <button class="ad-close" onclick="closeDrawer()">âœ•</button>
+    <button class="ad-close" onclick="closeDrawer()">✕</button>
   </div>
 </div>
 
-<script src="/static/dashboard.js"></script>
+<script>
+// ══════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════
+const LINES = [
+  {id:'L-01',name:'Final Assembly A',status:'green', output:412,target:440,oee:94,yield:97,downtime:'7m', takt:55,cycle:52},
+  {id:'L-02',name:'Final Assembly B',status:'green', output:387,target:400,oee:91,yield:99,downtime:'12m',takt:55,cycle:54},
+  {id:'L-03',name:'Weld & Join',      status:'red',   output:298,target:380,oee:67,yield:84,downtime:'48m',takt:42,cycle:61},
+  {id:'L-04',name:'Sub-Assembly C',   status:'green', output:444,target:450,oee:93,yield:98,downtime:'9m', takt:50,cycle:49},
+  {id:'L-05',name:'Paint & Finish',   status:'amber', output:320,target:360,oee:78,yield:91,downtime:'28m',takt:60,cycle:68},
+  {id:'L-06',name:'Electrical Fit',   status:'green', output:401,target:420,oee:89,yield:96,downtime:'14m',takt:48,cycle:46},
+  {id:'L-07',name:'Press & Form',     status:'red',   output:210,target:350,oee:55,yield:79,downtime:'72m',takt:38,cycle:71},
+  {id:'L-08',name:'Machining A',      status:'green', output:368,target:380,oee:90,yield:97,downtime:'11m',takt:44,cycle:43},
+  {id:'L-09',name:'Packaging',        status:'amber', output:305,target:360,oee:75,yield:88,downtime:'24m',takt:36,cycle:42},
+  {id:'L-10',name:'QA & Test',        status:'green', output:430,target:440,oee:92,yield:98,downtime:'8m', takt:52,cycle:50},
+];
+const STATIONS = [
+  {name:'Material Intake',    type:'INTAKE',   units:308,pass:307,cycle:'28.3s',defects:1},
+  {name:'CNC Machining',      type:'MACHINE',  units:299,pass:296,cycle:'42.1s',defects:3},
+  {name:'Press Forming',      type:'PRESS',    units:290,pass:289,cycle:'18.7s',defects:2},
+  {name:'Deburring',          type:'FINISH',   units:287,pass:287,cycle:'12.4s',defects:0},
+  {name:'Sub-Assembly I',     type:'ASSEMBLY', units:283,pass:282,cycle:'55.2s',defects:2},
+  {name:'Sub-Assembly II',    type:'ASSEMBLY', units:280,pass:279,cycle:'61.8s',defects:1},
+  {name:'Welding',            type:'WELD',     units:275,pass:271,cycle:'34.5s',defects:7},
+  {name:'Heat Treatment',     type:'THERMAL',  units:270,pass:270,cycle:'180s', defects:0},
+  {name:'Painting',           type:'PAINT',    units:267,pass:263,cycle:'48.0s',defects:5},
+  {name:'Electrical Install', type:'ELEC',     units:262,pass:261,cycle:'72.3s',defects:1},
+  {name:'Final Assembly',     type:'ASSEMBLY', units:259,pass:258,cycle:'88.5s',defects:1},
+  {name:'QA Inspection',      type:'QA',       units:257,pass:257,cycle:'24.1s',defects:0},
+];
+const DEFECT_LOG = [
+  {time:'14:18',line:'L-07',station:'ST-03',serial:'SN-00821',batch:'BATCH-44B',cat:'Dimensional',sev:'CRITICAL',op:'OP-214',status:'Open'},
+  {time:'13:55',line:'L-03',station:'ST-07',serial:'SN-00694',batch:'BATCH-43A',cat:'Weld',sev:'CRITICAL',op:'OP-208',status:'In Review'},
+  {time:'13:42',line:'L-05',station:'ST-09',serial:'SN-00712',batch:'BATCH-43C',cat:'Paint',sev:'WARNING',op:'OP-219',status:'Open'},
+  {time:'13:11',line:'L-03',station:'ST-07',serial:'SN-00688',batch:'BATCH-43A',cat:'Weld',sev:'HIGH',op:'OP-208',status:'Rework'},
+  {time:'12:48',line:'L-07',station:'ST-03',serial:'SN-00801',batch:'BATCH-44B',cat:'Dimensional',sev:'HIGH',op:'OP-214',status:'Scrap'},
+  {time:'12:30',line:'L-03',station:'ST-06',serial:'SN-00675',batch:'BATCH-43A',cat:'Weld',sev:'MEDIUM',op:'OP-207',status:'Closed'},
+  {time:'12:15',line:'L-01',station:'ST-11',serial:'SN-00641',batch:'BATCH-42A',cat:'Assembly',sev:'LOW',op:'OP-201',status:'Closed'},
+  {time:'11:52',line:'L-05',station:'ST-09',serial:'SN-00698',batch:'BATCH-43C',cat:'Paint',sev:'MEDIUM',op:'OP-219',status:'Rework'},
+];
+const ASSETS = [
+  {name:'L-07 Hydraulic Press #3',line:'L-07',health:23,mtbf:18,mttr:4.2,status:'red',risk:'<2h',type:'🔴'},
+  {name:'L-03 Weld Station #7',   line:'L-03',health:48,mtbf:42,mttr:3.1,status:'amber',risk:'<8h',type:'🟡'},
+  {name:'L-05 Paint Oven #2',     line:'L-05',health:61,mtbf:68,mttr:2.4,status:'amber',risk:'<24h',type:'🟡'},
+  {name:'L-01 Assembly Robot #2', line:'L-01',health:79,mtbf:112,mttr:1.8,status:'green',risk:'>48h',type:'🟢'},
+  {name:'L-06 Test Bench #1',     line:'L-06',health:82,mtbf:128,mttr:1.2,status:'green',risk:'>72h',type:'🟢'},
+];
+const MAINT_EVENTS = [
+  {time:'13:58',type:'EMERGENCY',asset:'L-07 Hydraulic Press #3',desc:'Emergency shutdown — pressure sensor failure',status:'OPEN',dur:'Ongoing',color:'red'},
+  {time:'12:30',type:'CORRECTIVE',asset:'L-03 Weld Station #7',desc:'Weld tip replacement after temp exceedance',status:'IN PROGRESS',dur:'45m',color:'amber'},
+  {time:'10:00',type:'PLANNED',asset:'L-08 CNC #2',desc:'Scheduled PM — lubrication & calibration',status:'COMPLETED',dur:'62m',color:'green'},
+  {time:'09:15',type:'PLANNED',asset:'L-04 Press #1',desc:'Bearing inspection — PM compliance',status:'COMPLETED',dur:'38m',color:'green'},
+  {time:'UPCOMING',type:'PLANNED',asset:'L-05 Paint Oven #2',desc:'Temperature sensor calibration — overdue 2 days',status:'SCHEDULED',dur:'30m est.',color:'blue'},
+  {time:'UPCOMING',type:'PLANNED',asset:'L-10 Test Bench #3',desc:'Quarterly calibration verification',status:'SCHEDULED',dur:'60m est.',color:'blue'},
+];
+const KPI_SUMMARY = [
+  {name:'Overall OEE',actual:'82%',target:'85%',delta:'-3%',status:'amber'},
+  {name:'First Pass Yield',actual:'94.3%',target:'95%',delta:'-0.7%',status:'amber'},
+  {name:'Safety — Days Clean',actual:'14',target:'30',delta:'On track',status:'green'},
+  {name:'Customer OTIF',actual:'96.4%',target:'98%',delta:'-1.6%',status:'amber'},
+  {name:'PM Compliance',actual:'87%',target:'95%',delta:'-8%',status:'red'},
+  {name:'Energy kWh/unit',actual:'2.84',target:'2.60',delta:'+0.24',status:'amber'},
+  {name:'Scrap Rate',actual:'0.55%',target:'<0.5%',delta:'+0.05%',status:'amber'},
+  {name:'Labor Productivity',actual:'94 u/h',target:'100 u/h',delta:'-6',status:'amber'},
+];
+
+// ══════════════════════════════════════════════
+// CLOCK
+// ══════════════════════════════════════════════
+function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('en-US',{hour12:false});}
+setInterval(tick,1000);tick();
+
+// ══════════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════════
+function showTab(id,btn){
+  document.querySelectorAll('.tab-page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+  if(id==='lines') renderLinesTab();
+  if(id==='quality') renderQualityTab();
+  if(id==='maintenance') renderMaintenanceTab();
+  if(id==='reports') renderReportsTab();
+}
+
+// ══════════════════════════════════════════════
+// CANVAS HELPERS
+// ══════════════════════════════════════════════
+function ctx2d(id){
+  const c=document.getElementById(id);if(!c)return null;
+  const dpr=window.devicePixelRatio||1;
+  const W=c.offsetWidth||c.width,H=c.offsetHeight||c.height;
+  c.width=W*dpr;c.height=H*dpr;
+  const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  return{ctx,W,H};
+}
+function sparkline(id,data,color){
+  const r=ctx2d(id);if(!r)return;
+  const{ctx,W,H}=r;
+  const mn=Math.min(...data),mx=Math.max(...data);
+  const px=i=>i*(W/(data.length-1));
+  const py=v=>H-2-((v-mn)/(mx-mn||1))*(H-4);
+  const g=ctx.createLinearGradient(0,0,0,H);
+  g.addColorStop(0,color+'30');g.addColorStop(1,color+'00');
+  ctx.beginPath();ctx.moveTo(px(0),py(data[0]));
+  data.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});
+  ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();data.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});
+  ctx.strokeStyle=color;ctx.lineWidth=1.8;ctx.lineJoin='round';ctx.stroke();
+}
+
+// ══════════════════════════════════════════════
+// RING CHART (inline SVG)
+// ══════════════════════════════════════════════
+function ringsvg(pct,color,size=38){
+  const r=14,cx=19,cy=19,circ=2*Math.PI*r,dash=circ*pct/100;
+  return`<svg width="${size}" height="${size}" viewBox="0 0 38 38"><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="rgba(0,0,0,0.06)" stroke-width="4.5"/><circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="4.5" stroke-dasharray="${dash} ${circ}" stroke-dashoffset="${circ/4}" stroke-linecap="round"/><text x="${cx}" y="${cy+4}" text-anchor="middle" font-size="9" font-weight="700" fill="${color}" font-family="JetBrains Mono,monospace">${pct}</text></svg>`;
+}
+
+const SC={green:'var(--green)',amber:'var(--amber)',red:'var(--red)'};
+
+// ══════════════════════════════════════════════
+// LINE CARD HTML
+// ══════════════════════════════════════════════
+function lineCardHTML(l,clickIdx){
+  const pct=Math.round(l.output/l.target*100);
+  const col=SC[l.status];
+  const lbl={green:'On Target',amber:'Warning',red:'Critical'}[l.status];
+  return`<div class="line-card ${l.status}" onclick="openLine(${clickIdx})">
+    <div class="lc-top">
+      <div class="lc-id">${l.id}</div>
+      <div class="badge ${l.status}"><div class="pip ${l.status}"></div>${lbl}</div>
+    </div>
+    <div class="lc-name">${l.name.toUpperCase()}</div>
+    <div style="display:flex;align-items:baseline;gap:3px;margin-bottom:2px;">
+      <div class="lc-num" style="color:${col};">${l.output}</div>
+      <div class="lc-denom"> / ${l.target}</div>
+    </div>
+    <div class="lc-unit">UNITS THIS SHIFT · ${pct}%</div>
+    <div class="prog-track" style="margin-bottom:10px;"><div class="prog-fill" style="width:${pct}%;background:${col};"></div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);">OEE</div><div style="font-size:14px;font-weight:700;color:${col};">${l.oee}%</div></div>
+      ${ringsvg(l.yield,col)}
+    </div>
+  </div>`;
+}
+
+// ══════════════════════════════════════════════
+// OVERVIEW INIT
+// ══════════════════════════════════════════════
+function initOverview(){
+  // Lines mini-grid
+  const g=document.getElementById('overviewLinesGrid');
+  g.innerHTML=LINES.map((l,i)=>lineCardHTML(l,i)).join('');
+  // Sparklines
+  sparkline('spk1',[320,380,360,420,390,430,410,438],'#2563eb');
+  sparkline('spk2',[95,94,96,93,95,94,95,94],'#00b96b');
+  sparkline('spk3',[32,28,35,24,30,22,28,24],'#ef4444');
+  sparkline('spk4',[44,46,43,48,45,47,46,46],'#f59e0b');
+  drawThroughput();
+  drawDefectDonut();
+  drawBottlenecks();
+  drawShiftBars();
+}
+
+// ── THROUGHPUT CHART ──
+function drawThroughput(){
+  const r=ctx2d('throughputChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const today=[350,370,420,400,440,430,450,438];
+  const yest=[310,340,380,370,400,390,420,410];
+  const tgt=400;const labels=['08h','09h','10h','11h','12h','13h','14h','15h'];
+  const mn=280,mx=470;
+  const px=i=>38+i*(W-50)/(today.length-1);
+  const py=v=>H-20-((v-mn)/(mx-mn))*(H-30);
+  [320,360,400,440].forEach(v=>{
+    ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;ctx.setLineDash([3,4]);
+    ctx.beginPath();ctx.moveTo(34,py(v));ctx.lineTo(W-4,py(v));ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle='rgba(0,0,0,.22)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';
+    ctx.fillText(v,30,py(v)+3);
+  });
+  ctx.strokeStyle='rgba(37,99,235,.18)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(34,py(tgt));ctx.lineTo(W-4,py(tgt));ctx.stroke();
+  ctx.setLineDash([]);
+  const g2=ctx.createLinearGradient(0,0,0,H);g2.addColorStop(0,'rgba(0,0,0,.04)');g2.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.beginPath();ctx.moveTo(px(0),py(yest[0]));yest.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});
+  ctx.lineTo(px(yest.length-1),H-20);ctx.lineTo(px(0),H-20);ctx.closePath();ctx.fillStyle=g2;ctx.fill();
+  ctx.beginPath();yest.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});
+  ctx.strokeStyle='rgba(0,0,0,.18)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  const g1=ctx.createLinearGradient(0,0,0,H);g1.addColorStop(0,'rgba(37,99,235,.12)');g1.addColorStop(1,'rgba(37,99,235,0)');
+  ctx.beginPath();ctx.moveTo(px(0),py(today[0]));today.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});
+  ctx.lineTo(px(today.length-1),H-20);ctx.lineTo(px(0),H-20);ctx.closePath();ctx.fillStyle=g1;ctx.fill();
+  ctx.beginPath();today.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});
+  ctx.strokeStyle='#2563eb';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+  today.forEach((v,i)=>{ctx.beginPath();ctx.arc(px(i),py(v),3.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.stroke();});
+  ctx.fillStyle='rgba(0,0,0,.28)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+  labels.forEach((l,i)=>ctx.fillText(l,px(i),H-5));
+}
+
+function switchChartView(btn,view){
+  document.querySelectorAll('.chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  drawThroughput();// In real app, re-fetch data for the view
+}
+
+// ── DEFECT DONUT ──
+function drawDefectDonut(){
+  const r=ctx2d('defDonut');if(!r)return;
+  const{ctx}=r;const cx=50,cy=50,outerR=44,innerR=26;
+  const cats=[{c:'#ef4444',n:8},{c:'#f59e0b',n:6},{c:'#2563eb',n:5},{c:'#6366f1',n:3},{c:'#a8a8b8',n:2}];
+  const total=cats.reduce((a,x)=>a+x.n,0);
+  let angle=-Math.PI/2;
+  cats.forEach(x=>{const sw=x.n/total*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,outerR,angle,angle+sw);ctx.closePath();ctx.fillStyle=x.c+'cc';ctx.fill();angle+=sw;});
+  ctx.beginPath();ctx.arc(cx,cy,innerR,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.fillStyle='#0d0d12';ctx.font='bold 14px Outfit,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,cx,cy-4);
+  ctx.font='7px JetBrains Mono';ctx.fillStyle='#6b6b7a';ctx.fillText('DEFECTS',cx,cy+8);
+}
+
+// ── BOTTLENECKS ──
+function drawBottlenecks(){
+  const bns=[{l:'L-07 Press',m:72,c:'var(--red)'},{l:'L-03 Weld',m:48,c:'var(--red)'},{l:'L-05 Paint',m:28,c:'var(--amber)'},{l:'L-09 Pack',m:24,c:'var(--amber)'},{l:'L-01 Assm',m:7,c:'var(--green)'}];
+  const mx=72;
+  document.getElementById('bottleneckList').innerHTML=bns.map((b,i)=>`
+    <div class="hbar-row">
+      <div class="hbar-label">${b.l}</div>
+      <div class="hbar-track"><div class="hbar-fill" style="width:${b.m/mx*100}%;background:${b.c};"></div></div>
+      <div class="hbar-val" style="color:${b.c};">${b.m}m</div>
+    </div>`).join('');
+}
+
+// ── SHIFT BARS ──
+function drawShiftBars(){
+  const r=ctx2d('shiftBarChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const data=[{v:3650,l:'A Mon'},{v:3820,l:'B Mon'},{v:3710,l:'A Tue'},{v:3841,l:'B Now'}];
+  const mx=4000,mn=3400;
+  const bw=(W-40)/(data.length*2);
+  data.forEach((d,i)=>{
+    const x=20+i*((W-40)/data.length);
+    const bh=(d.v-mn)/(mx-mn)*(H-28);
+    const y=H-18-bh;
+    const isNow=(i===3);const col=isNow?'#2563eb':'rgba(0,0,0,.1)';
+    ctx.fillStyle=col;
+    const rr=4;ctx.beginPath();ctx.moveTo(x+rr,y);ctx.lineTo(x+bw-rr,y);ctx.arcTo(x+bw,y,x+bw,y+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,y+rr);ctx.arcTo(x,y,x+rr,y,rr);ctx.closePath();ctx.fill();
+    const tc=isNow?'#2563eb':'rgba(0,0,0,.35)';
+    ctx.fillStyle=tc;ctx.font=`${isNow?'bold ':''} 9px JetBrains Mono`;ctx.textAlign='center';
+    ctx.fillText(`${(d.v/1000).toFixed(1)}k`,x+bw/2,y-4);
+    ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='8px JetBrains Mono';ctx.fillText(d.l,x+bw/2,H-5);
+  });
+}
+
+// ══════════════════════════════════════════════
+// LINES TAB
+// ══════════════════════════════════════════════
+let linesFilter='all';
+function renderLinesTab(){
+  buildLinesGrid(LINES,'linesTabGrid');
+  buildLinesTable(LINES);
+  buildLeagueTable();
+  drawTaktChart();
+}
+function buildLinesGrid(data,targetId){
+  const g=document.getElementById(targetId);if(!g)return;
+  g.innerHTML=data.map((l,i)=>lineCardHTML(l,LINES.indexOf(l))).join('');
+}
+function filterLinesStatus(btn,f){
+  document.querySelectorAll('#tab-lines .filter-chip').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');linesFilter=f;
+  const filtered=f==='all'?LINES:LINES.filter(l=>l.status===f);
+  buildLinesGrid(filtered,'linesTabGrid');buildLinesTable(filtered);
+}
+function filterLinesTab(q){
+  const filtered=LINES.filter(l=>l.id.toLowerCase().includes(q.toLowerCase())||l.name.toLowerCase().includes(q.toLowerCase()));
+  buildLinesGrid(filtered,'linesTabGrid');buildLinesTable(filtered);
+}
+function buildLinesTable(data){
+  const tb=document.getElementById('linesTableBody');if(!tb)return;
+  tb.innerHTML=data.map(l=>{
+    const pct=Math.round(l.output/l.target*100);
+    const sc=l.status==='green'?'color:var(--green)':l.status==='amber'?'color:var(--amber)':'color:var(--red)';
+    const off=l.cycle>l.takt;
+    return`<tr onclick="openLine(${LINES.indexOf(l)})">
+      <td class="mono" style="font-weight:700;">${l.id}</td>
+      <td style="font-weight:600;">${l.name}</td>
+      <td><span class="badge ${l.status}"><div class="pip ${l.status}"></div>${{green:'On Target',amber:'Warning',red:'Critical'}[l.status]}</span></td>
+      <td class="mono">${l.output}</td>
+      <td class="mono">${l.target}</td>
+      <td><div style="display:flex;align-items:center;gap:6px;"><div class="prog-track" style="width:60px;"><div class="prog-fill" style="width:${pct}%;background:${SC[l.status]};"></div></div><span class="mono" style="${sc};font-size:11px;">${pct}%</span></div></td>
+      <td class="mono" style="${sc};font-weight:700;">${l.oee}%</td>
+      <td class="mono">${l.yield}%</td>
+      <td class="mono" style="${l.status!=='green'?'color:var(--red)':''}">${l.downtime}</td>
+      <td><span class="badge ${off?'red':'green'}">${off?'⚠ Off-takt':'✓ On-takt'}</span></td>
+    </tr>`;
+  }).join('');
+}
+function buildLeagueTable(){
+  const sorted=[...LINES].sort((a,b)=>b.oee-a.oee);
+  const medals=['🥇','🥈','🥉'];
+  document.getElementById('leagueTable').innerHTML=sorted.map((l,i)=>`
+    <div class="lt-row" onclick="openLine(${LINES.indexOf(l)})">
+      <div class="lt-rank">${i+1}</div>
+      <div class="lt-medal">${medals[i]||''}</div>
+      <div class="lt-label">${l.id} — ${l.name}</div>
+      <div class="lt-bar-wrap"><div class="hbar-track"><div class="hbar-fill" style="width:${l.oee}%;background:${SC[l.status]};"></div></div></div>
+      <div class="lt-score" style="color:${SC[l.status]};">${l.oee}%</div>
+      ${l.oee>=90?'<span class="badge green" style="font-size:8px;">⭐ Best</span>':''}
+    </div>`).join('');
+}
+function drawTaktChart(){
+  const r=ctx2d('taktChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const bw=Math.min(18,(W-40)/LINES.length-4);
+  const mx=80;const mn=0;
+  LINES.forEach((l,i)=>{
+    const x=24+i*((W-32)/LINES.length);
+    const th=(l.takt-mn)/(mx-mn)*(H-34);const ch=(l.cycle-mn)/(mx-mn)*(H-34);
+    ctx.fillStyle='rgba(37,99,235,.15)';ctx.fillRect(x,H-18-th,bw,th);
+    const cc=l.cycle>l.takt?'#ef4444':'#00b96b';
+    ctx.fillStyle=cc+'cc';ctx.fillRect(x+bw+2,H-18-ch,bw,ch);
+    ctx.fillStyle='rgba(0,0,0,.28)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(l.id,x+bw+1,H-5);
+  });
+  ctx.fillStyle='rgba(37,99,235,.6)';ctx.fillRect(W-90,8,10,6);ctx.fillStyle='rgba(0,0,0,.4)';ctx.font='8px JetBrains Mono';ctx.textAlign='left';ctx.fillText('Takt',W-76,14);
+  ctx.fillStyle='rgba(0,185,107,.7)';ctx.fillRect(W-50,8,10,6);ctx.fillText('Cycle',W-36,14);
+}
+
+// ══════════════════════════════════════════════
+// QUALITY TAB
+// ══════════════════════════════════════════════
+function renderQualityTab(){
+  buildDefectTable();
+  drawFPYChart();
+  drawParetoChart();
+  drawFatigueChart();
+  drawFPYTrendChart();
+}
+function buildDefectTable(){
+  const tb=document.getElementById('defectTableBody');if(!tb)return;
+  tb.innerHTML=DEFECT_LOG.map(d=>{
+    const sc=d.sev==='CRITICAL'?'color:var(--red)':d.sev==='WARNING'?'color:var(--amber)':'color:var(--dim)';
+    const ss=d.status==='Open'?'red':d.status==='In Review'?'amber':d.status==='Rework'?'indigo':'green';
+    return`<tr onclick="openTrace('${d.line} · ${d.station}','${d.cat} defect — ${d.sev}','${d.op}','${d.serial}','${d.batch}','${d.sev}')">
+      <td class="mono">${d.time}</td>
+      <td style="font-weight:700;">${d.line}</td>
+      <td class="mono">${d.station}</td>
+      <td class="mono hi" style="color:var(--blue);font-weight:700;">${d.serial}</td>
+      <td class="mono">${d.batch}</td>
+      <td style="font-weight:600;">${d.cat}</td>
+      <td style="${sc};font-weight:700;">${d.sev}</td>
+      <td class="mono">${d.op}</td>
+      <td><span class="badge ${ss}">${d.status}</span></td>
+    </tr>`;
+  }).join('');
+}
+function doQualSearch(){
+  const v=document.getElementById('qualSearch').value.trim();
+  if(v)openTrace('Quality Search','Search query: '+v,'QA-SYSTEM',v,'AUTO','INFO');
+}
+function drawFPYChart(){
+  const r=ctx2d('fpyChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const labels=LINES.map(l=>l.id);const vals=LINES.map(l=>l.yield);
+  const tgt=95;const mn=75,mx=102;
+  const bw=(W-40)/vals.length-5;
+  vals.forEach((v,i)=>{
+    const x=24+i*((W-32)/vals.length);
+    const bh=(v-mn)/(mx-mn)*(H-28);
+    const col=v>=95?'#00b96b':v>=88?'#f59e0b':'#ef4444';
+    ctx.fillStyle=col+'22';const rr=4;
+    ctx.beginPath();ctx.moveTo(x+rr,H-18-bh);ctx.lineTo(x+bw-rr,H-18-bh);ctx.arcTo(x+bw,H-18-bh,x+bw,H-18-bh+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,H-18-bh+rr);ctx.arcTo(x,H-18-bh,x+rr,H-18-bh,rr);ctx.closePath();ctx.fill();
+    ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x+rr,H-18-6);ctx.lineTo(x+bw-rr,H-18-6);ctx.arcTo(x+bw,H-18-6,x+bw,H-18-6+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,H-18-6+rr);ctx.arcTo(x,H-18-6,x+rr,H-18-6,rr);ctx.closePath();ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';ctx.fillText(`${v}%`,x+bw/2,H-18-bh-4);ctx.fillText(l.id,x+bw/2,H-5);
+  });
+  // target line
+  const ty=H-18-((tgt-mn)/(mx-mn))*(H-28);
+  ctx.strokeStyle='rgba(37,99,235,.35)';ctx.lineWidth=1.5;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(20,ty);ctx.lineTo(W-4,ty);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(37,99,235,.7)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';ctx.fillText('Target 95%',W-6,ty-3);
+}
+function drawParetoChart(){
+  const r=ctx2d('paretoChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const cats=[{l:'Weld',n:10,c:'#ef4444'},{l:'Dimensional',n:8,c:'#f59e0b'},{l:'Paint',n:6,c:'#2563eb'},{l:'Assembly',n:5,c:'#6366f1'},{l:'Electrical',n:3,c:'#0d9488'},{l:'Other',n:2,c:'#a8a8b8'}];
+  const total=cats.reduce((a,x)=>a+x.n,0);const mx=cats[0].n;
+  const bw=(W-40)/cats.length-4;
+  let cum=0;
+  const cumPts=[];
+  cats.forEach((c,i)=>{
+    const x=24+i*((W-32)/cats.length);
+    const bh=c.n/mx*(H-28);
+    ctx.fillStyle=c.c+'33';ctx.fillRect(x,H-18-bh,bw,bh);
+    ctx.fillStyle=c.c;ctx.fillRect(x,H-18-Math.min(bh,6),bw,Math.min(bh,6));
+    ctx.fillStyle='rgba(0,0,0,.35)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(c.n,x+bw/2,H-18-bh-4);ctx.fillText(c.l,x+bw/2,H-5);
+    cum+=c.n;cumPts.push({x:x+bw/2,y:H-18-((cum/total)*(H-28))});
+  });
+  ctx.beginPath();cumPts.forEach((p,i)=>{if(i===0)ctx.moveTo(p.x,p.y);else ctx.lineTo(p.x,p.y);});
+  ctx.strokeStyle='rgba(0,0,0,.45)';ctx.lineWidth=1.8;ctx.stroke();
+  cumPts.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='rgba(0,0,0,.45)';ctx.lineWidth=1.5;ctx.stroke();});
+}
+function drawFatigueChart(){
+  const r=ctx2d('fatigueChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const data=[1,2,1,3,2,4,6,5];const labels=['08h','09h','10h','11h','12h','13h','14h','15h'];
+  const mx=7,mn=0;const px=i=>32+i*(W-44)/(data.length-1);const py=v=>H-18-v/(mx-mn)*(H-26);
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(239,68,68,.15)');g.addColorStop(1,'rgba(239,68,68,0)');
+  ctx.beginPath();ctx.moveTo(px(0),py(data[0]));data.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});
+  ctx.lineTo(W-12,H-18);ctx.lineTo(32,H-18);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();data.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.stroke();
+  data.forEach((v,i)=>{ctx.beginPath();ctx.arc(px(i),py(v),3.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.stroke();});
+  ctx.fillStyle='rgba(0,0,0,.28)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';
+  labels.forEach((l,i)=>ctx.fillText(l,px(i),H-4));
+  [2,4,6].forEach(v=>{ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(28,py(v));ctx.lineTo(W-4,py(v));ctx.stroke();ctx.setLineDash([]);ctx.fillStyle='rgba(0,0,0,.25)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';ctx.fillText(v,26,py(v)+3);});
+}
+function drawFPYTrendChart(){
+  const r=ctx2d('fpyTrendChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const shiftA=[93,94,95,94,95,96,94,95,95,96,95,94,95,94];
+  const shiftB=[91,93,92,94,93,94,93,92,94,93,94,95,94,94];
+  const mn=89,mx=98;const px=i=>16+i*(W-24)/(shiftA.length-1);const py=v=>H-16-((v-mn)/(mx-mn))*(H-24);
+  [91,93,95].forEach(v=>{ctx.strokeStyle='rgba(0,0,0,.05)';ctx.lineWidth=1;ctx.setLineDash([2,4]);ctx.beginPath();ctx.moveTo(12,py(v));ctx.lineTo(W-4,py(v));ctx.stroke();ctx.setLineDash([]);});
+  const drawLine=(data,col,dash)=>{
+    if(dash)ctx.setLineDash(dash);
+    ctx.beginPath();data.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});
+    ctx.strokeStyle=col;ctx.lineWidth=2;ctx.stroke();ctx.setLineDash([]);
+  };
+  drawLine(shiftB,'rgba(0,0,0,.2)',[4,3]);
+  drawLine(shiftA,'#2563eb');
+  ctx.strokeStyle='rgba(37,99,235,.3)';ctx.lineWidth=1;ctx.setLineDash([5,4]);
+  ctx.beginPath();ctx.moveTo(12,py(95));ctx.lineTo(W-4,py(95));ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(0,0,0,.35)';ctx.font='8px JetBrains Mono';ctx.textAlign='left';ctx.fillText('Target 95%',14,py(95)-3);
+}
+
+// ══════════════════════════════════════════════
+// MAINTENANCE TAB
+// ══════════════════════════════════════════════
+function renderMaintenanceTab(){
+  buildAssetRiskList();
+  buildMaintTimeline();
+  drawQuadrant();
+  drawDowntimeChart();
+  drawMTBFChart();
+}
+function buildAssetRiskList(){
+  const el=document.getElementById('assetRiskList');if(!el)return;
+  el.innerHTML=ASSETS.map(a=>{
+    const col=a.status==='red'?'var(--red)':a.status==='amber'?'var(--amber)':'var(--green)';
+    const bg=a.status==='red'?'var(--red-l)':a.status==='amber'?'var(--amber-l)':'var(--green-l)';
+    return`<div style="display:flex;align-items:center;gap:10px;padding:10px;border-radius:9px;background:${bg};border:1px solid ${col}22;cursor:pointer;" onclick="openTrace('${a.name}','Asset health ${a.health}/100 — predicted failure ${a.risk}','MAINT-TEAM','ASSET-${a.line}','N/A','${a.status==='red'?'CRITICAL':'WARNING'}')">
+      <div style="font-size:20px;">${a.type}</div>
+      <div style="flex:1;">
+        <div style="font-size:12px;font-weight:700;">${a.name}</div>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px;">Health: ${a.health}/100 · MTBF: ${a.mtbf}h · MTTR: ${a.mttr}h</div>
+        <div style="height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-top:4px;"><div style="width:${a.health}%;height:100%;background:${col};border-radius:2px;"></div></div>
+      </div>
+      <div>
+        <span class="badge ${a.status}" style="display:block;text-align:center;margin-bottom:3px;">${a.status==='red'?'CRITICAL':a.status==='amber'?'AT RISK':'HEALTHY'}</span>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:9px;color:${col};text-align:center;">${a.risk}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+function buildMaintTimeline(){
+  const el=document.getElementById('maintTimeline');if(!el)return;
+  el.innerHTML=MAINT_EVENTS.map(e=>{
+    const col=e.color==='red'?'var(--red)':e.color==='amber'?'var(--amber)':e.color==='green'?'var(--green)':'var(--blue)';
+    return`<div class="timeline-event" onclick="openTrace(${JSON.stringify(e.asset)},'${e.desc}','MAINT-TEAM','N/A','N/A','${e.color==='red'?'CRITICAL':'INFO'}')">
+      <div class="te-dot" style="background:${col};"></div>
+      <div class="te-body">
+        <div class="te-title">[${e.time}] ${e.type} — ${e.asset}</div>
+        <div class="te-meta">${e.desc} · Duration: ${e.dur}</div>
+      </div>
+      <span class="badge ${e.color}">${e.status}</span>
+    </div>`;
+  }).join('');
+}
+function drawQuadrant(){
+  const r=ctx2d('quadChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const pad=32;
+  // grid
+  ctx.strokeStyle='rgba(0,0,0,.06)';ctx.lineWidth=1;
+  [.25,.5,.75].forEach(f=>{
+    ctx.beginPath();ctx.moveTo(pad+(W-pad*2)*f,pad);ctx.lineTo(pad+(W-pad*2)*f,H-pad);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(pad,pad+(H-pad*2)*f);ctx.lineTo(W-pad,pad+(H-pad*2)*f);ctx.stroke();
+  });
+  // quadrant labels
+  ctx.font='8px JetBrains Mono';ctx.fillStyle='rgba(0,0,0,.2)';
+  ctx.textAlign='center';ctx.fillText('HIGH MTBF / LOW MTTR (IDEAL)',pad+(W-pad*2)*.75,pad+10);
+  ctx.fillText('LOW MTBF / HIGH MTTR (PROBLEM)',pad+(W-pad*2)*.25,H-pad-6);
+  // axes
+  ctx.strokeStyle='rgba(0,0,0,.15)';ctx.lineWidth=1.5;
+  ctx.beginPath();ctx.moveTo(pad,H-pad);ctx.lineTo(W-pad,H-pad);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(pad,pad);ctx.lineTo(pad,H-pad);ctx.stroke();
+  ctx.fillStyle='rgba(0,0,0,.4)';ctx.font='9px JetBrains Mono';
+  ctx.textAlign='center';ctx.fillText('MTBF (hours) →',W/2,H-6);
+  ctx.save();ctx.translate(10,H/2);ctx.rotate(-Math.PI/2);ctx.fillText('MTTR (hours) →',0,0);ctx.restore();
+  // dots — position: high MTBF = right, low MTTR = top (good = top-right)
+  const maxMTBF=150,maxMTTR=6;
+  ASSETS.forEach((a,i)=>{
+    const x=pad+(a.mtbf/maxMTBF)*(W-pad*2);
+    const y=H-pad-(1-a.mttr/maxMTTR)*(H-pad*2);
+    const col=a.status==='red'?'#ef4444':a.status==='amber'?'#f59e0b':'#00b96b';
+    ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.fillStyle=col+'cc';ctx.fill();
+    ctx.strokeStyle='#fff';ctx.lineWidth=2;ctx.stroke();
+    ctx.fillStyle='rgba(0,0,0,.55)';ctx.font='bold 7px JetBrains Mono';ctx.textAlign='center';ctx.fillText(a.line,x,y+3);
+  });
+}
+function drawDowntimeChart(){
+  const r=ctx2d('downtimeChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const labels=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const planned=[45,38,50,42,35,55,48];
+  const unplanned=[80,62,38,55,70,45,38];
+  const micro=[24,18,22,30,28,20,25];
+  const mx=170;const bw=(W-50)/labels.length-4;
+  labels.forEach((l,i)=>{
+    const x=26+i*((W-38)/labels.length);
+    const mh=micro[i]/mx*(H-28);const uh=unplanned[i]/mx*(H-28);const ph=planned[i]/mx*(H-28);
+    ctx.fillStyle='rgba(239,68,68,.7)';ctx.fillRect(x,H-18-ph-uh-mh,bw,mh);
+    ctx.fillStyle='rgba(245,158,11,.7)';ctx.fillRect(x,H-18-ph-uh,bw,uh);
+    ctx.fillStyle='rgba(37,99,235,.5)';ctx.fillRect(x,H-18-ph,bw,ph);
+    ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';ctx.fillText(l,x+bw/2,H-5);
+  });
+  // legend
+  [['#2563eb','Planned'],['#f59e0b','Unplanned'],['#ef4444','Micro']].forEach((e,i)=>{
+    ctx.fillStyle=e[0];ctx.fillRect(W-90+i*0,8+i*12,8,5);
+    ctx.fillStyle='rgba(0,0,0,.45)';ctx.font='8px JetBrains Mono';ctx.textAlign='left';ctx.fillText(e[1],W-78+i*0,14+i*12);
+  });
+}
+function drawMTBFChart(){
+  const r=ctx2d('mtbfChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const wks=['W1','W2','W3','W4','W5','W6','W7','W8','W9','W10','W11','W12'];
+  const mtbf=[72,76,68,80,84,78,82,80,84,88,86,84];
+  const mttr=[3.2,3.0,3.8,2.8,2.6,3.0,2.8,2.4,2.6,2.2,2.4,2.4];
+  const mn1=60,mx1=100;const px=i=>28+i*(W-36)/(wks.length-1);
+  const py1=v=>H-18-((v-mn1)/(mx1-mn1))*(H-28);
+  const py2=v=>H-18-((v/5))*(H-28);
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'rgba(37,99,235,.1)');g.addColorStop(1,'rgba(37,99,235,0)');
+  ctx.beginPath();ctx.moveTo(px(0),py1(mtbf[0]));mtbf.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py1(v));});
+  ctx.lineTo(px(mtbf.length-1),H-18);ctx.lineTo(px(0),H-18);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();mtbf.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py1(v));else ctx.lineTo(px(i),py1(v));});
+  ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.stroke();
+  ctx.beginPath();mttr.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py2(v));else ctx.lineTo(px(i),py2(v));});
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=2;ctx.setLineDash([4,3]);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(0,0,0,.28)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+  wks.forEach((l,i)=>{if(i%2===0)ctx.fillText(l,px(i),H-4);});
+  ctx.fillStyle='#2563eb';ctx.fillRect(W-90,6,10,3);ctx.fillStyle='rgba(0,0,0,.4)';ctx.font='8px JetBrains Mono';ctx.textAlign='left';ctx.fillText('MTBF',W-76,11);
+  ctx.strokeStyle='#ef4444';ctx.lineWidth=1.5;ctx.setLineDash([3,2]);ctx.beginPath();ctx.moveTo(W-90,18);ctx.lineTo(W-80,18);ctx.stroke();ctx.setLineDash([]);ctx.fillText('MTTR',W-76,21);
+}
+function openMaintenanceAction(){
+  openActionDrawer('Create Work Order','Assign maintenance task to a technician with priority and due date',
+    [{label:'Schedule PM',cls:'primary'},{label:'Emergency WO',cls:'danger'},{label:'Cancel',cls:'secondary'}]);
+}
+
+// ══════════════════════════════════════════════
+// REPORTS TAB
+// ══════════════════════════════════════════════
+function renderReportsTab(){
+  buildKPISummaryTable();
+  drawEnergyChart();
+  buildScheduledReports();
+}
+function buildKPISummaryTable(){
+  const tb=document.getElementById('kpiSummaryTable');if(!tb)return;
+  tb.innerHTML=KPI_SUMMARY.map(k=>`
+    <tr>
+      <td style="font-weight:600;">${k.name}</td>
+      <td class="mono" style="font-weight:700;">${k.actual}</td>
+      <td class="mono" style="color:var(--muted);">${k.target}</td>
+      <td class="mono" style="color:${k.status==='green'?'var(--green)':k.status==='amber'?'var(--amber)':'var(--red)'};">${k.delta}</td>
+      <td><span class="badge ${k.status}">${k.status==='green'?'✓ On Track':k.status==='amber'?'⚠ Watch':'✕ Off Target'}</span></td>
+    </tr>`).join('');
+}
+function drawEnergyChart(){
+  const r=ctx2d('energyChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const vals=[2.9,3.1,2.7,2.8,3.4,2.6,4.1,2.7,3.2,2.8];const tgt=2.6;
+  const mn=2.4,mx=4.4;const bw=(W-40)/vals.length-5;
+  vals.forEach((v,i)=>{
+    const x=22+i*((W-30)/vals.length);
+    const bh=(v-mn)/(mx-mn)*(H-28);
+    const col=v<=tgt?'#00b96b':v<=3.0?'#f59e0b':'#ef4444';
+    ctx.fillStyle=col+'25';ctx.fillRect(x,H-18-bh,bw,bh);
+    ctx.fillStyle=col;ctx.fillRect(x,H-18-Math.min(bh,6),bw,Math.min(bh,6));
+    ctx.fillStyle='rgba(0,0,0,.32)';ctx.font='8px JetBrains Mono';ctx.textAlign='center';
+    ctx.fillText(v,x+bw/2,H-18-bh-4);ctx.fillText(LINES[i]?.id||'',x+bw/2,H-5);
+  });
+  const ty=H-18-((tgt-mn)/(mx-mn))*(H-28);
+  ctx.strokeStyle='rgba(0,185,107,.4)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(18,ty);ctx.lineTo(W-4,ty);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle='rgba(0,185,107,.7)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';ctx.fillText('Target 2.6',W-6,ty-3);
+}
+function buildScheduledReports(){
+  const rpts=[
+    {name:'Daily OEE Report',freq:'Daily 18:00',last:'17 Mar 14:32',rcpts:'sarah.m@apex.com, cto@apex.com',fmt:'PDF+XLSX'},
+    {name:'Shift Quality Summary',freq:'Per shift',last:'Today 06:00',rcpts:'qa-team@apex.com',fmt:'PDF'},
+    {name:'Weekly Maintenance',freq:'Mon 08:00',last:'11 Mar 08:02',rcpts:'maintenance@apex.com',fmt:'XLSX'},
+    {name:'Monthly P&L Ops',freq:'1st of month',last:'1 Mar 09:00',rcpts:'management@apex.com',fmt:'PDF'},
+  ];
+  const tb=document.getElementById('scheduledReportsBody');if(!tb)return;
+  tb.innerHTML=rpts.map(r=>`<tr>
+    <td style="font-weight:600;">${r.name}</td>
+    <td class="mono">${r.freq}</td>
+    <td class="mono" style="color:var(--muted);">${r.last}</td>
+    <td class="mono" style="font-size:11px;">${r.rcpts}</td>
+    <td><span class="badge blue">${r.fmt}</span></td>
+    <td><button onclick="openTrace('${r.name}','Report generated and sent','SYSTEM','N/A','N/A','INFO')" style="padding:4px 12px;border-radius:6px;background:var(--blue-l);color:var(--blue);font-size:11px;font-weight:700;border:none;cursor:pointer;">Run Now</button></td>
+  </tr>`).join('');
+}
+function openReportModal(type){
+  const names={oee:'OEE Analytics',quality:'Quality & FPY',maintenance:'Maintenance',energy:'Energy Intensity',labor:'Labor Productivity',traceability:'Traceability'};
+  openTrace(`Report: ${names[type]}`,'Click to generate and download this report','SYSTEM','N/A','N/A','INFO');
+}
+
+// ══════════════════════════════════════════════
+// OPEN LINE OVERLAY
+// ══════════════════════════════════════════════
+function openLine(idx){
+  const l=LINES[idx];
+  const col=SC[l.status];
+  document.getElementById('ovTitle').textContent=`${l.id} — ${l.name}`;
+  document.getElementById('ovSub').textContent=`STATUS: ${l.status.toUpperCase()} · OEE ${l.oee}% · FPY ${l.yield}% · ${l.output}/${l.target} UNITS · DOWNTIME: ${l.downtime}`;
+  const defCats=[{c:'#ef4444',label:'Weld',n:7},{c:'#f59e0b',label:'Dimensional',n:5},{c:'#2563eb',label:'Paint',n:4},{c:'#6366f1',label:'Assembly',n:3},{c:'#a8a8b8',label:'Other',n:2}];
+  const totalDef=defCats.reduce((a,x)=>a+x.n,0);
+  const typeColors={INTAKE:'#eff6ff|#2563eb',MACHINE:'#ccfbf1|#0d9488',PRESS:'#fef3cd|#f59e0b',FINISH:'#e3f9f0|#00b96b',ASSEMBLY:'#eef2ff|#6366f1',WELD:'#fee2e2|#ef4444',THERMAL:'#fef3cd|#f59e0b',PAINT:'#eff6ff|#2563eb',ELEC:'#e3f9f0|#00b96b',QA:'#eef2ff|#6366f1'};
+  document.getElementById('ovBody').innerHTML=`
+  <!-- SEARCH -->
+  <div style="display:flex;gap:7px;margin-bottom:18px;">
+    <div class="search-bar" style="flex:1;">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input placeholder="Search by Serial #, Batch, WO, PO…" id="ovSearch">
+    </div>
+    <button class="search-btn" onclick="doOvSearch()">Trace</button>
+  </div>
+  <!-- KPI STRIP -->
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:16px;">
+    <div class="card" style="padding:13px;"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">OEE</div><div style="font-size:20px;font-weight:800;color:${col};">${l.oee}%</div><div class="mono" style="font-size:9px;color:var(--muted);">Plant avg 82%</div></div>
+    <div class="card" style="padding:13px;"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">FPY</div><div style="font-size:20px;font-weight:800;">${l.yield}%</div><div class="mono" style="font-size:9px;color:var(--muted);">Target ≥95%</div></div>
+    <div class="card" style="padding:13px;"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Output</div><div style="font-size:20px;font-weight:800;">${l.output}</div><div class="mono" style="font-size:9px;color:var(--muted);">/ ${l.target}</div></div>
+    <div class="card" style="padding:13px;"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Defects</div><div style="font-size:20px;font-weight:800;color:var(--red);">${totalDef}</div><div class="mono" style="font-size:9px;color:var(--muted);">this shift</div></div>
+    <div class="card" style="padding:13px;"><div style="font-size:9px;font-weight:600;color:var(--muted);text-transform:uppercase;margin-bottom:4px;">Downtime</div><div style="font-size:20px;font-weight:800;color:var(--amber);">${l.downtime}</div><div class="mono" style="font-size:9px;color:var(--muted);">planned 15m</div></div>
+  </div>
+  <!-- STATION FLOW MAP -->
+  <div class="card" style="padding:14px 16px;margin-bottom:14px;">
+    <div style="font-size:12px;font-weight:700;margin-bottom:10px;">Station Flow Map — Click station to drill down</div>
+    <div class="station-map" id="stationMap"></div>
+  </div>
+  <!-- HOURLY CHART -->
+  <div class="card" style="padding:14px 16px;margin-bottom:14px;">
+    <div style="font-size:12px;font-weight:700;margin-bottom:10px;">Hourly Output — ${l.id} vs Target</div>
+    <canvas id="ovLineChart" style="width:100%;height:90px;"></canvas>
+  </div>
+  <!-- STATION TABLE -->
+  <div class="card" style="margin-bottom:14px;overflow:hidden;">
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+      <div style="font-size:12px;font-weight:700;">12 Stations — Click row or defect to trace</div>
+    </div>
+    <table class="tbl"><thead><tr><th>#</th><th>Station</th><th>Type</th><th>Units</th><th>Pass %</th><th>Cycle</th><th>Throughput</th><th>Defects</th></tr></thead>
+    <tbody>${STATIONS.map((s,i)=>{
+      const pr=Math.round(s.pass/s.units*100);
+      const pc=pr>=95?'var(--green)':pr>=85?'var(--amber)':'var(--red)';
+      const bw=Math.round(s.units/320*100);
+      const [bg,tc]=(typeColors[s.type]||'#f0f0f5|#6b6b7a').split('|');
+      const dc=s.defects>3?'var(--red)':s.defects>0?'var(--amber)':'var(--muted)';
+      return`<tr onclick="openTrace('${l.id} · ${s.name}','${s.type} station inspection','OP-${200+i}','SN-${1001+i}','BATCH-44B','INFO')">
+        <td class="mono">ST-${String(i+1).padStart(2,'0')}</td>
+        <td style="font-weight:600;">${s.name}</td>
+        <td><span style="background:${bg};color:${tc};padding:2px 7px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;">${s.type}</span></td>
+        <td class="mono">${s.units}</td>
+        <td style="font-weight:700;color:${pc};">${pr}%</td>
+        <td class="mono">${s.cycle}</td>
+        <td><div class="prog-track" style="width:70px;"><div class="prog-fill" style="width:${bw}%;background:${pc};"></div></div></td>
+        <td style="color:${dc};font-weight:700;cursor:pointer;" onclick="event.stopPropagation();openTrace('${l.id} · ${s.name}','Defect trace — ${s.defects} defects','OP-${200+i}','SN-${1001+i}','BATCH-44B','${s.defects>3?'CRITICAL':s.defects>0?'WARNING':'INFO'}')">${s.defects>0?s.defects:'—'}</td>
+      </tr>`;}).join('')}</tbody></table>
+  </div>
+  <!-- DEFECT SECTION -->
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:14px;margin-bottom:14px;">
+    <div class="card" style="padding:14px 16px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:10px;">Defect Split</div>
+      <canvas id="ovPie" width="168" height="168"></canvas>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:10px;">
+        ${defCats.map(d=>`<div style="display:flex;align-items:center;gap:6px;cursor:pointer;" onclick="openTrace('${l.id}','${d.label} defect — investigation','QA-TEAM','MULTI','BATCH-44B','WARNING')"><div style="width:8px;height:8px;border-radius:50%;background:${d.c};flex-shrink:0;"></div><div style="font-size:11px;flex:1;font-weight:500;">${d.label}</div><div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:${d.c};">${d.n}</div></div>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="padding:14px 16px;">
+      <div style="font-size:12px;font-weight:700;margin-bottom:4px;">Defects Per Hour</div>
+      <div class="mono" style="font-size:10px;color:var(--muted);margin-bottom:10px;">Click bar to trace batch</div>
+      <canvas id="ovDefBar" style="width:100%;height:130px;"></canvas>
+    </div>
+  </div>
+  <!-- ACTION BUTTONS -->
+  <div style="display:flex;gap:8px;margin-top:4px;">
+    <button onclick="openActionDrawer('L-${l.id} — Escalate Issue','Escalate this line issue to maintenance and quality teams',
+      [{label:'Raise Work Order',cls:'primary'},{label:'Quality Hold',cls:'danger'},{label:'Notify Team',cls:'secondary'}])" style="flex:1;padding:10px;border-radius:10px;background:var(--blue);color:#fff;font-size:12px;font-weight:700;">🔧 Raise Work Order</button>
+    <button onclick="openActionDrawer('Quality Hold — ${l.id}','Place quality hold and notify downstream',
+      [{label:'Confirm Hold',cls:'danger'},{label:'Cancel',cls:'secondary'}])" style="flex:1;padding:10px;border-radius:10px;background:var(--red-l);color:var(--red);font-size:12px;font-weight:700;">⛔ Quality Hold</button>
+    <button onclick="openTrace('${l.id}','Export line report PDF','MANAGER','N/A','N/A','INFO')" style="flex:1;padding:10px;border-radius:10px;background:var(--surface3);color:var(--text);font-size:12px;font-weight:700;">📊 Export Report</button>
+  </div>`;
+
+  // Render station map
+  const sm=document.getElementById('stationMap');
+  if(sm){
+    sm.innerHTML=STATIONS.map((s,i)=>{
+      const pr=Math.round(s.pass/s.units*100);
+      const cls=pr>=95?'green':pr>=85?'amber':'red';
+      const c=SC[cls];
+      return`${i>0?'<div class="smap-arrow">→</div>':''}<div class="smap-node ${cls}" onclick="openTrace('${l.id} · ${s.name}','Station status ${pr}% pass rate','OP-${200+i}','SN-${1001+i}','BATCH-44B','${cls==='red'?'CRITICAL':cls==='amber'?'WARNING':'INFO'}')"><div class="smap-id">ST-${String(i+1).padStart(2,'0')}</div><div class="smap-name">${s.name.split(' ')[0]}</div><div class="smap-eff" style="color:${c};">${pr}%</div></div>`;
+    }).join('');
+  }
+
+  document.getElementById('overlay').classList.add('open');
+  requestAnimationFrame(()=>{
+    drawOvLineChart(l,col);
+    drawOvPie(defCats,totalDef);
+    drawOvDefBar();
+  });
+}
+
+function drawOvLineChart(l,col){
+  const r=ctx2d('ovLineChart');if(!r)return;
+  const{ctx,W,H}=r;
+  const data=[Math.round(l.output*.18),Math.round(l.output*.20),Math.round(l.output*.17),Math.round(l.output*.19),Math.round(l.output*.21),Math.round(l.output*.05)];
+  const tgt=Math.round(l.target/8);const mn=0,mx=Math.max(...data,tgt)+8;
+  const px=i=>28+i*(W-36)/(data.length-1);const py=v=>H-16-v/(mx-mn)*(H-22);
+  const strokeCol=l.status==='green'?'#00b96b':l.status==='amber'?'#f59e0b':'#ef4444';
+  const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,strokeCol+'18');g.addColorStop(1,strokeCol+'00');
+  ctx.beginPath();ctx.moveTo(px(0),py(data[0]));data.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});
+  ctx.lineTo(W-8,H-16);ctx.lineTo(28,H-16);ctx.closePath();ctx.fillStyle=g;ctx.fill();
+  ctx.beginPath();data.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});
+  ctx.strokeStyle=strokeCol;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
+  data.forEach((v,i)=>{ctx.beginPath();ctx.arc(px(i),py(v),3.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle=strokeCol;ctx.lineWidth=2;ctx.stroke();});
+  const ty=py(tgt);ctx.strokeStyle='rgba(37,99,235,.3)';ctx.lineWidth=1.2;ctx.setLineDash([4,3]);ctx.beginPath();ctx.moveTo(24,ty);ctx.lineTo(W-4,ty);ctx.stroke();ctx.setLineDash([]);
+  ['08h','09h','10h','11h','12h','13h'].forEach((l,i)=>{ctx.fillStyle='rgba(0,0,0,.28)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';ctx.fillText(l,px(i),H-3);});
+}
+
+function drawOvPie(cats,total){
+  const r=ctx2d('ovPie');if(!r)return;
+  const{ctx}=r;const cx=84,cy=84,OR=72,IR=40;
+  let angle=-Math.PI/2;
+  cats.forEach(x=>{const sw=x.n/total*Math.PI*2;ctx.beginPath();ctx.moveTo(cx,cy);ctx.arc(cx,cy,OR,angle,angle+sw);ctx.closePath();ctx.fillStyle=x.c+'cc';ctx.fill();angle+=sw;});
+  ctx.beginPath();ctx.arc(cx,cy,IR,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();
+  ctx.fillStyle='#0d0d12';ctx.font='bold 18px Outfit';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(total,cx,cy-5);
+  ctx.font='8px JetBrains Mono';ctx.fillStyle='#6b6b7a';ctx.fillText('TOTAL',cx,cy+12);
+}
+
+function drawOvDefBar(){
+  const r=ctx2d('ovDefBar');if(!r)return;
+  const{ctx,W,H}=r;
+  const data=[4,2,6,3,5,4];const labels=['08h','09h','10h','11h','12h','13h'];const mx=7;
+  const bw=(W-32)/(data.length)-6;
+  data.forEach((v,i)=>{
+    const x=16+i*((W-24)/data.length)+2;const bh=v/mx*(H-28);const y=H-18-bh;
+    const col=v>4?'#ef4444':v>2?'#f59e0b':'#00b96b';
+    ctx.fillStyle=col+'20';const rr=3;
+    ctx.beginPath();ctx.moveTo(x+rr,y);ctx.lineTo(x+bw-rr,y);ctx.arcTo(x+bw,y,x+bw,y+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,y+rr);ctx.arcTo(x,y,x+rr,y,rr);ctx.closePath();ctx.fill();
+    ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(x+rr,H-18-Math.min(bh,5));ctx.lineTo(x+bw-rr,H-18-Math.min(bh,5));ctx.arcTo(x+bw,H-18-Math.min(bh,5),x+bw,H-18-Math.min(bh,5)+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,H-18-Math.min(bh,5)+rr);ctx.arcTo(x,H-18-Math.min(bh,5),x+rr,H-18-Math.min(bh,5),rr);ctx.closePath();ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,.4)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';ctx.fillText(v,x+bw/2,y-4);ctx.fillText(labels[i],x+bw/2,H-4);
+  });
+}
+
+function doOvSearch(){
+  const v=(document.getElementById('ovSearch')||{}).value?.trim();
+  if(v)openTrace('Search Result','Query: '+v,'OP-AUTO',v.startsWith('SN')?v:'SN-AUTO','BATCH-SRCH','INFO');
+}
+
+function closeOverlay(){document.getElementById('overlay').classList.remove('open');}
+document.getElementById('overlay').addEventListener('click',e=>{if(e.target===document.getElementById('overlay'))closeOverlay();});
+
+// ══════════════════════════════════════════════
+// TRACE MODAL
+// ══════════════════════════════════════════════
+function openTrace(location,issue,operator,serial,batch,severity){
+  const wo='WO-'+Math.floor(50000+Math.random()*9999);
+  const po='PO-2026-'+Math.floor(1000+Math.random()*999);
+  const ship='2026-03-'+String(Math.floor(1+Math.random()*17)).padStart(2,'0');
+  const sc=severity==='CRITICAL'?'bad':severity==='WARNING'?'warn':severity==='INFO'?'hi':'good';
+  document.getElementById('traceTitle').textContent='🔍 Traceability Record';
+  document.getElementById('traceSub').textContent=`${location} · ${new Date().toLocaleString()}`;
+  document.getElementById('traceBody').innerHTML=`
+    <div class="trace-row"><div class="trace-key">Serial Number</div><div class="trace-val hi">${serial||'N/A'}</div></div>
+    <div class="trace-row"><div class="trace-key">Batch ID</div><div class="trace-val hi">${batch||'N/A'}</div></div>
+    <div class="trace-row"><div class="trace-key">Work Order</div><div class="trace-val">${wo}</div></div>
+    <div class="trace-row"><div class="trace-key">Purchase Order</div><div class="trace-val">${po}</div></div>
+    <div class="trace-row"><div class="trace-key">Shipment Date</div><div class="trace-val">${ship}</div></div>
+    <div class="trace-row"><div class="trace-key">Location</div><div class="trace-val">${location}</div></div>
+    <div class="trace-row"><div class="trace-key">Issue / Flag</div><div class="trace-val ${sc}">${issue}</div></div>
+    <div class="trace-row"><div class="trace-key">Severity</div><div class="trace-val ${sc}">${severity||'INFO'}</div></div>
+    <div class="trace-row"><div class="trace-key">Operator</div><div class="trace-val">${operator||'N/A'}</div></div>
+    <div class="trace-row"><div class="trace-key">Timestamp</div><div class="trace-val">${new Date().toLocaleString()}</div></div>`;
+  document.getElementById('traceActions').innerHTML=`
+    <button onclick="closeTrace();openActionDrawer('Action for ${location}','Choose an action to resolve this issue',
+      [{label:'Create WO',cls:'primary'},{label:'Quality Hold',cls:'danger'},{label:'Assign Owner',cls:'secondary'}])" style="flex:1;padding:8px;border-radius:8px;background:var(--blue);color:#fff;font-size:11px;font-weight:700;cursor:pointer;">Take Action →</button>
+    <button onclick="closeTrace()" style="padding:8px 16px;border-radius:8px;background:var(--surface3);font-size:11px;font-weight:700;cursor:pointer;">Close</button>`;
+  document.getElementById('trace-bg').classList.add('open');
+}
+function closeTrace(){document.getElementById('trace-bg').classList.remove('open');}
+function handleTraceBg(e){if(e.target===document.getElementById('trace-bg'))closeTrace();}
+
+// ══════════════════════════════════════════════
+// ACTION DRAWER
+// ══════════════════════════════════════════════
+function openActionDrawer(title,sub,actions){
+  document.getElementById('adTitle').textContent=title;
+  document.getElementById('adSub').textContent=sub;
+  document.getElementById('adActions').innerHTML=actions.map(a=>`<button class="ad-btn ${a.cls}" onclick="closeDrawer();openTrace('${title}','Action: ${a.label}','MANAGER','N/A','N/A','INFO')">${a.label}</button>`).join('');
+  document.getElementById('actionDrawer').classList.add('open');
+}
+function closeDrawer(){document.getElementById('actionDrawer').classList.remove('open');}
+
+// ══════════════════════════════════════════════
+// REPORT MODAL
+// ══════════════════════════════════════════════
+function openReportModal(type){
+  const info={
+    oee:{name:'OEE Analytics Report',desc:'Full OEE analysis by line, shift, and product family with trend data.'},
+    quality:{name:'Quality & FPY Report',desc:'First Pass Yield, defect categories, and corrective actions.'},
+    maintenance:{name:'Maintenance Effectiveness',desc:'MTBF, MTTR, PM compliance, and planned vs unplanned analysis.'},
+    energy:{name:'Energy Intensity Report',desc:'kWh per unit by line and product with sustainability benchmarks.'},
+    labor:{name:'Labor Productivity',desc:'Output per labor hour, overtime, and skill-mix analysis.'},
+    traceability:{name:'Traceability & Genealogy',desc:'Full serial number and batch chain of custody for audits.'},
+  }[type]||{name:'Report',desc:''};
+  openActionDrawer(`Generate: ${info.name}`,info.desc,[{label:'Download PDF',cls:'primary'},{label:'Export Excel',cls:'secondary'},{label:'Schedule',cls:'secondary'}]);
+}
+
+// ══════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════
+window.addEventListener('DOMContentLoaded',()=>{
+  initOverview();
+  // Pre-build lines tab so cards load on switch
+  buildLinesGrid(LINES,'linesTabGrid');
+});
+// Redraw charts when tab becomes visible (handle font-loading delays)
+setTimeout(()=>{drawThroughput();drawDefectDonut();drawShiftBars();},400);
+</script>
 </body>
 </html>
-
