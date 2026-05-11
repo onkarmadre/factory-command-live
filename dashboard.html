@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Factory Command</title>
+<title>ACTIN TraceiX — Decision Command Center</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600&display=swap');
 
@@ -131,13 +131,8 @@ input,select{font-family:'Outfit',sans-serif;}
 
 /* ─── KPI PILL ─── */
 .kpi-card{
-background:var(--surface);
-border-radius:var(--r);
-box-shadow:var(--shadow);
-padding:16px 18px;
-position:relative;
-overflow:hidden;
-transition:box-shadow .2s ease, transform .2s ease;
+  background:var(--surface);border-radius:var(--r);box-shadow:var(--shadow);
+  padding:16px 18px;position:relative;overflow:hidden;transition:all .2s ease;
 }
 .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
 .kpi-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;margin-bottom:9px;}
@@ -439,8 +434,8 @@ transition:box-shadow .2s ease, transform .2s ease;
       </svg>
     </div>
     <div>
-      <div class="logo-name">Factory Command</div>
-      <div class="logo-tag">LIVE DECISION CENTER</div>
+      <div class="logo-name">ACTIN <em>TraceiX</em></div>
+      <div class="logo-tag">DECISION COMMAND CENTER</div>
     </div>
   </div>
   <nav class="nav">
@@ -500,7 +495,7 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="card" style="padding:20px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--indigo));"></div>
       <div class="kpi-label" style="margin-bottom:5px;">Overall OEE</div>
-      <div style="font-size:58px;font-weight:900;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,#2563eb,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;"><span id="oeeValue">82</span><span style="font-size:24px;font-weight:400;letter-spacing:0;">%</span></div>
+      <div style="font-size:58px;font-weight:900;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,#2563eb,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">82<span style="font-size:24px;font-weight:400;letter-spacing:0;">%</span></div>
       <div style="display:flex;align-items:center;gap:6px;margin:6px 0 14px;">
         <span class="badge green">↑ +4.2%</span>
         <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);">vs yesterday 78.8%</span>
@@ -508,18 +503,18 @@ transition:box-shadow .2s ease, transform .2s ease;
       <div style="display:flex;flex-direction:column;gap:8px;">
         <div style="display:flex;align-items:center;gap:7px;">
           <div style="font-size:11px;font-weight:600;color:var(--dim);width:80px;">Availability</div>
-          <div class="prog-track" style="flex:1;"><div id="availabilityFill" class="prog-fill" style="width:91%;background:var(--green);"></div></div>
-          <div id="availabilityValue" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">91%</div>
+          <div class="prog-track" style="flex:1;"><div class="prog-fill" style="width:91%;background:var(--green);"></div></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">91%</div>
         </div>
         <div style="display:flex;align-items:center;gap:7px;">
           <div style="font-size:11px;font-weight:600;color:var(--dim);width:80px;">Performance</div>
-          <div class="prog-track" style="flex:1;"><div id="performanceFill" class="prog-fill" style="width:87%;background:var(--blue);"></div></div>
-          <div id="performanceValue" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">87%</div>
+          <div class="prog-track" style="flex:1;"><div class="prog-fill" style="width:87%;background:var(--blue);"></div></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">87%</div>
         </div>
         <div style="display:flex;align-items:center;gap:7px;">
           <div style="font-size:11px;font-weight:600;color:var(--dim);width:80px;">Quality</div>
-          <div class="prog-track" style="flex:1;"><div id="qualityFill" class="prog-fill" style="width:96%;background:var(--indigo);"></div></div>
-          <div id="qualityValue" style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">96%</div>
+          <div class="prog-track" style="flex:1;"><div class="prog-fill" style="width:96%;background:var(--indigo);"></div></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;width:28px;text-align:right;">96%</div>
         </div>
       </div>
     </div>
@@ -527,8 +522,8 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--blue-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div>
       <div class="kpi-label">Units Produced</div>
-      <div id="unitsProducedValue" class="kpi-val" style="color:var(--blue);">3,841</div>
-      <div class="kpi-sub">/ <span id="unitsTargetValue">4,000</span> target</div>
+      <div class="kpi-val" style="color:var(--blue);">3,841</div>
+      <div class="kpi-sub">/ 4,000 target</div>
       <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">↑</span><span class="delta-txt">+4.2% vs yesterday</span></div>
       <div class="kpi-spark"><canvas id="spk1" width="72" height="32"></canvas></div>
     </div>
@@ -536,7 +531,7 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--green-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
       <div class="kpi-label">First Pass Yield</div>
-      <div id="fpyValue" class="kpi-val" style="color:var(--green);">94.3%</div>
+      <div class="kpi-val" style="color:var(--green);">94.3%</div>
       <div class="kpi-sub">target ≥ 95%</div>
       <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↓</span><span class="delta-txt">−0.7% vs target</span></div>
       <div class="kpi-spark"><canvas id="spk2" width="72" height="32"></canvas></div>
@@ -545,7 +540,7 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--red-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
       <div class="kpi-label">Total Defects</div>
-      <div id="totalDefectsValue" class="kpi-val" style="color:var(--red);">24</div>
+      <div class="kpi-val" style="color:var(--red);">24</div>
       <div class="kpi-sub">this shift · 3 rework</div>
       <div class="kpi-delta"><span class="delta-arrow" style="color:var(--green);">↓</span><span class="delta-txt">−8 vs last shift</span></div>
       <div class="kpi-spark"><canvas id="spk3" width="72" height="32"></canvas></div>
@@ -554,7 +549,7 @@ transition:box-shadow .2s ease, transform .2s ease;
     <div class="kpi-card">
       <div class="kpi-icon" style="background:var(--amber-l);"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
       <div class="kpi-label">Avg Cycle Time</div>
-      <div id="avgCycleTimeValue" class="kpi-val" style="color:var(--amber);">46.2s</div>
+      <div class="kpi-val" style="color:var(--amber);">46.2s</div>
       <div class="kpi-sub">target 42s</div>
       <div class="kpi-delta"><span class="delta-arrow" style="color:var(--red);">↑</span><span class="delta-txt">+4.2s above target</span></div>
       <div class="kpi-spark"><canvas id="spk4" width="72" height="32"></canvas></div>
@@ -1631,52 +1626,6 @@ function drawEnergyChart(){
   ctx.strokeStyle='rgba(0,185,107,.4)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);ctx.beginPath();ctx.moveTo(18,ty);ctx.lineTo(W-4,ty);ctx.stroke();ctx.setLineDash([]);
   ctx.fillStyle='rgba(0,185,107,.7)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';ctx.fillText('Target 2.6',W-6,ty-3);
 }
-
-async function fetchLiveData() {
-try {
-const res = await fetch('/kpis');
-const data = await res.json();
-
-updateDashboard(data);
-
-} catch (err) {
-console.error('Live data fetch failed:', err);
-}
-}
-function formatMetric(value){
-  if(value===undefined||value===null||Number.isNaN(value))return '—';
-  return Number.isInteger(value)?String(value):String(Number(value).toFixed(1));
-}
-function updateDashboard(data){
-  if(!data||!data.overview)return;
-  const ov=data.overview;
-  const setText=id=>{const el=document.getElementById(id);if(el)el.textContent=''+(ov[id]!==undefined?ov[id]:'—');};
-  const oeeEl=document.getElementById('oeeValue');
-  if(oeeEl) oeeEl.textContent=formatMetric(ov.oee);
-  const availabilityEl=document.getElementById('availabilityValue');
-  if(availabilityEl) availabilityEl.textContent=formatMetric(ov.availability)+'%';
-  const perfEl=document.getElementById('performanceValue');
-  if(perfEl) perfEl.textContent=formatMetric(ov.performance)+'%';
-  const qualityEl=document.getElementById('qualityValue');
-  if(qualityEl) qualityEl.textContent=formatMetric(ov.quality)+'%';
-  const availFill=document.getElementById('availabilityFill');
-  if(availFill&&typeof ov.availability==='number') availFill.style.width=Math.min(100,Math.max(0,ov.availability))+'%';
-  const perfFill=document.getElementById('performanceFill');
-  if(perfFill&&typeof ov.performance==='number') perfFill.style.width=Math.min(100,Math.max(0,ov.performance))+'%';
-  const qualFill=document.getElementById('qualityFill');
-  if(qualFill&&typeof ov.quality==='number') qualFill.style.width=Math.min(100,Math.max(0,ov.quality))+'%';
-  const unitsProducedEl=document.getElementById('unitsProducedValue');
-  if(unitsProducedEl&&typeof ov.unitsProduced!=='undefined') unitsProducedEl.textContent=String(ov.unitsProduced);
-  const unitsTargetEl=document.getElementById('unitsTargetValue');
-  if(unitsTargetEl&&typeof ov.unitsTarget!=='undefined') unitsTargetEl.textContent=String(ov.unitsTarget);
-  const fpyEl=document.getElementById('fpyValue');
-  if(fpyEl&&typeof ov.firstPassYield!=='undefined') fpyEl.textContent=formatMetric(ov.firstPassYield)+'%';
-  const defectsEl=document.getElementById('totalDefectsValue');
-  if(defectsEl&&typeof ov.totalDefects!=='undefined') defectsEl.textContent=String(ov.totalDefects);
-  const cycleEl=document.getElementById('avgCycleTimeValue');
-  if(cycleEl&&typeof ov.avgCycleTime!=='undefined') cycleEl.textContent=formatMetric(ov.avgCycleTime)+'s';
-}
-
 function buildScheduledReports(){
   const rpts=[
     {name:'Daily OEE Report',freq:'Daily 18:00',last:'17 Mar 14:32',rcpts:'sarah.m@apex.com, cto@apex.com',fmt:'PDF+XLSX'},
@@ -1916,8 +1865,6 @@ window.addEventListener('DOMContentLoaded',()=>{
   initOverview();
   // Pre-build lines tab so cards load on switch
   buildLinesGrid(LINES,'linesTabGrid');
-  fetchLiveData();
-  setInterval(fetchLiveData,3000);
 });
 // Redraw charts when tab becomes visible (handle font-loading delays)
 setTimeout(()=>{drawThroughput();drawDefectDonut();drawShiftBars();},400);
