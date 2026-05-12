@@ -71,9 +71,30 @@ input,select{font-family:'Outfit',sans-serif;}
   background:var(--green-l);border:1px solid rgba(0,185,107,0.2);
   padding:5px 11px;border-radius:20px;
   font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--green);font-weight:600;
+  position:relative;overflow:hidden;
 }
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 2s infinite;}
+.live-chip::before{
+  content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+  background:radial-gradient(circle at center, rgba(0,185,107,0.1) 0%, transparent 70%);
+  animation:heartbeat 1s infinite;
+}
+.live-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--green);
+  animation:liveBreath 2s infinite, liveGlow 1s infinite;
+  position:relative;
+}
+.live-dot::after{
+  content:'';position:absolute;top:-2px;left:-2px;right:-2px;bottom:-2px;
+  border-radius:50%;border:1px solid var(--green);
+  animation:ripple 1s infinite;
+}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+@keyframes heartbeat{0%,100%{opacity:0;transform:scale(0.8)}50%{opacity:0.3;transform:scale(1.2)}}
+@keyframes liveBreath{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.1);opacity:0.8}}
+@keyframes liveGlow{0%,100%{box-shadow:0 0 4px rgba(0,185,107,0.4)}50%{box-shadow:0 0 8px rgba(0,185,107,0.8)}}
+@keyframes ripple{0%{transform:scale(0.8);opacity:1}100%{transform:scale(1.5);opacity:0}}
+.live-chip.heartbeat-active{animation:heartbeat 0.8s ease-out;}
+.progress-live{background:linear-gradient(90deg, var(--blue) 0%, var(--blue-l) 50%, var(--blue) 100%);background-size:200% 100%;animation:progressFlow 2s linear infinite;}
 .shift-chip{
   background:var(--surface3);border:1px solid var(--border2);
   padding:5px 11px;border-radius:20px;
@@ -158,8 +179,18 @@ input,select{font-family:'Outfit',sans-serif;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
 @keyframes kpiGlow{0%{box-shadow:0 0 0 0 rgba(37,99,235,0.4)}50%{box-shadow:0 0 12px 2px rgba(37,99,235,0.15)}100%{box-shadow:0 0 0 0 rgba(37,99,235,0)}}
 @keyframes dataUpdate{0%{transform:scale(0.98);opacity:0.7}50%{transform:scale(1.02);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes kpiPulse{0%{transform:scale(1);box-shadow:0 0 0 0 rgba(37,99,235,0.3)}50%{transform:scale(1.02);box-shadow:0 0 8px 1px rgba(37,99,235,0.5)}100%{transform:scale(1);box-shadow:0 0 0 0 rgba(37,99,235,0.3)}}
+@keyframes chartFlow{0%{transform:translateX(0)}100%{transform:translateX(-2px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes cardBreath{0%,100%{box-shadow:0 1px 4px rgba(0,0,0,0.06)}50%{box-shadow:0 2px 8px rgba(0,0,0,0.08)}}
+@keyframes alertPulse{0%,100%{opacity:0.9}50%{opacity:1}}
+@keyframes progressFlow{0%{background-position:0% 50%}100%{background-position:100% 50%}}
 .kpi-updating{animation:dataUpdate 0.3s ease-out;}
+.kpi-live{animation:kpiPulse 2s infinite;}
 .alert-highlight{animation:kpiGlow 1.2s ease-out;}
+.chart-live{animation:chartFlow 3s ease-in-out infinite;}
+.card-live{animation:cardBreath 4s ease-in-out infinite;}
+.progress-live{background:linear-gradient(90deg, var(--blue) 0%, var(--blue-l) 50%, var(--blue) 100%);background-size:200% 100%;animation:progressFlow 2s linear infinite;}
 
 /* ─── PROGRESS BAR ─── */
 .prog-track{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden;}
@@ -239,6 +270,26 @@ input,select{font-family:'Outfit',sans-serif;}
 .alert-title{font-size:12px;font-weight:700;line-height:1.3;}
 .alert-detail{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .alert-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);flex-shrink:0;margin-top:2px;}
+
+/* ─── TELEMETRY TICKER ─── */
+.telemetry-ticker{
+  display:flex;align-items:center;gap:12px;padding:8px 14px;
+  background:linear-gradient(135deg, rgba(37,99,235,0.02), rgba(99,102,241,0.02));
+  border:1px solid rgba(37,99,235,0.1);border-radius:8px;
+  font-family:'JetBrains Mono',monospace;font-size:10px;
+}
+.ticker-label{
+  color:var(--blue);font-weight:700;letter-spacing:0.1em;
+  padding:2px 6px;border-radius:4px;background:var(--blue-l);
+}
+.ticker-content{
+  flex:1;color:var(--text);font-weight:500;animation:shimmer 3s ease-in-out infinite;
+  background:linear-gradient(90deg, transparent 0%, rgba(37,99,235,0.1) 50%, transparent 100%);
+  background-size:200% 100%;
+}
+.sync-status{
+  color:var(--green);font-weight:600;animation:alertPulse 2s infinite;
+}
 
 /* ─── OVERLAY ─── */
 #overlay{
@@ -492,11 +543,18 @@ input,select{font-family:'Outfit',sans-serif;}
     <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--red);">→ ACT NOW</div>
   </div>
 
+  <!-- TELEMETRY TICKER -->
+  <div class="telemetry-ticker" style="margin-bottom:14px;">
+    <div class="ticker-label">LIVE TELEMETRY</div>
+    <div class="ticker-content" id="telemetryTicker">Initializing telemetry feed...</div>
+    <div class="sync-status" id="syncStatus">Last Sync: 0.0s ago</div>
+  </div>
+
   <!-- ROW 1: OEE HERO + 4 KPIs -->
   <div style="display:grid;grid-template-columns:260px 1fr 1fr 1fr 1fr;gap:13px;margin-bottom:14px;">
 
     <!-- OEE HERO -->
-    <div class="card" style="padding:20px;position:relative;overflow:hidden;">
+    <div class="card card-live" style="padding:20px;position:relative;overflow:hidden;">
       <div style="position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--indigo));"></div>
       <div class="kpi-label" style="margin-bottom:5px;">Overall OEE</div>
       <div style="font-size:58px;font-weight:900;letter-spacing:-4px;line-height:1;background:linear-gradient(135deg,#2563eb,#6366f1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">82<span style="font-size:24px;font-weight:400;letter-spacing:0;">%</span></div>
@@ -583,17 +641,17 @@ input,select{font-family:'Outfit',sans-serif;}
         <span class="badge red">3 open</span>
       </div>
       <div class="alert-item" onclick="openTrace('L-07 · ST-03','Hydraulic pressure drop','OP-214','SN-00821','BATCH-44B','CRITICAL')">
-        <div class="alert-icon" style="background:var(--red-l);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="alert-icon" style="background:var(--red-l);animation:alertPulse 1.5s infinite;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <div class="alert-body"><div class="alert-title">L-07 · Hydraulic Pressure Drop</div><div class="alert-detail">SN-00821 · BATCH-44B · Station 03</div></div>
         <div class="alert-time">2m</div>
       </div>
       <div class="alert-item" onclick="openTrace('L-03 · ST-07','Weld temp exceeded UCL +12°C','OP-208','SN-00694','BATCH-43A','CRITICAL')">
-        <div class="alert-icon" style="background:var(--red-l);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="alert-icon" style="background:var(--red-l);animation:alertPulse 1.5s infinite;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2.2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
         <div class="alert-body"><div class="alert-title">L-03 · Weld Temp Exceeded</div><div class="alert-detail">SN-00694 · BATCH-43A · Station 07</div></div>
         <div class="alert-time">18m</div>
       </div>
       <div class="alert-item" onclick="openTrace('L-05 · ST-09','Paint color deviation Δ=4.2','OP-219','SN-00712','BATCH-43C','WARNING')">
-        <div class="alert-icon" style="background:var(--amber-l);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <div class="alert-icon" style="background:var(--amber-l);animation:alertPulse 2.5s infinite;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
         <div class="alert-body"><div class="alert-title">L-05 · Paint Color Deviation</div><div class="alert-detail">SN-00712 · BATCH-43C · Station 09</div></div>
         <div class="alert-time">41m</div>
       </div>

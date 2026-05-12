@@ -365,6 +365,12 @@ function drawThroughput(){
   const mx=Math.max(...today,...yest,tgt)+10;
   const px=i=>34+i*(W-50)/(today.length-1);
   const py=v=>H-20-((v-mn)/(mx-mn))*(H-30);
+
+  // Add subtle animated flow effect
+  const flowOffset = (Date.now() * 0.001) % 4;
+  ctx.save();
+  ctx.translate(flowOffset - 2, 0);
+
   [320,360,400,440].forEach(v=>{
     ctx.strokeStyle='rgba(0,0,0,0.05)';ctx.lineWidth=1;ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(34,py(v));ctx.lineTo(W-4,py(v));ctx.stroke();ctx.setLineDash([]);
     ctx.fillStyle='rgba(0,0,0,.22)';ctx.font='8px JetBrains Mono';ctx.textAlign='right';ctx.fillText(v,30,py(v)+3);
@@ -377,6 +383,8 @@ function drawThroughput(){
   ctx.beginPath();ctx.moveTo(px(0),py(today[0]));today.forEach((v,i)=>{if(i>0)ctx.lineTo(px(i),py(v));});ctx.lineTo(px(today.length-1),H-20);ctx.lineTo(px(0),H-20);ctx.closePath();ctx.fillStyle=g1;ctx.fill();
   ctx.beginPath();today.forEach((v,i)=>{if(i===0)ctx.moveTo(px(i),py(v));else ctx.lineTo(px(i),py(v));});ctx.strokeStyle='#2563eb';ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
   today.forEach((v,i)=>{ctx.beginPath();ctx.arc(px(i),py(v),3.5,0,Math.PI*2);ctx.fillStyle='#fff';ctx.fill();ctx.strokeStyle='#2563eb';ctx.lineWidth=2;ctx.stroke();});
+  ctx.restore(); // Restore transform
+
   ctx.fillStyle='rgba(0,0,0,.28)';ctx.font='9px JetBrains Mono';ctx.textAlign='center';labels.forEach((l,i)=>ctx.fillText(l,px(i),H-5));
 }
 
@@ -398,8 +406,8 @@ function drawBottlenecks(){
   container.innerHTML = bns.map(b=>`
     <div class="hbar-row">
       <div class="hbar-label">${b.l}</div>
-      <div class="hbar-track"><div class="hbar-fill" style="width:${b.m/72*100}%;background:${b.c};"></div></div>
-      <div class="hbar-val" style="color:${b.c};">${b.m}m</div>
+      <div class="hbar-track"><div class="hbar-fill progress-live" style="width:${b.m/72*100}%;background:${b.c};transition:width 1.2s cubic-bezier(.4,0,.2,1);"></div></div>
+      <div class="hbar-val" style="color:${b.c};animation:kpiPulse 3s infinite;">${b.m}m</div>
     </div>`).join('');
 }
 
@@ -409,6 +417,15 @@ function drawShiftBars(){
   const data=plantState.shiftBars.map((v,i)=>({v,l:['A Mon','B Mon','A Tue','B Now'][i]}));
   const mx=4000,mn=3400;
   const bw=(W-40)/(data.length*2);
+
+  // Add subtle animated background
+  const bgGradient = ctx.createLinearGradient(0, 0, W, 0);
+  bgGradient.addColorStop(0, 'rgba(37,99,235,0.02)');
+  bgGradient.addColorStop(0.5, 'rgba(37,99,235,0.05)');
+  bgGradient.addColorStop(1, 'rgba(37,99,235,0.02)');
+  ctx.fillStyle = bgGradient;
+  ctx.fillRect(0, 0, W, H);
+
   data.forEach((d,i)=>{
     const x=20+i*((W-40)/data.length);
     const bh=(d.v-mn)/(mx-mn)*(H-28);
@@ -418,6 +435,15 @@ function drawShiftBars(){
     ctx.fillStyle=col;
     const rr=4;
     ctx.beginPath();ctx.moveTo(x+rr,y);ctx.lineTo(x+bw-rr,y);ctx.arcTo(x+bw,y,x+bw,y+rr,rr);ctx.lineTo(x+bw,H-18);ctx.lineTo(x,H-18);ctx.lineTo(x,y+rr);ctx.arcTo(x,y,x+rr,y,rr);ctx.closePath();ctx.fill();
+
+    // Add animated glow for current shift
+    if(isNow){
+      ctx.shadowColor = '#2563eb';
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
     const tc=isNow?'#2563eb':'rgba(0,0,0,.35)';
     ctx.fillStyle=tc;ctx.font=`${isNow?'bold ':''} 9px JetBrains Mono`;ctx.textAlign='center';ctx.fillText(`${(d.v/1000).toFixed(1)}k`,x+bw/2,y-4);
     ctx.fillStyle='rgba(0,0,0,.3)';ctx.font='8px JetBrains Mono';ctx.fillText(d.l,x+bw/2,H-5);
@@ -915,14 +941,20 @@ function applyTelemetryData(data){
 async function fetchTelemetry(){
   if(isFetchingTelemetry) return;
   isFetchingTelemetry = true;
+  const fetchStart = Date.now();
   try{
     const response = await fetch('/kpis?t=' + Date.now(), { cache: 'no-store' });
     if(!response.ok) throw new Error(`HTTP ${response.status}`);
     const data = await response.json();
+    const fetchTime = Date.now() - fetchStart;
     applyTelemetryData(data);
     updateDashboardUI();
+    updateTelemetryTicker(data);
+    updateSyncStatus(fetchTime);
+    triggerLiveHeartbeat();
   }catch(err){
     console.error('Telemetry fetch failed:', err);
+    updateSyncStatus(-1); // Error state
   }finally{
     isFetchingTelemetry = false;
     updateClock();
@@ -970,6 +1002,72 @@ function updateDashboardUI(){
   buildMaintTimeline();
   buildKPISummaryTable();
   buildScheduledReports();
+}
+
+let lastTelemetryData = null;
+let tickerMessages = [
+  "Telemetry feed active",
+  "Monitoring production lines",
+  "Quality control systems online",
+  "Asset health tracking active",
+  "Safety systems monitoring",
+  "Energy consumption tracking",
+  "Maintenance schedules updated",
+  "Defect detection active",
+  "Throughput optimization running",
+  "OEE calculations updated"
+];
+let currentTickerIndex = 0;
+
+function updateTelemetryTicker(data) {
+  const tickerEl = document.getElementById('telemetryTicker');
+  if (!tickerEl) return;
+
+  // Generate contextual messages based on telemetry changes
+  let message = tickerMessages[currentTickerIndex];
+  currentTickerIndex = (currentTickerIndex + 1) % tickerMessages.length;
+
+  if (lastTelemetryData && data.overview) {
+    const prev = lastTelemetryData.overview;
+    const curr = data.overview;
+
+    if (curr.unitsProduced > prev.unitsProduced) {
+      message = `Production increased: +${curr.unitsProduced - prev.unitsProduced} units`;
+    } else if (curr.totalDefects > prev.totalDefects) {
+      message = `Quality alert: New defect detected`;
+    } else if (Math.abs(curr.oee - prev.oee) > 0.5) {
+      const direction = curr.oee > prev.oee ? 'improved' : 'declined';
+      message = `OEE ${direction}: ${formatMetric(curr.oee)}%`;
+    } else if (curr.avgCycleTime !== prev.avgCycleTime) {
+      message = `Cycle time updated: ${formatMetric(curr.avgCycleTime)}s`;
+    }
+  }
+
+  tickerEl.textContent = message;
+  lastTelemetryData = JSON.parse(JSON.stringify(data)); // Deep copy
+}
+
+function updateSyncStatus(fetchTime) {
+  const syncEl = document.getElementById('syncStatus');
+  if (!syncEl) return;
+
+  if (fetchTime === -1) {
+    syncEl.textContent = 'Last Sync: ERROR';
+    syncEl.style.color = 'var(--red)';
+  } else {
+    const status = fetchTime < 200 ? 'EXCELLENT' : fetchTime < 500 ? 'GOOD' : 'SLOW';
+    const color = fetchTime < 200 ? 'var(--green)' : fetchTime < 500 ? 'var(--amber)' : 'var(--red)';
+    syncEl.textContent = `Last Sync: ${fetchTime}ms`;
+    syncEl.style.color = color;
+  }
+}
+
+function triggerLiveHeartbeat() {
+  const liveChip = document.querySelector('.live-chip');
+  if (liveChip) {
+    liveChip.classList.add('heartbeat-active');
+    setTimeout(() => liveChip.classList.remove('heartbeat-active'), 1000);
+  }
 }
 
 function updateOverviewLineCards(){
