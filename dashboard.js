@@ -259,8 +259,8 @@ let isFetchingTelemetry = false;
 
 // ═══════════════ REAL-TIME DATE/TIME UPDATER ═══════════════
 function updateBannerTimestamp() {
-  const bannerDateTimeEl = document.getElementById('bannerDateTime');
-  if (!bannerDateTimeEl) return;
+  const bannerMetaEl = document.querySelector('.ban-meta');
+  if (!bannerMetaEl) return;
 
   const now = new Date();
   const options = {
@@ -275,13 +275,15 @@ function updateBannerTimestamp() {
   };
 
   const parts = now.toLocaleString('en-US', options).split(' ');
-  const dayOfWeek = parts[0]; // Mon
-  const day = parts[1]; // 12
-  const month = parts[2]; // May
-  const year = parts[3]; // 2026
-  const timeStr = parts[4]; // 13:46
+  const dayOfWeek = parts[0];
+  const day = parts[1];
+  const month = parts[2];
+  const year = parts[3];
+  const timeStr = parts[4];
 
-  bannerDateTimeEl.textContent =
+  // Keep the existing copy, but ensure real time is updated every second.
+  // We'll append telemetry ticker separately (see updateTelemetryTicker).
+  bannerMetaEl.textContent =
     `${dayOfWeek.toUpperCase()} ${day} ${month.toUpperCase()} ${year} - ${timeStr} IST - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%`;
 }
 
