@@ -1793,23 +1793,29 @@ function startRealtimeLoop(){
 
   // Banner time every second
   setInterval(() => {
-    updateBannerTimestamp();
+    try { updateBannerTimestamp(); } catch (e) { /* DEBUG */ console.error('banner tick failed', e); }
   }, 1000);
 
-  // ticker & sync age presence
-  startTelemetryTicker();
-  startSyncAgeTicker();
+  // ticker & sync age presence (may be missing in some HTML variants; never let it break the loop)
+  try { startTelemetryTicker(); } catch (e) { /* DEBUG */ console.error('startTelemetryTicker failed', e); }
+  try { startSyncAgeTicker(); } catch (e) { /* DEBUG */ console.error('startSyncAgeTicker failed', e); }
 
   // Start throughput rAF animator once (visible streaming even between fetches)
-  startThroughputAnimator();
+  try { startThroughputAnimator(); } catch (e) { /* DEBUG */ console.error('startThroughputAnimator failed', e); }
 
   // Fetch telemetry from backend every 1 second
   setInterval(() => {
-    fetchTelemetry();
+    try {
+      fetchTelemetry();
 
-    // Between backend fetches, evolve telemetry continuously (so KPIs never look frozen)
-    evolveTelemetryRealistic();
-    updateDashboardUI();
+      // Between backend fetches, evolve telemetry continuously (so KPIs never look frozen)
+      evolveTelemetryRealistic();
+
+      // Render directly to existing DOM structure to avoid selector mismatches stopping updates.
+      syncRealtimeDOMForDashboard();
+    } catch (e) {
+      /* DEBUG */ console.error('realtime loop tick failed (interval continues)', e);
+    }
   }, 1000);
 }
 
