@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import math
-import random
 import time
 from copy import deepcopy
 from datetime import datetime
@@ -205,47 +204,64 @@ def _initialize_telemetry_state() -> None:
 
 
 def simulate_telemetry_tick() -> None:
+    """
+    Deterministic telemetry evolution (no chaotic randomness).
+    Frontend polls every ~1s; we derive smooth drift from time phase.
+    """
     if not telemetry_state:
         return
 
     overview = telemetry_state["overview"]
-    overview["unitsProduced"] = int(overview["unitsProduced"] + random.randint(0, 3))
-    overview["totalDefects"] = int(overview["totalDefects"] + random.choice([0, 0, 0, 1]))
+    phase = _phase()
 
+    # Units: monotonic stream with small smooth modulation
+    units_rate = 2 + int((math.sin(phase) + 1) * 1.5)  # 2..5-ish
+    units_delta = max(1, units_rate)  # ensure always movement
+    overview["unitsProduced"] = int(overview["unitsProduced"] + units_delta)
+
+    # Defects: occasional deterministic pulses based on phase
+    defect_pulse = 1 if int(phase * 1.7) % 13 == 0 else 0
+    if defect_pulse:
+        overview["totalDefects"] = int(overview["totalDefects"] + 1)
+
+    # OEE / avg cycle drift smoothly, bounded
     current_oee = float(overview["oee"])
-    current_oee = round(max(1.0, min(99.9, current_oee + random.uniform(-0.1, 0.1))), 1)
-    overview["oee"] = current_oee
+    oee_step = round(math.sin(phase / 2.6) * 0.18 + math.cos(phase / 7.2) * 0.08, 1)
+    overview["oee"] = round(max(1.0, min(99.9, current_oee + oee_step)), 1)
 
     current_avg_cycle = float(overview["avgCycleTime"])
-    current_avg_cycle = round(max(1.0, current_avg_cycle + random.uniform(-0.1, 0.1)), 1)
-    overview["avgCycleTime"] = current_avg_cycle
+    cycle_step = round(math.cos(phase / 3.3) * 0.14 + math.sin(phase / 9.4) * 0.07, 1)
+    overview["avgCycleTime"] = round(max(1.0, min(120.0, current_avg_cycle + cycle_step)), 1)
 
+    # Throughput: shift window left by 1 point and append deterministic new point
     throughput_today = telemetry_state["throughput"]["today"]
     if throughput_today:
         last_point = int(throughput_today[-1])
-        next_point = max(0, last_point + random.randint(-5, 5))
+        wave = math.sin(phase + 0.9) * 10 + math.cos(phase / 2.1) * 4
+        next_point = max(0, last_point + int(round(wave / 3.2)))
         throughput_today.pop(0)
         throughput_today.append(next_point)
 
     telemetry_state["sparks"]["spk1"] = throughput_today
     telemetry_state["sparks"]["spk3"][-1] = int(overview["totalDefects"])
-    telemetry_state["sparks"]["spk4"][-1] = current_avg_cycle
+    telemetry_state["sparks"]["spk4"][-1] = float(overview["avgCycleTime"])
 
+    # Bottleneck minutes drift deterministically and smoothly
     for bottleneck in telemetry_state["bottlenecks"]:
         label = bottleneck["l"]
         if label == "L-07 Press":
-            bottleneck["m"] = 72 + random.randint(0, 3)
+            bottleneck["m"] = 72 + int(abs(math.sin(phase)) * 3)
         elif label == "L-03 Weld":
-            bottleneck["m"] = 48 + random.randint(0, 2)
+            bottleneck["m"] = 48 + int(abs(math.cos(phase / 1.3)) * 2)
         elif label == "L-05 Paint":
-            bottleneck["m"] = 28
+            bottleneck["m"] = 28 + int(abs(math.sin(phase / 2.2)) * 1)
         elif label == "L-09 Pack":
-            bottleneck["m"] = 24
+            bottleneck["m"] = 24 + int(abs(math.cos(phase / 3.1)) * 1)
         elif label == "L-01 Assm":
-            bottleneck["m"] = 7
+            bottleneck["m"] = 7 + int(abs(math.sin(phase / 4.3)) * 1)
 
     telemetry_state["banner"]["greeting"] = (
-        f"Good afternoon, Sarah. Plant running at {round(current_oee)}% OEE - 2 lines need your attention."
+        f"Good afternoon, Sarah. Plant running at {round(overview['oee'])}% OEE - 2 lines need your attention."
     )
     telemetry_state["banner"]["meta"] = datetime.now().strftime(
         "%a %d %b %Y - %H:%M IST - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%%"
