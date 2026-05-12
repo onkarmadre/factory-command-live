@@ -132,23 +132,45 @@ function animateValue(el, from, to, duration = 300, format = (v) => String(v)) {
   animate();
 }
 
-function applyKPIGlow(el) {
+function applyKPIGlow(el, colorVar) {
   if(!el) return;
-  el.classList.add('kpi-updating');
-  setTimeout(() => el.classList.remove('kpi-updating'), 300);
+  // 300–500ms single pulse presence
+  const cls = 'kpi-updating-pulse';
+  el.classList.remove(cls);
+  // force reflow to retrigger animation
+  // eslint-disable-next-line no-unused-expressions
+  el.offsetHeight;
+
+  el.style.setProperty('--pulse-color', colorVar || 'var(--blue)');
+  el.classList.add(cls);
+
+  setTimeout(() => {
+    el.classList.remove(cls);
+    // keep inline variable clean
+    el.style.removeProperty('--pulse-color');
+  }, 420);
 }
 
-function updateValueWithAnimation(el, newValue, formatter = formatMetric) {
+function updateValueWithAnimation(el, newValue, formatter = formatMetric, deltaMeta) {
   if(!el) return;
   const currentText = el.textContent;
   const currentNum = parseFloat(currentText);
   const newNum = parseFloat(String(newValue));
-  if(!isNaN(currentNum) && !isNaN(newNum) && currentNum !== newNum) {
-    animateValue(el, currentNum, newNum, 200, formatter);
-    applyKPIGlow(el);
-  } else if(currentText !== String(newValue)) {
+
+  const shouldAnimateNumber = !isNaN(currentNum) && !isNaN(newNum) && currentNum !== newNum;
+  const shouldSetText = !shouldAnimateNumber && currentText !== String(newValue);
+
+  // KPI pulse on change (no aggressive animation)
+  if(shouldAnimateNumber) {
+    animateValue(el, currentNum, newNum, 320, formatter);
+    const pulse = deltaMeta || {};
+    const color = pulse.colorVar || 'var(--blue)';
+    applyKPIGlow(el, color);
+  } else if(shouldSetText) {
     el.textContent = formatter(newValue);
-    applyKPIGlow(el);
+    const pulse = deltaMeta || {};
+    const color = pulse.colorVar || 'var(--blue)';
+    applyKPIGlow(el, color);
   }
 }
 
@@ -211,6 +233,18 @@ function initializePlantState(){
   plantState.defectBreakdown = [{label:'Dimensional',n:8,c:'#ef4444'},{label:'Weld',n:6,c:'#f59e0b'},{label:'Paint',n:5,c:'#2563eb'},{label:'Assembly',n:3,c:'#6366f1'},{label:'Other',n:2,c:'#a8a8b8'}];
   plantState.kpiSummary = KPI_SUMMARY.map(item => ({...item}));
   derivePlantOverview();
+
+  // cache for KPI delta pulses
+  plantState.prevKPIs = {
+    unitsProduced: plantState.overview.unitsProduced,
+    totalDefects: plantState.overview.totalDefects,
+    firstPassYield: plantState.overview.firstPassYield,
+    oee: plantState.overview.oee,
+    availability: plantState.overview.availability,
+    performance: plantState.overview.performance,
+    quality: plantState.overview.quality,
+    avgCycleTime: plantState.overview.avgCycleTime,
+  };
 }
 
 let isFetchingTelemetry = false;
@@ -1115,26 +1149,53 @@ async function fetchTelemetry(){
 }
 function updateDashboardUI(){
   const ov = plantState.overview;
-  const oeeEl=document.getElementById('oeeValue'); if(oeeEl) updateValueWithAnimation(oeeEl, ov.oee, formatMetric);
-  const availabilityEl=document.getElementById('availabilityValue'); if(availabilityEl) updateValueWithAnimation(availabilityEl, ov.availability, (v)=>formatMetric(v)+'%');
-  const performanceEl=document.getElementById('performanceValue'); if(performanceEl) updateValueWithAnimation(performanceEl, ov.performance, (v)=>formatMetric(v)+'%');
-  const qualityEl=document.getElementById('qualityValue'); if(qualityEl) updateValueWithAnimation(qualityEl, ov.quality, (v)=>formatMetric(v)+'%');
+  const prev = plantState.prevKPIs || {};
+
+  // delta colors per requirements
+  const unitsDelta = (typeof prev.unitsProduced === 'number') ? (ov.unitsProduced - prev.unitsProduced) : 0;
+  const defectsDelta = (typeof prev.totalDefects === 'number') ? (ov.totalDefects - prev.totalDefects) : 0;
+  const fpyDelta = (typeof prev.firstPassYield === 'number') ? (ov.firstPassYield - prev.firstPassYield) : 0;
+
+  const unitsPulseColor = unitsDelta > 0 ? 'var(--blue)' : 'var(--blue-l)';
+  const defectsPulseColor = defectsDelta > 0 ? 'var(--red)' : 'var(--red-l)';
+  const fpyPulseColor =
+    fpyDelta >= 0
+      ? 'var(--green)'
+      : (fpyDelta <= -0.15 ? 'var(--red)' : 'var(--amber)');
+
+  const oeeEl=document.getElementById('oeeValue'); if(oeeEl) updateValueWithAnimation(oeeEl, ov.oee, formatMetric, {colorVar:'var(--indigo)'});
+  const availabilityEl=document.getElementById('availabilityValue'); if(availabilityEl) updateValueWithAnimation(availabilityEl, ov.availability, (v)=>formatMetric(v)+'%', {colorVar:'var(--teal)'});
+  const performanceEl=document.getElementById('performanceValue'); if(performanceEl) updateValueWithAnimation(performanceEl, ov.performance, (v)=>formatMetric(v)+'%', {colorVar:'var(--blue)'});
+  const qualityEl=document.getElementById('qualityValue'); if(qualityEl) updateValueWithAnimation(qualityEl, ov.quality, (v)=>formatMetric(v)+'%', {colorVar:'var(--indigo-l)'});
+
   const availFill=document.getElementById('availabilityFill'); if(availFill) availFill.style.width = Math.min(100,Math.max(0,ov.availability))+'%';
   const perfFill=document.getElementById('performanceFill'); if(perfFill) perfFill.style.width = Math.min(100,Math.max(0,ov.performance))+'%';
   const qualFill=document.getElementById('qualityFill'); if(qualFill) qualFill.style.width = Math.min(100,Math.max(0,ov.quality))+'%';
-  const unitsProducedEl=document.getElementById('unitsProducedValue'); if(unitsProducedEl) updateValueWithAnimation(unitsProducedEl, ov.unitsProduced, String);
+
+  const unitsProducedEl=document.getElementById('unitsProducedValue');
+  if(unitsProducedEl) updateValueWithAnimation(unitsProducedEl, ov.unitsProduced, String, {colorVar: unitsPulseColor});
+
   const unitsTargetEl=document.getElementById('unitsTargetValue'); if(unitsTargetEl) unitsTargetEl.textContent = String(ov.unitsTarget);
-  const fpyEl=document.getElementById('fpyValue'); if(fpyEl) updateValueWithAnimation(fpyEl, ov.firstPassYield, (v)=>formatMetric(v)+'%');
-  const defectsEl=document.getElementById('totalDefectsValue'); if(defectsEl) updateValueWithAnimation(defectsEl, ov.totalDefects, String);
-  const cycleEl=document.getElementById('avgCycleTimeValue'); if(cycleEl) updateValueWithAnimation(cycleEl, ov.avgCycleTime, (v)=>formatMetric(v)+'s');
+
+  const fpyEl=document.getElementById('fpyValue');
+  if(fpyEl) updateValueWithAnimation(fpyEl, ov.firstPassYield, (v)=>formatMetric(v)+'%', {colorVar: fpyPulseColor});
+
+  const defectsEl=document.getElementById('totalDefectsValue');
+  if(defectsEl) updateValueWithAnimation(defectsEl, ov.totalDefects, String, {colorVar: defectsPulseColor});
+
+  const cycleEl=document.getElementById('avgCycleTimeValue'); if(cycleEl) updateValueWithAnimation(cycleEl, ov.avgCycleTime, (v)=>formatMetric(v)+'s', {colorVar:'var(--amber)'});
+
   const banGreeting=document.querySelector('.ban-greeting'); if(banGreeting) banGreeting.innerHTML = plantState.bannerState.greeting || `Good afternoon, <strong>Sarah.</strong> Plant running at <strong>${formatMetric(ov.oee)}% OEE</strong> — ${plantState.bannerState.warningLines} lines need your attention.`;
   const banMeta=document.querySelector('.ban-meta'); if(banMeta) banMeta.textContent = plantState.bannerState.meta || `${nowIso()} · PLANT 4 — PUNE NORTH · CUSTOMER OTIF: 96.4%`;
+
   const safetyDays = document.getElementById('safetyDaysValue'); if(safetyDays) updateValueWithAnimation(safetyDays, plantState.safetyDays, String);
   const safetyNearMisses = document.getElementById('safetyNearMisses'); if(safetyNearMisses) updateValueWithAnimation(safetyNearMisses, plantState.safetyNearMisses, String);
   const safetyAlerts = document.getElementById('safetyAlertsValue'); if(safetyAlerts) updateValueWithAnimation(safetyAlerts, plantState.safetyAlertsOpen, String);
   const safetyRiskZone = document.getElementById('safetyRiskZone'); if(safetyRiskZone) safetyRiskZone.textContent = plantState.safetyRiskZone;
+
   const alertBadge=document.querySelector('.bell-badge'); if(alertBadge) alertBadge.textContent = String(plantState.alerts.length);
   document.querySelectorAll('.top-alert .badge.red').forEach(el=>{el.textContent = `${plantState.alerts.length} open`;});
+
   plantState.refs.overviewLines && updateOverviewLineCards();
   updateLineTableAndLeague();
   buildAlertItems();
@@ -1155,7 +1216,7 @@ function updateDashboardUI(){
   buildMaintTimeline();
   buildKPISummaryTable();
   buildScheduledReports();
-  
+
   // Draw live sparklines with continuously updating data
   if(plantState.sparks) {
     sparkline('spk1', plantState.sparks.spk1, '#2563eb');
@@ -1163,6 +1224,18 @@ function updateDashboardUI(){
     sparkline('spk3', plantState.sparks.spk3, '#ef4444');
     sparkline('spk4', plantState.sparks.spk4, '#f59e0b');
   }
+
+  // update cache after successful UI update
+  plantState.prevKPIs = {
+    unitsProduced: ov.unitsProduced,
+    totalDefects: ov.totalDefects,
+    firstPassYield: ov.firstPassYield,
+    oee: ov.oee,
+    availability: ov.availability,
+    performance: ov.performance,
+    quality: ov.quality,
+    avgCycleTime: ov.avgCycleTime,
+  };
 }
 
 let lastTelemetryData = null;
