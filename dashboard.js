@@ -242,7 +242,48 @@ function initializePlantState(){
   plantState.kpiSummary = KPI_SUMMARY.map(item => ({...item}));
   derivePlantOverview();
 
+  // Mid-shift demo baseline:
+  // start Units Produced at 2000 (UI shows a day/shift target of 4000),
+  // and scale line outputs proportionally so everything feels coherent.
+  (function applyMidShiftBaseline(){
+    const baselineUnitsProduced = 2000;
+    const currentTotalOutput = plantState.lines.reduce((acc, l) => acc + l.output, 0) || 1;
+    const scale = baselineUnitsProduced / currentTotalOutput;
+
+    plantState.lines.forEach(l => {
+      l.output = Math.max(0, Math.round(l.output * scale));
+    });
+
+    // Recompute derived overview (unitsProduced/defects/yield/cycle/OEE are based on lines)
+    derivePlantOverview();
+
+    // Ensure cached KPIs match baseline so first visual delta pulses make sense
+    plantState.prevKPIs = plantState.prevKPIs || {};
+    plantState.prevKPIs.unitsProduced = plantState.overview.unitsProduced;
+    plantState.prevKPIs.totalDefects = plantState.overview.totalDefects;
+    plantState.prevKPIs.firstPassYield = plantState.overview.firstPassYield;
+    plantState.prevKPIs.oee = plantState.overview.oee;
+    plantState.prevKPIs.availability = plantState.overview.availability;
+    plantState.prevKPIs.performance = plantState.overview.performance;
+    plantState.prevKPIs.quality = plantState.overview.quality;
+    plantState.prevKPIs.avgCycleTime = plantState.overview.avgCycleTime;
+  })();
+
   // cache for KPI delta pulses
+  plantState.prevKPIs = plantState.prevKPIs || {};
+  if (!plantState.prevKPIs.unitsProduced) {
+    plantState.prevKPIs = {
+      unitsProduced: plantState.overview.unitsProduced,
+      totalDefects: plantState.overview.totalDefects,
+      firstPassYield: plantState.overview.firstPassYield,
+      oee: plantState.overview.oee,
+      availability: plantState.overview.availability,
+      performance: plantState.overview.performance,
+      quality: plantState.overview.quality,
+      avgCycleTime: plantState.overview.avgCycleTime,
+    };
+  }
+  // (existing cache below may be overwritten; harmless)
   plantState.prevKPIs = {
     unitsProduced: plantState.overview.unitsProduced,
     totalDefects: plantState.overview.totalDefects,
@@ -718,7 +759,7 @@ function startThroughputAnimator(){
   if(throughputAnim.started) return;
   throughputAnim.started = true;
 
-  const tickEveryMs = 1000; // align with fetch loop cadence
+  const tickEveryMs = 350; // align with evolve+sync cadence
   const step = () => {
     throughputAnim.raf = requestAnimationFrame(step);
 
@@ -1788,6 +1829,63 @@ function simulatePlantTick(){
   }
 }
 
+function syncRealtimeDOMForDashboard(){
+  // KPI map based on existing dashboard.html structure: .kpi-card -> .kpi-label + .kpi-val + .kpi-delta
+  // Update only visible DOM nodes; no HTML regeneration.
+  try {
+    // 1) clock/banner timestamp already handled by updateClock + updateBannerTimestamp interval
+    // 2) KPI values (Overview cards only)
+    const setKpiVal = (labelText, valueText) => {
+      const cards = Array.from(document.querySelectorAll('#tab-overview .kpi-card'));
+      const card = cards.find(c => {
+        const lbl = c.querySelector('.kpi-label');
+        return lbl && lbl.textContent && lbl.textContent.trim() === labelText;
+      });
+      const valEl = card?.querySelector('.kpi-val');
+      if (valEl) valEl.textContent = valueText;
+    };
+
+    // Units Produced
+    const units = Math.round(plantState.overview.unitsProduced || 0);
+    setKpiVal('Units Produced', units.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ','));
+
+    // OEE KPI exists as hero (not same structure). We update the hero % text by finding the first big number within #tab-overview.
+    const oee = plantState.overview.oee;
+    const hero = document.querySelector('#tab-overview [style*="font-size:58px"]');
+    if (hero) {
+      // hero contains number + nested % span; update only the text node portion by replacing all digits
+      // (avoid innerHTML)
+      const percentSpan = hero.querySelector('span');
+      if (percentSpan) {
+        // hero.textContent is like "82%"
+        hero.childNodes.forEach(n => { if (n.nodeType === 3) { n.textContent = String(Math.round(oee)); }});
+      }
+    }
+
+    // Total Defects
+    const defects = Math.round(plantState.overview.totalDefects || 0);
+    setKpiVal('Total Defects', String(defects));
+
+    // Avg Cycle Time (label is "Avg Cycle Time")
+    const avgCycle = plantState.overview.avgCycleTime;
+    setKpiVal('Avg Cycle Time', `${round1(avgCycle)}s`);
+
+    // 3) Sparklines canvases (always exist in overview)
+    if (plantState.sparks) {
+      sparkline('spk1', plantState.sparks.spk1, '#2563eb');
+      sparkline('spk2', plantState.sparks.spk2, '#00b96b');
+      sparkline('spk3', plantState.sparks.spk3, '#ef4444');
+      sparkline('spk4', plantState.sparks.spk4, '#f59e0b');
+    }
+
+    // 4) Alerts list (existing .alert-item nodes)
+    buildAlertItems();
+
+  } catch (e) {
+    console.error('syncRealtimeDOMForDashboard failed', e);
+  }
+}
+
 function startRealtimeLoop(){
   updateClock();
   updateBannerTimestamp();
@@ -1805,20 +1903,25 @@ function startRealtimeLoop(){
   // Start throughput rAF animator once (visible streaming even between fetches)
   try { startThroughputAnimator(); } catch (e) { /* DEBUG */ console.error('startThroughputAnimator failed', e); }
 
-  // Fetch telemetry from backend every 1 second
+  // Fetch telemetry from backend every 1 second (keep network cadence stable)
   setInterval(() => {
     try {
       fetchTelemetry();
+    } catch (e) {
+      /* DEBUG */ console.error('fetchTelemetry failed', e);
+    }
+  }, 1000);
 
+  // Evolve + sync DOM faster to feel “live” (2–3 updates/sec)
+  setInterval(() => {
+    try {
       // Between backend fetches, evolve telemetry continuously (so KPIs never look frozen)
       evolveTelemetryRealistic();
-
-      // Render directly to existing DOM structure to avoid selector mismatches stopping updates.
       syncRealtimeDOMForDashboard();
     } catch (e) {
       /* DEBUG */ console.error('realtime loop tick failed (interval continues)', e);
     }
-  }, 1000);
+  }, 350);
 }
 
 function renderLinesTab(){
