@@ -76,6 +76,12 @@ const plantState = {
   energy:[2.9,3.1,2.7,2.8,3.4,2.6,4.1,2.7,3.2,2.8],
   defectBreakdown:[{label:'Dimensional',n:8,c:'#ef4444'},{label:'Weld',n:6,c:'#f59e0b'},{label:'Paint',n:5,c:'#2563eb'},{label:'Assembly',n:3,c:'#6366f1'},{label:'Other',n:2,c:'#a8a8b8'}],
   kpiSummary: KPI_SUMMARY.map(item => ({...item})),
+  sparks: {
+    spk1: [350,370,420,400,440,430,450,438],
+    spk2: [95,94,96,93,95,94,95,96],
+    spk3: [24,26,25,24,23,22,24,25],
+    spk4: [42,43,42,41,42,43,42,41],
+  },
   scheduledReports:[
     {name:'Daily OEE Report',freq:'Daily 18:00',last:'17 Mar 14:32',rcpts:'sarah.m@apex.com, cto@apex.com',fmt:'PDF+XLSX'},
     {name:'Shift Quality Summary',freq:'Per shift',last:'Today 06:00',rcpts:'qa-team@apex.com',fmt:'PDF'},
@@ -209,9 +215,156 @@ function initializePlantState(){
 
 let isFetchingTelemetry = false;
 
+// ═══════════════ REAL-TIME DATE/TIME UPDATER ═══════════════
+function updateBannerDateTime() {
+  const bannerDateTimeEl = document.getElementById('bannerDateTime');
+  if (!bannerDateTimeEl) return;
+  
+  const now = new Date();
+  const options = {
+    weekday: 'short',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: undefined,
+    hour12: false
+  };
+  
+  const parts = now.toLocaleString('en-US', options).split(' ');
+  const dayOfWeek = parts[0]; // e.g., "Mon"
+  const day = parts[1]; // e.g., "12"
+  const month = parts[2]; // e.g., "May"
+  const year = parts[3]; // e.g., "2026"
+  const timeStr = parts[4]; // e.g., "10:52"
+  
+  // Format: "MON 12 MAY 2026 - 10:52 IST - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%"
+  bannerDateTimeEl.textContent = `${dayOfWeek.toUpperCase()} ${day} ${month.toUpperCase()} ${year} - ${timeStr} IST - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%`;
+}
+
+// ═══════════════ CONTINUOUS TELEMETRY EVOLUTION ═══════════════
+function evolveTelemetryRealistic() {
+  // Evolve KPI values gradually and realistically
+  const ov = plantState.overview;
+  
+  // Units produced increases gradually (realistic production rate)
+  if (Math.random() < 0.6) {
+    ov.unitsProduced = Math.min(ov.unitsProduced + Math.floor(Math.random() * 3) + 1, ov.unitsProduced * 1.5);
+  }
+  
+  // OEE fluctuates subtly (±0.1% to ±0.3%)
+  ov.oee = clamp(round1(ov.oee + (Math.random() - 0.5) * 0.4), 75, 88);
+  
+  // Cycle time varies slightly (±0.1 to ±0.2 seconds)
+  ov.avgCycleTime = clamp(round1(ov.avgCycleTime + (Math.random() - 0.5) * 0.3), 40, 55);
+  
+  // Defects increment occasionally
+  if (Math.random() < 0.15) {
+    ov.totalDefects = Math.max(ov.totalDefects, ov.totalDefects + 1);
+  }
+  
+  // Availability/Performance/Quality vary subtly
+  ov.availability = clamp(round1(ov.availability + (Math.random() - 0.5) * 0.2), 85, 96);
+  ov.performance = clamp(round1(ov.performance + (Math.random() - 0.5) * 0.2), 82, 92);
+  ov.quality = clamp(round1(ov.quality + (Math.random() - 0.5) * 0.1), 92, 98);
+  
+  // Update line outputs gradually
+  plantState.lines.forEach(line => {
+    if (line.status === 'green') {
+      line.output = Math.min(line.output + Math.floor(Math.random() * 2) + 1, Math.round(line.target * 1.1));
+    } else if (line.status === 'amber') {
+      line.output = Math.min(line.output + Math.floor(Math.random()), Math.round(line.target * 1.05));
+    }
+    line.oee = clamp(round1(line.oee + (Math.random() - 0.5) * 0.2), 55, 98);
+    line.yield = clamp(round1(line.yield + (Math.random() - 0.5) * 0.15), 70, 99);
+  });
+  
+  // Update bottleneck minutes (downtime evolves)
+  if (plantState.bottlenecks[0]) {
+    plantState.bottlenecks[0].m = clamp(plantState.bottlenecks[0].m + Math.floor((Math.random() - 0.5) * 4), 68, 76);
+  }
+  if (plantState.bottlenecks[1]) {
+    plantState.bottlenecks[1].m = clamp(plantState.bottlenecks[1].m + Math.floor((Math.random() - 0.5) * 2), 46, 50);
+  }
+  
+  // Rotate and add new throughput point
+  const today = plantState.throughput.today;
+  if (today.length > 0) {
+    const lastVal = today[today.length - 1];
+    const newVal = clamp(lastVal + Math.floor((Math.random() - 0.5) * 10), 350, 470);
+    today.shift();
+    today.push(newVal);
+  }
+  
+  // Update labels for throughput
+  plantState.throughputLabels.shift();
+  plantState.throughputLabels.push(nextThroughputLabel());
+  
+  // Update sparklines with scrolling animation
+  if (plantState.sparks) {
+    // Throughput sparkline - scroll left
+    if (plantState.sparks.spk1 && plantState.sparks.spk1.length > 0) {
+      const lastVal = plantState.sparks.spk1[plantState.sparks.spk1.length - 1];
+      const newVal = clamp(lastVal + Math.floor((Math.random() - 0.5) * 8), 350, 470);
+      plantState.sparks.spk1.shift();
+      plantState.sparks.spk1.push(newVal);
+    }
+    
+    // FPY sparkline - scroll left
+    if (plantState.sparks.spk2) {
+      plantState.sparks.spk2.shift();
+      plantState.sparks.spk2.push(clamp(ov.firstPassYield, 90, 98));
+    }
+    
+    // Defects sparkline - scroll left
+    if (plantState.sparks.spk3) {
+      plantState.sparks.spk3.shift();
+      plantState.sparks.spk3.push(ov.totalDefects);
+    }
+    
+    // Cycle time sparkline - scroll left
+    if (plantState.sparks.spk4) {
+      plantState.sparks.spk4.shift();
+      plantState.sparks.spk4.push(round1(ov.avgCycleTime));
+    }
+  }
+  
+  // Update defect breakdown with variation
+  plantState.defectBreakdown = plantState.defectBreakdown.map((item, idx) => ({
+    ...item,
+    n: clamp(item.n + Math.floor((Math.random() - 0.5) * 2), Math.max(1, item.n - 3), item.n + 3)
+  }));
+  
+  // Age alert timestamps and occasionally update
+  plantState.alerts = plantState.alerts.map((alert, idx) => {
+    const timeMinutes = parseInt(alert.time) || 2;
+    return {
+      ...alert,
+      time: `${clamp(timeMinutes + 1, 1, 120)}m`  // Increment age
+    };
+  });
+  
+  // Occasionally change alert severity
+  if (Math.random() < 0.05) {
+    const idx = Math.floor(Math.random() * plantState.alerts.length);
+    if (plantState.alerts[idx]) {
+      const alert = plantState.alerts[idx];
+      if (alert.severity === 'WARNING') {
+        alert.severity = 'CRITICAL';
+        alert.status = 'red';
+      } else if (alert.severity === 'CRITICAL' && Math.random() < 0.3) {
+        alert.severity = 'WARNING';
+        alert.status = 'amber';
+      }
+    }
+  }
+}
+
 function updateClock(){
   const clock = document.getElementById('clock');
   if(clock) clock.textContent = new Date().toLocaleTimeString('en-US', {hour12:false});
+  updateBannerDateTime(); // Also update banner date/time
 }
 
 function showTab(id,btn){
@@ -1002,6 +1155,14 @@ function updateDashboardUI(){
   buildMaintTimeline();
   buildKPISummaryTable();
   buildScheduledReports();
+  
+  // Draw live sparklines with continuously updating data
+  if(plantState.sparks) {
+    sparkline('spk1', plantState.sparks.spk1, '#2563eb');
+    sparkline('spk2', plantState.sparks.spk2, '#00b96b');
+    sparkline('spk3', plantState.sparks.spk3, '#ef4444');
+    sparkline('spk4', plantState.sparks.spk4, '#f59e0b');
+  }
 }
 
 let lastTelemetryData = null;
@@ -1191,8 +1352,17 @@ function simulatePlantTick(){
 
 function startRealtimeLoop(){
   updateClock();
+  updateBannerDateTime();
   fetchTelemetry();
-  setInterval(fetchTelemetry, 1000);
+  
+  // Fetch telemetry from backend every 1 second
+  setInterval(() => {
+    fetchTelemetry();
+    
+    // Between backend fetches, evolve telemetry realistically
+    evolveTelemetryRealistic();
+    updateDashboardUI();
+  }, 1000);
 }
 
 function renderLinesTab(){
