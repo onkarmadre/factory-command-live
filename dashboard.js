@@ -324,8 +324,11 @@ function updateBannerTimestamp() {
 
   // Keep the existing copy, but ensure real time is updated every second.
   // We'll append telemetry ticker separately (see updateTelemetryTicker).
+  const tzParts = new Intl.DateTimeFormat(undefined, { timeZoneName: 'short' }).formatToParts(now);
+  const tzName = tzParts.find(p => p.type === 'timeZoneName')?.value || '';
+
   bannerMetaEl.textContent =
-    `${dayOfWeek.toUpperCase()} ${day} ${month.toUpperCase()} ${year} - ${timeStr} IST - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%`;
+    `${dayOfWeek.toUpperCase()} ${day} ${month.toUpperCase()} ${year} · ${timeStr} ${tzName} - PLANT 4 - PUNE NORTH - CUSTOMER OTIF: 96.4%`;
 }
 
 // Backward-compatible alias (keeps any existing calls working)
@@ -1522,7 +1525,7 @@ function updateDashboardUI(){
   const cycleEl=document.getElementById('avgCycleTimeValue'); if(cycleEl) updateValueWithAnimation(cycleEl, ov.avgCycleTime, (v)=>formatMetric(v)+'s', {colorVar:'var(--amber)'});
 
   const banGreeting=document.querySelector('.ban-greeting'); if(banGreeting) banGreeting.innerHTML = plantState.bannerState.greeting || `Good afternoon, <strong>Sarah.</strong> Plant running at <strong>${formatMetric(ov.oee)}% OEE</strong> — ${plantState.bannerState.warningLines} lines need your attention.`;
-  const banMeta=document.querySelector('.ban-meta'); if(banMeta) banMeta.textContent = plantState.bannerState.meta || `${nowIso()} · PLANT 4 — PUNE NORTH · CUSTOMER OTIF: 96.4%`;
+  const banMeta=document.querySelector('.ban-meta'); if(banMeta) banMeta.textContent = `${new Date().toLocaleString('en-US',{weekday:'short',day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false})} · PLANT 4 — PUNE NORTH · CUSTOMER OTIF: 96.4%`;
 
   const safetyDays = document.getElementById('safetyDaysValue'); if(safetyDays) updateValueWithAnimation(safetyDays, plantState.safetyDays, String);
   const safetyNearMisses = document.getElementById('safetyNearMisses'); if(safetyNearMisses) updateValueWithAnimation(safetyNearMisses, plantState.safetyNearMisses, String);
@@ -1833,7 +1836,21 @@ function syncRealtimeDOMForDashboard(){
   // KPI map based on existing dashboard.html structure: .kpi-card -> .kpi-label + .kpi-val + .kpi-delta
   // Update only visible DOM nodes; no HTML regeneration.
   try {
+    // Ensure banner date/time stays real-time even if other schedulers are broken
+    updateBannerTimestamp();
+
+    // Throttle debug logs so console isn't spammed
+    syncRealtimeDOMForDashboard._dbg = syncRealtimeDOMForDashboard._dbg ?? { last: 0 };
+    const now = Date.now();
+    const doLog = now - syncRealtimeDOMForDashboard._dbg.last > 2000;
+    if (doLog) {
+      syncRealtimeDOMForDashboard._dbg.last = now;
+      console.debug('[RT] syncRealtimeDOMForDashboard tick=', plantState.tick, 'unitsProduced=', plantState.overview?.unitsProduced);
+    }
+
+    const overview = plantState.overview || {};
     // 1) clock/banner timestamp already handled by updateClock + updateBannerTimestamp interval
+
     // 2) KPI values (Overview cards only)
     const setKpiVal = (labelText, valueText) => {
       const cards = Array.from(document.querySelectorAll('#tab-overview .kpi-card'));
@@ -1842,32 +1859,43 @@ function syncRealtimeDOMForDashboard(){
         return lbl && lbl.textContent && lbl.textContent.trim() === labelText;
       });
       const valEl = card?.querySelector('.kpi-val');
-      if (valEl) valEl.textContent = valueText;
+      if (valEl) {
+        valEl.textContent = valueText;
+      } else if (doLog) {
+        console.warn('[RT] KPI DOM missing for label:', labelText, 'found cards:', cards.length);
+      }
     };
 
     // Units Produced
-    const units = Math.round(plantState.overview.unitsProduced || 0);
-    setKpiVal('Units Produced', units.toString().replace(/\\B(?=(\\d{3})+(?!\\d))/g, ','));
+    const units = Math.round(overview.unitsProduced || 0);
+    setKpiVal('Units Produced', units.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','));
 
-    // OEE KPI exists as hero (not same structure). We update the hero % text by finding the first big number within #tab-overview.
-    const oee = plantState.overview.oee;
+    // OEE KPI hero number (big number inside the first kpi hero card)
+    const oee = overview.oee;
     const hero = document.querySelector('#tab-overview [style*="font-size:58px"]');
     if (hero) {
-      // hero contains number + nested % span; update only the text node portion by replacing all digits
-      // (avoid innerHTML)
-      const percentSpan = hero.querySelector('span');
-      if (percentSpan) {
-        // hero.textContent is like "82%"
-        hero.childNodes.forEach(n => { if (n.nodeType === 3) { n.textContent = String(Math.round(oee)); }});
-      }
+      // Replace only the numeric text content (hero contains like "82" + <span>%</span>)
+      // Avoid innerHTML; operate on text nodes only.
+      const targetNum = String(Math.round(oee));
+      let replaced = false;
+      hero.childNodes.forEach(n => {
+        if (replaced) return;
+        if (n.nodeType === Node.TEXT_NODE && /\\d/.test(n.textContent)) {
+          n.textContent = targetNum;
+          replaced = true;
+        }
+      });
+      if (!replaced && doLog) console.warn('[RT] OEE hero numeric text node not replaced');
+    } else if (doLog) {
+      console.warn('[RT] OEE hero node not found');
     }
 
     // Total Defects
-    const defects = Math.round(plantState.overview.totalDefects || 0);
+    const defects = Math.round(overview.totalDefects || 0);
     setKpiVal('Total Defects', String(defects));
 
     // Avg Cycle Time (label is "Avg Cycle Time")
-    const avgCycle = plantState.overview.avgCycleTime;
+    const avgCycle = overview.avgCycleTime;
     setKpiVal('Avg Cycle Time', `${round1(avgCycle)}s`);
 
     // 3) Sparklines canvases (always exist in overview)
@@ -1880,7 +1908,6 @@ function syncRealtimeDOMForDashboard(){
 
     // 4) Alerts list (existing .alert-item nodes)
     buildAlertItems();
-
   } catch (e) {
     console.error('syncRealtimeDOMForDashboard failed', e);
   }
